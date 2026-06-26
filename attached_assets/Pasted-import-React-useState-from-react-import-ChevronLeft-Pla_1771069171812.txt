@@ -1,0 +1,187 @@
+import React, { useState } from 'react';
+import { 
+  ChevronLeft, 
+  Play, 
+  Star, 
+  Clock, 
+  Flame, 
+  Dumbbell, 
+  ChevronDown,
+  Info,
+  CheckCircle2
+} from 'lucide-react';
+
+/**
+ * Componente principal App
+ * Implementa o Design System "Cinematic Dark" inspirado na interface de streaming
+ * Adaptado para o nicho de Fitness e Treino de Alta Performance
+ */
+export default function App() {
+  const [selectedWeek, setSelectedWeek] = useState('Semana 1');
+
+  // Dados mockados para os exercícios (equivalente aos episódios)
+  const exercicios = [
+    {
+      id: 1,
+      titulo: "Aquecimento Dinâmico",
+      duracao: "8m",
+      descricao: "Preparação articular e elevação da frequência cardíaca para o treino principal.",
+      thumb: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&q=80"
+    },
+    {
+      id: 2,
+      titulo: "Agachamento com Salto",
+      duracao: "12m",
+      descricao: "Foco em potência explosiva dos membros inferiores e estabilização de core.",
+      thumb: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&q=80"
+    },
+    {
+      id: 3,
+      titulo: "Burpees de Alta Intensidade",
+      duracao: "15m",
+      descricao: "Movimento multiarticular para queima calórica máxima e resistência cardiovascular.",
+      thumb: "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=400&q=80"
+    },
+    {
+      id: 4,
+      titulo: "Prancha Abdominal Ativa",
+      duracao: "10m",
+      descricao: "Fortalecimento isométrico do core com variações de movimento lateral.",
+      thumb: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80"
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-[#0a0a0a] text-white font-sans selection:bg-red-600">
+      
+      {/* Hero Section com Imagem de Fundo */}
+      <div className="relative h-[70vh] w-full overflow-hidden">
+        {/* Imagem de Fundo com Overlay */}
+        <div className="absolute inset-0">
+          <img 
+            src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=1200&q=90" 
+            alt="Treino de Performance"
+            className="w-full h-full object-cover object-top opacity-60"
+          />
+          {/* Gradientes para mesclar com o fundo escuro */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-transparent"></div>
+        </div>
+
+        {/* Botão de Voltar */}
+        <button className="absolute top-6 left-6 p-2 bg-black/40 backdrop-blur-md rounded-full border border-white/10 hover:bg-black/60 transition-all">
+          <ChevronLeft size={24} />
+        </button>
+
+        {/* Informações do Treino no Hero */}
+        <div className="absolute bottom-10 left-0 w-full px-6 md:px-12">
+          <p className="text-xs font-bold tracking-[0.3em] uppercase text-white/70 mb-2 drop-shadow-lg">
+            Da Imaginação do Coach de Elite
+          </p>
+          <h1 className="text-5xl md:text-7xl font-black mb-4 tracking-tight drop-shadow-2xl">
+            Protocolo HIIT <br/> Explosivo
+          </h1>
+
+          <div className="flex flex-wrap items-center gap-4 mb-8">
+            <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 text-xs font-bold uppercase">
+              <Dumbbell size={14} className="text-red-500" />
+              Nível Avançado
+            </div>
+            <div className="flex items-center gap-1.5 text-sm font-semibold">
+              <Star size={16} className="text-yellow-400 fill-yellow-400" />
+              <span>4.9/5 <span className="text-white/40 font-normal">(2.1k alunos)</span></span>
+            </div>
+          </div>
+
+          <div className="flex flex-col md:flex-row gap-4">
+            <button className="flex items-center justify-center gap-3 bg-red-600 hover:bg-red-700 transition-colors px-12 py-4 rounded-xl font-bold text-lg shadow-xl shadow-red-900/20 active:scale-95">
+              <Play size={20} fill="currentColor" />
+              Começar Treino
+            </button>
+            <button className="flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 backdrop-blur-md transition-colors px-6 py-4 rounded-xl font-bold border border-white/20">
+              <Info size={20} />
+              Mais Detalhes
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Conteúdo Detalhado */}
+      <div className="px-6 md:px-12 pb-20 max-w-5xl mx-auto -mt-4 relative z-10">
+        <p className="text-lg text-white/70 leading-relaxed mb-12">
+          Siga o programa de anos da elite esportiva. Este protocolo desafia a sua capacidade 
+          de explosão muscular, resistência cardiovascular e foco mental absoluto. 
+          Desenvolvido para quem busca resultados rápidos e consistentes.
+        </p>
+
+        {/* Seção de Exercícios (Estilo Episódios) */}
+        <div className="flex items-center justify-between mb-8 border-b border-white/10 pb-4">
+          <h3 className="text-2xl font-bold">Rotina de Exercícios</h3>
+          <div className="relative">
+            <button className="flex items-center gap-2 bg-[#1a1a1a] px-4 py-2 rounded-xl border border-white/10 font-semibold text-sm">
+              {selectedWeek}
+              <ChevronDown size={16} />
+            </button>
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          {exercicios.map((ex) => (
+            <div 
+              key={ex.id} 
+              className="group flex flex-col md:flex-row gap-6 p-4 rounded-2xl hover:bg-white/5 transition-all cursor-pointer border border-transparent hover:border-white/10"
+            >
+              {/* Número e Thumbnail */}
+              <div className="flex items-center gap-6">
+                <span className="text-3xl font-black text-white/20 group-hover:text-red-500 transition-colors w-8">
+                  {ex.id}
+                </span>
+                <div className="relative w-full md:w-56 aspect-video rounded-xl overflow-hidden shadow-2xl">
+                  <img 
+                    src={ex.thumb} 
+                    alt={ex.titulo} 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                  <div className="absolute bottom-2 right-2 bg-black/60 backdrop-blur-sm px-2 py-0.5 rounded text-[10px] font-bold">
+                    {ex.duracao}
+                  </div>
+                </div>
+              </div>
+
+              {/* Texto do Exercício */}
+              <div className="flex-1 flex flex-col justify-center">
+                <div className="flex justify-between items-start mb-2">
+                  <h4 className="text-xl font-bold group-hover:text-red-400 transition-colors">
+                    {ex.titulo}
+                  </h4>
+                  <span className="text-xs font-bold text-white/40 flex items-center gap-1 bg-white/5 px-2 py-1 rounded">
+                    <Clock size={12} /> {ex.duracao}
+                  </span>
+                </div>
+                <p className="text-sm text-white/50 leading-relaxed line-clamp-2">
+                  {ex.descricao}
+                </p>
+              </div>
+
+              {/* Botão de Check/Play Lateral */}
+              <div className="flex items-center justify-end">
+                <button className="p-3 bg-white/5 rounded-full text-white/20 group-hover:text-red-500 group-hover:bg-red-500/10 transition-all border border-transparent hover:border-red-500/20">
+                  <Play size={20} fill="currentColor" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Footer de Conclusão */}
+        <div className="mt-16 p-8 rounded-[32px] bg-gradient-to-br from-[#1a1a1a] to-[#0d0d0d] border border-white/10 text-center">
+          <CheckCircle2 size={40} className="mx-auto mb-4 text-red-500" />
+          <h4 className="text-xl font-bold mb-2">Treino Finalizado?</h4>
+          <p className="text-white/40 text-sm mb-6">Não esqueça de registrar seu progresso e hidratar-se.</p>
+          <button className="text-red-500 font-bold hover:underline">Marcar como Concluído</button>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,112 @@
+# PRD Mestre: Fitness Sincera (Fase 1: Design & Prototipagem)
+
+> **⚠️ INSTRUÇÃO CRÍTICA PARA O AGENTE REPLIT:**
+Este prompt foca EXCLUSIVAMENTE na **Etapa 1 (Frontend Visual)**.
+**NÃO** configure Banco de Dados (PostgreSQL), Backend (Node/Express) ou Autenticação agora.
+Use **Mock Data (JSON)** para simular todos os dados. O objetivo é validar a UX/UI e as micro-interações.
+> 
+
+## 1. Visão Geral do Produto
+
+O "Fitness Sincera" é uma plataforma SaaS de nutrição e treino. O produto foca na gestão de rotina e consistência, entregando ao usuário um dia já planejado pelo profissional.
+**Foco desta etapa:** Criar um protótipo navegável de alta fidelidade que simule a experiência do usuário final ("User Persona").
+
+## 2. Problema / Oportunidade
+
+**Problema:** Apps tradicionais dão "tela em branco" e exigem que o usuário decida o que comer. Isso gera fadiga de decisão.
+**Oportunidade:** Um público High-Ticket paga por **decisões tomadas**. A interface deve ser **"Routine First"** (focada na execução do dia) e não "Data First". O usuário quer ver "Coma 3 Ovos" e dar um check.
+
+## 3. Público-Alvo (Simulado nesta fase)
+
+- **Persona User (O Executor):** Visualiza a dieta pronta. Interage com botões de "Check" e "Swap". Precisa de feedback visual imediato (animações de sucesso) e simplicidade extrema.
+
+## 4. Objetivos do Protótipo
+
+1. **Fidelidade Visual:** Implementar o Design System (Dark/Neon) com precisão pixel-perfect baseada nos arquivos anexos.
+2. **Validação de Fluxo:** Testar a navegação entre Dashboard, Treino e Mentor.
+3. **Interatividade:** Validar as micro-interações (hover, clique, transições de estado dos cards de refeição).
+
+## 5. Escopo Funcional (Apenas Frontend)
+
+### 5.1 Funcionalidades Principais (MVP Visual)
+
+1. **Layout Principal:** Sidebar (Navegação Desktop) + Área de Conteúdo + Mobile Nav (Drawer).
+2. **Dashboard "Routine First" (A Home):**
+    - **Topo:** `HealthOverviewCard` (Barras de progresso de Proteína, Carbo, Gordura - estáticas ou animadas).
+    - **Centro (O Palco):** `DailyRoutineTimeline` (Lista vertical das refeições do dia: Café, Almoço, Jantar).
+    - **FAB (Floating Action Button):** Botão de Câmera (Neon Yellow) flutuando no canto inferior direito ou centro (mobile).
+3. **Componente de Refeição (Meal Card):**
+    - **Estado 1 (Pendente):** Opaco, mostra alimentos (ex: "3 Ovos"). Botão "Check" visível. Botão "Swap" (Ghost) visível.
+    - **Estado 2 (Concluído):** Verde (`bg-nutrition`), texto riscado ou diminuído, ícone de Check.
+    - **Estado 3 (Swap):** Ao clicar no ícone de troca, abre um Drawer/Modal.
+4. **Aba de Progresso:** Página onde ficam os gráficos detalhados (`EnergyUsed`, `SleepAnalysis`, etc) que foram removidos da Home.
+
+### 5.2 Funcionalidades Simuladas (Mock Logic)
+
+1. **Troca de Alimentos:** Ao clicar em trocar, abrir um modal com lista falsa de alimentos para demonstrar a UI de seleção.
+2. **Câmera IA:** Ao clicar no botão FAB, abrir uma simulação de "Enviando foto..." e mostrar um Toast ou Modal com resultado fake (JSON estático de sucesso).
+3. **Modo Festa:** Um botão ou link no `HealthOverviewCard` que abre um Dialog para selecionar data.
+
+### 
+
+## 6. Requisitos Detalhados
+
+### 6.1 Requisitos Funcionais (Simulados)
+
+- **RF01 - Carregamento de Rotina:** O Dashboard deve iniciar renderizando o JSON `mockDiet.ts`.
+- **RF02 - Interação de Check:** Ao clicar em check, o card deve mudar de estilo visualmente e persistir o estado (localmente).
+- **RF03 - Navegação:** A Sidebar deve levar para rotas reais (mesmo que vazias) como `/treinos`, `/chat`, `/progresso`.
+
+### 6.2 Padrões de Sistema e Design Funcional
+
+- **Design System:** Seguir `DESIGN_SYSTEM_SPECIFICATION.md` e `COLOR_REFERENCE_GUIDE.md` rigorosamente.
+- **Paleta Obrigatória:**
+    - **Background:** `#0F0F10` (Preto Profundo).
+    - **Primary (Ação/Neon):** `#DFFF00` (Botões de Ação, FAB, Destaques).
+    - **Nutrition (Contexto Comida):** `#10B981` (Verde - Usar em Cards de Refeição Concluídos).
+    - **Personal (Contexto Treino):** `#8B5CF6` (Roxo).
+- **Tipografia:** Inter (Corpo) e Bebas Neue (Títulos/Metas).
+- **Stack:** React + Vite + TypeScript + Tailwind CSS + Shadcn/UI.
+
+## 7. Fluxo do Usuário (Navegação Simulada)
+
+1. **Landing:** Usuário cai no `/dashboard`.
+2. **Interação:** Vê o card "Café da Manhã". Clica no Check.
+    - *Resposta do Sistema:* O card brilha (verde), colapsa levemente e a barra de progresso no topo enche um pouco.
+3. **Exceção:** No "Almoço", clica no ícone "Swap" (Refresh).
+    - *Resposta:* Abre um Drawer lateral com opções (Batata, Mandioca). Seleciona Batata. O Card atualiza o texto.
+4. **Ação IA:** Clica no FAB de Câmera.
+    - *Resposta:* Simulação de upload -> Toast de Sucesso "Alimento identificado!".
+
+## 8. Critérios de Sucesso (Visual)
+
+- **Dark Mode Real:** Sem fundos brancos acidentais. O app deve parecer "nativo" e imersivo.
+- **Responsividade:** A Sidebar deve virar um Menu Hambúrguer/Drawer no mobile.
+- **Hierarquia:** O botão da câmera (Neon) deve ser o elemento mais chamativo da tela.
+- **Feedback:** Todo clique deve ter um feedback visual (hover state, active state).
+
+## 9. Plano de Implementação (Passo a Passo para o Agent)
+
+**Etapa 1: Setup e Design Tokens**
+
+- Iniciar projeto Vite + React + TS.
+- Configurar `tailwind.config.ts` com as cores customizadas (`colors.personal`, `colors.nutrition`, `colors.primary` neon).
+- Configurar Fontes (Google Fonts - Inter e Bebas Neue).
+- Criar arquivo `globals.css` copiando os tokens do arquivo `DESIGN_SYSTEM_SPECIFICATION.md`.
+
+**Etapa 2: Layout Shell**
+
+- Implementar `AppSidebar` (Desktop) e `MobileNav` (Mobile).
+- Criar estrutura de Layout (`DashboardLayout`) que envolve as páginas.
+
+**Etapa 3: Componentes do Dashboard**
+
+- Criar `HealthOverviewCard` (Topo - Barras de progresso).
+- Criar `MealCard` (O coração do app - com variantes de estado: pending, done).
+- Criar `DailyTimeline` (Container que mapeia o `mockDiet.ts` e renderiza os MealCards).
+- Adicionar o FAB (Floating Action Button) da Câmera.
+
+**Etapa 4: Interatividade (State Mock)**
+
+- Adicionar estados locais (`useState`) para simular o "Check" das refeições (mudar de cor ao clicar).
+- Implementar a lógica visual do Swap (abrir o modal).

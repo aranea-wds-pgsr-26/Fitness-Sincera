@@ -1,0 +1,192 @@
+import React from 'react';
+import { 
+  Flame, 
+  MoreVertical, 
+  Plus, 
+  Coffee, 
+  Sun,
+  LayoutDashboard,
+  ChevronLeft
+} from 'lucide-react';
+
+/**
+ * Módulo de Nutrição Flux - Versão de Alta Fidelidade
+ * Recriação do Gauge de blocos e arco secundário com SVG de alta precisão.
+ */
+const App = () => {
+  return (
+    <div className="min-h-screen bg-[#f8f9fc] p-6 md:p-10 font-sans text-[#1a1c1e]">
+      <div className="max-w-md mx-auto space-y-6">
+        
+        {/* Header de Navegação */}
+        <div className="flex justify-between items-center px-2 mb-8">
+          <button className="p-2 bg-white rounded-2xl shadow-sm hover:bg-slate-50 transition-colors border border-slate-100">
+            <ChevronLeft size={20} />
+          </button>
+          <h2 className="text-lg font-bold tracking-tight">Flux Health</h2>
+          <div className="w-10 h-10 bg-[#d4f54c] rounded-2xl flex items-center justify-center shadow-sm">
+            <LayoutDashboard size={18} className="text-black" />
+          </div>
+        </div>
+
+        {/* Secção Resumo */}
+        <div className="space-y-4">
+          <div className="flex justify-between items-center px-2">
+            <h3 className="text-xl font-bold tracking-tight text-slate-800">Summary</h3>
+            <button className="text-indigo-600 font-bold text-sm tracking-wide">Details</button>
+          </div>
+
+          {/* Cartão do Gauge Principal - ALTA FIDELIDADE */}
+          <div className="bg-white rounded-[40px] p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative flex flex-col items-center border border-slate-50">
+            <div className="relative w-full aspect-[1.5/1] flex items-center justify-center">
+              
+              <svg viewBox="0 0 240 160" className="w-full h-full transform -translate-y-4">
+                {/* Arco Secundário Pontilhado (Interior) */}
+                <path
+                  d="M 60 120 A 60 60 0 0 1 180 120"
+                  fill="none"
+                  stroke="#e2e8f0"
+                  strokeWidth="4"
+                  strokeLinecap="round"
+                  strokeDasharray="0.1, 8"
+                />
+                
+                {/* Blocos do Gauge (Background - Cinza Claro) */}
+                <GaugeBlocks totalBlocks={26} progressBlocks={0} color="#f1f3f9" />
+                
+                {/* Blocos do Gauge (Progresso - Roxo/Indigo) */}
+                <GaugeBlocks totalBlocks={26} progressBlocks={9} color="#7c69ef" />
+              </svg>
+              
+              {/* Conteúdo Central */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center pt-10">
+                <Flame size={20} className="text-orange-500 fill-orange-500 mb-2" />
+                <span className="text-5xl font-black tracking-tighter leading-none text-slate-800">1280</span>
+                <span className="text-slate-400 text-xs font-bold uppercase tracking-[0.2em] mt-3">kcal</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Grelha de Macros - Alinhada com a Imagem */}
+        <div className="grid grid-cols-3 gap-3">
+          <MacroCard label="Carbs" val={241} max={359} color="#92cc16" />
+          <MacroCard label="Protein" val={20} max={143} color="#f9a825" />
+          <MacroCard label="Fat" val={179} max={370} color="#b8b0f5" />
+        </div>
+
+        {/* Secção Nutrition */}
+        <div className="space-y-4 pt-4">
+          <div className="flex justify-between items-center px-2">
+            <h3 className="text-xl font-bold tracking-tight text-slate-800">Nutrition</h3>
+            <button className="text-indigo-600 font-bold text-sm">View all</button>
+          </div>
+
+          <div className="space-y-3">
+            <MealCard 
+              name="Add Breakfast" 
+              info="Recommended  |  440 - 615 kcal"
+              img="https://images.unsplash.com/photo-1494390248081-4e521a5940db?w=150&h=150&fit=crop"
+              Icon={Coffee}
+            />
+            <MealCard 
+              name="Add Lunch" 
+              info="Recommended  |  537 - 700 kcal"
+              img="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=150&h=150&fit=crop"
+              Icon={Sun}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/**
+ * Componente que renderiza os blocos individuais do Gauge usando matemática polar
+ */
+const GaugeBlocks = ({ totalBlocks, progressBlocks, color }) => {
+  const blocks = [];
+  const startAngle = 180;
+  const endAngle = 360;
+  const radius = 90;
+  const centerX = 120;
+  const centerY = 130;
+  
+  // Se progressBlocks for 0, desenhamos o fundo total
+  const limit = progressBlocks > 0 ? progressBlocks : totalBlocks;
+
+  for (let i = 0; i < limit; i++) {
+    const angle = startAngle + (i * (endAngle - startAngle)) / (totalBlocks - 1);
+    const rad = (angle * Math.PI) / 180;
+    
+    // Coordenadas para blocos rectangulares rotacionados
+    const x = centerX + radius * Math.cos(rad);
+    const y = centerY + radius * Math.sin(rad);
+    
+    blocks.push(
+      <rect
+        key={i}
+        x={x - 4}
+        y={y - 10}
+        width="8"
+        height="20"
+        rx="4"
+        fill={color}
+        transform={`rotate(${angle + 90}, ${x}, ${y})`}
+      />
+    );
+  }
+  
+  return <g>{blocks}</g>;
+};
+
+const MacroCard = ({ label, val, max, color }) => {
+  const percent = Math.min((val / max) * 100, 100);
+  
+  return (
+    <div className="bg-white rounded-[28px] p-5 shadow-sm border border-slate-50 flex flex-col">
+      <div className="flex justify-between items-center mb-6">
+        <span className="text-[11px] font-bold text-slate-400">{label}</span>
+        <MoreVertical size={14} className="text-slate-300" />
+      </div>
+      <div className="mb-4">
+        <div className="text-sm font-bold text-slate-800">
+          {val} <span className="text-slate-300 font-medium">/ {max}g</span>
+        </div>
+      </div>
+      <div className="h-2 w-full bg-slate-50 rounded-full overflow-hidden">
+        <div 
+          className="h-full rounded-full transition-all duration-1000" 
+          style={{ width: `${percent}%`, backgroundColor: color }}
+        ></div>
+      </div>
+    </div>
+  );
+};
+
+const MealCard = ({ name, info, img, Icon }) => (
+  <div className="bg-white rounded-[28px] p-3 flex items-center justify-between group cursor-pointer transition-all hover:bg-slate-50/50">
+    <div className="flex items-center gap-4">
+      <div className="relative">
+        <img 
+          src={img} 
+          alt={name} 
+          className="w-14 h-14 object-cover rounded-2xl shadow-sm" 
+        />
+      </div>
+      <div className="flex flex-col">
+        <h4 className="font-bold text-sm text-slate-800">{name}</h4>
+        <p className="text-[11px] text-slate-400 font-medium mt-0.5">
+          {info}
+        </p>
+      </div>
+    </div>
+
+    <button className="w-9 h-9 rounded-full flex items-center justify-center border border-indigo-100 text-indigo-500 group-hover:bg-indigo-500 group-hover:text-white transition-all">
+      <Plus size={18} strokeWidth={2.5} />
+    </button>
+  </div>
+);
+
+export default App;
