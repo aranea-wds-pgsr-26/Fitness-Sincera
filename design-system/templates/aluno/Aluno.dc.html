@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="App do Aluno" description="App do cliente: home routine-first + roda de refeições estilo Apple Watch com sugestões de IA." -->
+<helmet>
+  <script src="./ds-base.js"></script>
+  <script src="https://unpkg.com/lucide@0.544.0/dist/umd/lucide.js"></script>
+  <script src="../../_ds_bundle.js"></script>
+  <script src="./data.js"></script>
+  <style>
+    html, body { margin: 0; height: 100%; background: var(--shell-900); }
+    .aluno-host { height: 100vh; display: block; }
+    .work-scroll::-webkit-scrollbar { width: 8px; }
+    .work-scroll::-webkit-scrollbar-thumb { background: rgba(0,0,0,.12); border-radius: 8px; }
+    .wheel-scroll { scrollbar-width: none; }
+    .wheel-scroll::-webkit-scrollbar { display: none; }
+    .spin { animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .fab { position: fixed; bottom: 28px; right: 28px; z-index: 50; width: 60px; height: 60px; border-radius: 999px; background: var(--lime-400); border: 4px solid var(--shell-900); box-shadow: var(--shadow-xl); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform .3s var(--ease-out); }
+    .fab:hover { transform: scale(1.1); }
+    .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 60; background: var(--lime-400); color: #000; padding: 14px 22px; border-radius: 16px; box-shadow: var(--shadow-xl); font-weight: 800; font-size: 14px; display: flex; align-items: center; gap: 10px; opacity: 0; pointer-events: none; transition: opacity .3s, transform .3s; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  </style>
+</helmet>
+<x-import component-from-global-scope="aluno-kit" from="./aluno-kit.jsx" class="aluno-host" hint-size="100%,100vh"></x-import>
+</x-dc>
+</body>
+</html>

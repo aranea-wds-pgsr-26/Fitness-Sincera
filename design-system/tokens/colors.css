@@ -1,0 +1,102 @@
+/* ============================================================
+   Fitness Sincera - Color tokens
+   Reverse-engineered from the live "flux" build (client/src).
+   Light surfaces on a dark app shell, with three context accents:
+     Lime  = primary action / energy   (#d4f54c)
+     Purple= treino / personal trainer (#7c69ef)
+     Green = nutrição / nutricionista  (#10b981)
+   ============================================================ */
+
+:root {
+  /* ---- App shell (the dark frame the product lives inside) ---- */
+  --shell-900: #111111;        /* app background, FAB ring */
+  --shell-800: #1a1c1e;        /* sidebar, mobile header */
+  --shell-700: #252528;        /* raised dark elements */
+
+  /* ---- Light work surfaces ---- */
+  --surface-app: #e9e9e9;      /* client dashboard inner panel */
+  --surface-app-cool: #f8fafc; /* nutritionist / pro work area */
+  --surface-card: #ffffff;     /* every content card */
+  --surface-sunken: #f1f5f9;   /* slate-100: inset rows, inputs */
+  --surface-tint-lime: #fafff0;/* completed-meal card wash */
+
+  /* ---- Primary: Lime (action, energy, "flux") ---- */
+  --lime-50:  #f7ffd9;
+  --lime-100: #ecffad;
+  --lime-300: #e0fb6e;
+  --lime-400: #d4f54c;         /* BASE - primary accent */
+  --lime-500: #c4e500;         /* hover / pressed */
+  --lime-600: #a9c400;
+  --lime-ink: #3d5200;         /* text/icon on faint lime washes */
+
+  /* ---- Personal / Treino: Purple ---- */
+  --purple-300: #a78bfa;
+  --purple-400: #8b5cf6;       /* login trainer accent */
+  --purple-500: #7c69ef;       /* sidebar active "Treino" */
+  --purple-700: #5b4bc4;
+
+  /* ---- Nutrição / Nutricionista: Green ---- */
+  --green-300: #34d399;        /* emerald-400 */
+  --green-400: #10b981;        /* emerald-500 - BASE */
+  --green-500: #059669;        /* emerald-600 - buttons */
+  --green-700: #047857;
+
+  /* ---- Neutral ramp (Tailwind slate, the product's text scale) ---- */
+  --slate-50:  #f8fafc;
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-300: #cbd5e1;
+  --slate-400: #94a3b8;
+  --slate-500: #64748b;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #1e293b;
+  --slate-900: #0f172a;
+
+  /* ---- Semantic ---- */
+  --ok:      #10b981;          /* success / on-track */
+  --ok-bg:   #ecfdf5;
+  --warning: #f59e0b;          /* at-risk amber */
+  --warning-bg: #fffbeb;
+  --danger:  #f87171;          /* destructive / delete */
+  --danger-bg: #fef2f2;
+  --info:    #34a8c8;          /* light-blue accents (goals widget) */
+  --info-bg: #bce9f5;
+
+  /* ---- Macro pills (used across plan/diet views) ---- */
+  --macro-protein: #ea580c;   --macro-protein-bg: #fff7ed; /* orange */
+  --macro-carbs:   #3d5200;   --macro-carbs-bg:   #f0ffce; /* lime   */
+  --macro-fat:     #9333ea;   --macro-fat-bg:     #faf5ff; /* purple */
+
+  /* ============================================================
+     SEMANTIC ALIASES - prefer these in components
+     ============================================================ */
+  --bg-app:            var(--shell-900);
+  --bg-sidebar:        var(--shell-800);
+  --bg-work:           var(--surface-app);
+  --bg-work-pro:       var(--surface-app-cool);
+  --bg-card:           var(--surface-card);
+
+  --text-strong:       var(--slate-900);
+  --text-body:         var(--slate-700);
+  --text-muted:        var(--slate-500);
+  --text-faint:        var(--slate-400);
+  --text-on-dark:      #ffffff;
+  --text-on-lime:      #000000;
+
+  --accent:            var(--lime-400);
+  --accent-hover:      var(--lime-500);
+  --accent-ink:        #000000;
+
+  --context-treino:    var(--purple-500);
+  --context-nutricao:  var(--green-400);
+
+  --border-card:       var(--slate-100);
+  --border-strong:     var(--slate-200);
+  --ring-focus:        var(--lime-400);
+
+  --selection-bg:      var(--lime-400);
+  --selection-fg:      #000000;
+}
+
+::selection { background: var(--selection-bg); color: var(--selection-fg); }

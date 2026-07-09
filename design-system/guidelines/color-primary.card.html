@@ -1,0 +1,24 @@
+<!-- @dsCard group="Colors" viewport="700x150" name="Primary — Lime" subtitle="The action colour. CTAs, FAB, active nav, highlights." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; background: var(--surface-card); font-family: var(--font-body); }
+  .wrap { display: flex; gap: 0; padding: 20px; }
+  .sw { flex: 1; height: 96px; border-radius: 14px; display: flex; flex-direction: column; justify-content: flex-end; padding: 10px; }
+  .sw + .sw { margin-left: 10px; }
+  .name { font-size: 11px; font-weight: 800; }
+  .hex { font-family: var(--font-mono); font-size: 10px; opacity: .7; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="sw" style="background:var(--lime-100)"><span class="name">lime-100</span><span class="hex">#ECFFAD</span></div>
+    <div class="sw" style="background:var(--lime-400); box-shadow:var(--glow-lime)"><span class="name">lime-400 · base</span><span class="hex">#D4F54C</span></div>
+    <div class="sw" style="background:var(--lime-500); color:#fff"><span class="name">lime-500 · hover</span><span class="hex">#C4E500</span></div>
+    <div class="sw" style="background:var(--lime-ink); color:#fff"><span class="name">lime-ink</span><span class="hex">#3D5200</span></div>
+  </div>
+</body>
+</html>

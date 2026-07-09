@@ -1,0 +1,30 @@
+<!-- @dsCard group="Colors" viewport="700x140" name="Semantic & macros" subtitle="Status colours + the protein/carb/fat pill palette." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; background: var(--surface-card); font-family: var(--font-body); padding: 20px; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .row + .row { margin-top: 14px; }
+  .chip { padding: 7px 12px; border-radius: 999px; font-size: 12px; font-weight: 800; }
+  .lbl { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .12em; color: var(--slate-400); width: 64px; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <span class="lbl">Status</span>
+    <span class="chip" style="background:var(--ok-bg); color:var(--ok)">No alvo</span>
+    <span class="chip" style="background:var(--warning-bg); color:var(--warning)">Em risco</span>
+    <span class="chip" style="background:var(--danger-bg); color:var(--danger)">Remover</span>
+    <span class="chip" style="background:var(--info-bg); color:var(--info)">Info</span>
+  </div>
+  <div class="row">
+    <span class="lbl">Macros</span>
+    <span class="chip" style="background:var(--macro-protein-bg); color:var(--macro-protein)">P · Proteína</span>
+    <span class="chip" style="background:var(--macro-carbs-bg); color:var(--macro-carbs)">C · Carboidrato</span>
+    <span class="chip" style="background:var(--macro-fat-bg); color:var(--macro-fat)">G · Gordura</span>
+  </div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Painel do Nutricionista" description="Painel profissional: dashboard de clientes + editor de planos estilo Notion editável pela IA." -->
+<helmet>
+  <script src="./ds-base.js"></script>
+  <script src="https://unpkg.com/lucide@0.544.0/dist/umd/lucide.js"></script>
+  <script src="../../_ds_bundle.js"></script>
+  <script src="./data.js"></script>
+  <style>
+    html, body { margin: 0; height: 100%; background: var(--shell-900); }
+    .nutri-host { height: 100vh; display: block; }
+    .work-scroll::-webkit-scrollbar { width: 8px; }
+    .work-scroll::-webkit-scrollbar-thumb { background: var(--slate-200); border-radius: 8px; }
+    .spin { animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .item-row .item-macros, .item-row .item-del { opacity: 0; transition: opacity .15s; }
+    .item-row:hover { background: rgba(0,0,0,.03) !important; }
+    .item-row:hover .item-macros, .item-row:hover .item-del, .item-row:focus-within .item-macros { opacity: 1; }
+  </style>
+</helmet>
+<x-import component-from-global-scope="nutri-kit" from="./nutri-kit.jsx" class="nutri-host" hint-size="100%,100vh"></x-import>
+</x-dc>
+</body>
+</html>

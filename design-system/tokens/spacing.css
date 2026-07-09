@@ -1,0 +1,51 @@
+/* ============================================================
+   Fitness Sincera - Spacing, radius, shadow, motion tokens
+   The product's signature is GENEROUS corner radius (cards run
+   16 - 40px) and soft, low-opacity shadows on white.
+   ============================================================ */
+
+:root {
+  /* ---- Spacing (4px base) ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* ---- Radius - the cornerstone of the look ---- */
+  --radius-sm:  8px;    /* small inputs, inline chips */
+  --radius-md:  12px;   /* buttons */
+  --radius-lg:  16px;   /* rounded-2xl - default card / nav item */
+  --radius-xl:  24px;   /* feature cards, sheets */
+  --radius-2xl: 28px;   /* dashboard panels */
+  --radius-3xl: 32px;   /* hero cards, dialogs */
+  --radius-4xl: 40px;   /* the biggest meal/image cards */
+  --radius-pill: 9999px;/* badges, FAB, avatars, progress */
+
+  /* ---- Shadows - soft on white, never heavy ---- */
+  --shadow-xs:   0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-sm:   0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.04);          /* the signature card shadow */
+  --shadow-lg:   0 12px 32px rgba(15, 23, 42, 0.10);
+  --shadow-xl:   0 20px 48px rgba(15, 23, 42, 0.14);
+
+  /* ---- Colored glows (accent emphasis) ---- */
+  --glow-lime:   0 0 20px rgba(212, 245, 76, 0.30);
+  --glow-purple: 0 0 20px rgba(124, 105, 239, 0.40);
+  --glow-green:  0 0 15px rgba(16, 185, 129, 0.40);
+
+  /* ---- Motion ---- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);   /* @kind other */
+  --ease-snap: cubic-bezier(0.4, 0, 0.2, 1);   /* @kind other */
+  --dur-fast: 150ms;  /* @kind other */
+  --dur-base: 300ms;  /* @kind other */
+  --dur-slow: 700ms;  /* @kind other */
+
+  /* Signature interaction: lift + grow on hover, shrink on press */
+  --hover-scale: 1.02; /* @kind other */
+  --press-scale: 0.98; /* @kind other */
+}

@@ -1,0 +1,42 @@
+/* ============================================================
+   Fitness Sincera - Typography tokens
+   Body & UI: Inter (Resolve Sans substitute).
+   Headings in-product are UPPERCASE Archivo Black with tight
+   tracking - an athletic grotesque carrying gym/nutrition energy.
+   Anton is the explosive poster headline. Numbers/time use mono.
+   ============================================================ */
+
+:root {
+  /* ---- Families ---- */
+  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Archivo', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; /* uppercase black, athletic */
+  --font-poster:  'Anton', 'Archivo', 'Inter', sans-serif;                /* explosive poster headline */
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* ---- Weights (the build leans on 700 & 900 heavily) ---- */
+  --fw-medium:   500; /* @kind font */
+  --fw-semibold: 600; /* @kind font */
+  --fw-bold:     700; /* @kind font */
+  --fw-black:    900; /* @kind font */
+
+  /* ---- Type scale ---- */
+  --text-display: 3rem;     /* 48px - page H1, uppercase black */
+  --text-h1:      2.25rem;  /* 36px */
+  --text-h2:      1.5rem;   /* 24px */
+  --text-h3:      1.25rem;  /* 20px - card titles */
+  --text-lg:      1.125rem; /* 18px */
+  --text-base:    1rem;     /* 16px */
+  --text-sm:      0.875rem; /* 14px - default UI text */
+  --text-xs:      0.75rem;  /* 12px - meta, labels */
+  --text-2xs:     0.625rem; /* 10px - eyebrow / tracking caps */
+
+  --leading-tight: 1.1;
+  --leading-snug:  1.3;
+  --leading-normal:1.55;
+
+  /* ---- Tracking ---- */
+  --tracking-tighter: -0.03em; /* wordmark "flux" */
+  --tracking-tight:   -0.01em; /* headings */
+  --tracking-wide:     0.08em;
+  --tracking-widest:   0.18em; /* uppercase eyebrows */
+}
