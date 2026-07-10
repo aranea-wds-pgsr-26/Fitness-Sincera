@@ -1,0 +1,22 @@
+<!-- @dsCard group="Spacing" viewport="700x170" name="Shadows & glows" subtitle="Soft, low-opacity shadows on white; coloured glows for accent emphasis." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; background: var(--surface-app); font-family: var(--font-body); padding: 26px; }
+  .wrap { display: flex; gap: 22px; align-items: center; }
+  .b { width: 120px; height: 80px; border-radius: 18px; background: var(--surface-card); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--slate-500); }
+  .lime { background: var(--lime-400); color: #000; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="b" style="box-shadow:var(--shadow-sm)">shadow-sm</div>
+    <div class="b" style="box-shadow:var(--shadow-card)">card</div>
+    <div class="b" style="box-shadow:var(--shadow-lg)">lg</div>
+    <div class="b lime" style="box-shadow:var(--glow-lime)">glow-lime</div>
+  </div>
+</body>
+</html>

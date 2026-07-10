@@ -1,0 +1,32 @@
+<!-- @dsCard group="Type" viewport="700x200" name="Body, meta & mono" subtitle="Inter body scale, eyebrow caps, and the mono numerals for time/kcal." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; background: var(--surface-card); font-family: var(--font-body); padding: 22px; }
+  .row { display: flex; align-items: baseline; gap: 12px; }
+  .row + .row { margin-top: 10px; }
+  .meta { font-family: var(--font-mono); font-size: 10px; color: var(--slate-400); width: 130px; flex-shrink: 0; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <span class="meta">base · 16 · 500</span>
+    <span style="font-size:16px; font-weight:500; color:var(--slate-700)">Tome o controlo da sua saúde hoje.</span>
+  </div>
+  <div class="row">
+    <span class="meta">sm · 14 · 600</span>
+    <span style="font-size:14px; font-weight:600; color:var(--slate-700)">150g Peito de Frango</span>
+  </div>
+  <div class="row">
+    <span class="meta">eyebrow · 10 · 900</span>
+    <span class="fs-eyebrow">A seguir · 12 Julho</span>
+  </div>
+  <div class="row">
+    <span class="meta">mono · time / kcal</span>
+    <span class="fs-mono" style="font-size:14px; font-weight:700; color:var(--slate-600)">07:00 · 320 kcal</span>
+  </div>
+</body>
+</html>

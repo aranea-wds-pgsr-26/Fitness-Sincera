@@ -1,0 +1,79 @@
+<!-- @dsCard group="Components" viewport="700x440" name="Core - Button, Badge, Avatar, IconTile" subtitle="Primitives: actions, pills, avatars, icon tiles." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  body { margin: 0; background: var(--surface-app); font-family: var(--font-body); padding: 24px; }
+  .panel { background: #fff; border-radius: 24px; box-shadow: var(--shadow-card); padding: 22px; }
+  .panel + .panel { margin-top: 16px; }
+  .lbl { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .14em; color: var(--slate-400); margin-bottom: 14px; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+</style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+  <script src="https://unpkg.com/lucide-react@0.544.0/dist/umd/lucide-react.min.js"></script>
+  <script src="../../_ds_bundle.js"></script>
+  <script type="text/babel">
+    const { Button, Badge, Avatar, IconTile } = window.FitnessSinceraDesignSystem_06b67f;
+    const { Check, Plus, Zap, Coffee, Dumbbell, ArrowRight, UserPlus } = window.LucideReact;
+
+    function Demo() {
+      return (
+        <>
+          <div className="panel">
+            <div className="lbl">Button - variants & sizes</div>
+            <div className="row" style={{ marginBottom: 12 }}>
+              <Button variant="primary" uppercase icon={<Check size={14} strokeWidth={3} />}>Confirmar</Button>
+              <Button variant="green" icon={<UserPlus size={14} />}>Novo Cliente</Button>
+              <Button variant="purple" icon={<Dumbbell size={14} />}>Ver Treino</Button>
+              <Button variant="dark">Upgrade Agora</Button>
+            </div>
+            <div className="row">
+              <Button variant="outline" size="sm" icon={<Plus size={13} />}>Substituir</Button>
+              <Button variant="ghost" size="sm">Cancelar</Button>
+              <Button variant="primary" size="lg" iconRight={<ArrowRight size={16} />}>Começar</Button>
+              <Button variant="primary" disabled>Desativado</Button>
+            </div>
+          </div>
+
+          <div className="panel">
+            <div className="lbl">Badge - status & macros</div>
+            <div className="row">
+              <Badge tone="green" dot>Plano Ativo</Badge>
+              <Badge tone="amber">Em risco</Badge>
+              <Badge tone="rose">Inativo</Badge>
+              <Badge tone="purple">HIIT</Badge>
+              <Badge tone="lime" solid>Concluído</Badge>
+              <Badge tone="neutral">Lanche</Badge>
+              <Badge tone="protein">P 32g</Badge>
+              <Badge tone="carbs">C 48g</Badge>
+              <Badge tone="fat">G 12g</Badge>
+            </div>
+          </div>
+
+          <div className="panel">
+            <div className="lbl">Avatar & IconTile</div>
+            <div className="row">
+              <Avatar initials="LB" />
+              <Avatar initials="CS" tone="dark" />
+              <Avatar initials="SA" tone="green" />
+              <span style={{ width: 16 }} />
+              <IconTile tone="lime" size={38} glow><Zap size={20} fill="#000" /></IconTile>
+              <IconTile tone="green"><Coffee size={18} /></IconTile>
+              <IconTile tone="purple"><Dumbbell size={18} /></IconTile>
+              <IconTile tone="slate"><Plus size={18} /></IconTile>
+            </div>
+          </div>
+        </>
+      );
+    }
+    ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+  </script>
+</body>
+</html>

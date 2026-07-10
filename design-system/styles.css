@@ -1,0 +1,28 @@
+/* =============================================================================
+   styles.css - Fitness Sincera design-system entry (the file consumers link).
+   Re-exports the token graph. Edit token VALUES in tokens/*.css, not here.
+   ============================================================================= */
+
+@import url("tokens/fonts.css");
+@import url("tokens/base.css");
+@import url("tokens/colors.css");
+@import url("tokens/typography.css");
+@import url("tokens/spacing.css");
+
+/* Baseline visible focus indicator — components reset outline:none inline for
+   visual polish, so we restore it at the interaction layer via :focus-visible. */
+:focus-visible {
+  outline: 2px solid var(--ring-focus, #d4f54c);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}

@@ -1,0 +1,24 @@
+<!-- @dsCard group="Spacing" viewport="700x170" name="Corner radius" subtitle="Generous rounding is the signature — cards run 16 to 40px, pills are fully round." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; background: var(--surface-app); font-family: var(--font-body); padding: 24px; }
+  .wrap { display: flex; gap: 14px; align-items: flex-end; }
+  .b { background: var(--surface-card); box-shadow: var(--shadow-card); display: flex; align-items: flex-end; justify-content: center; padding: 8px; }
+  .b span { font-family: var(--font-mono); font-size: 10px; color: var(--slate-500); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="b" style="width:80px;height:64px;border-radius:var(--radius-md)"><span>12 md</span></div>
+    <div class="b" style="width:90px;height:78px;border-radius:var(--radius-lg)"><span>16 lg</span></div>
+    <div class="b" style="width:96px;height:90px;border-radius:var(--radius-xl)"><span>24 xl</span></div>
+    <div class="b" style="width:104px;height:102px;border-radius:var(--radius-3xl)"><span>32 3xl</span></div>
+    <div class="b" style="width:112px;height:112px;border-radius:var(--radius-4xl)"><span>40 4xl</span></div>
+    <div class="b" style="width:64px;height:64px;border-radius:var(--radius-pill); background:var(--lime-400); box-shadow:none"><span>pill</span></div>
+  </div>
+</body>
+</html>

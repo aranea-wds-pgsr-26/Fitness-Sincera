@@ -1,0 +1,288 @@
+<!-- @dsCard group="System" viewport="1180x1480" name="Design System" subtitle="Tokens, tipografia e os 10 componentes reais do flux / Fitness Sincera." -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sistema de Design - Fitness Sincera</title>
+<link rel="stylesheet" href="styles.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script src="_ds_bundle.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  .es-nav,.fx-rail,.as-overlay{display:none !important;}
+  body{margin:0;background:var(--surface-app);}
+  .ds-page{min-height:100vh;background:var(--surface-app);color:var(--text-body);font-family:var(--font-body);}
+  .ds-hero{background:var(--shell-900);color:#fff;padding:60px clamp(20px,5vw,72px) 68px;}
+  .ds-wrap{max-width:1120px;margin:0 auto;}
+  .ds-eyebrow{font-family:var(--font-mono);font-size:var(--text-2xs);letter-spacing:var(--tracking-widest);text-transform:uppercase;color:var(--lime-400);margin:0;}
+  .ds-hero h1{font-family:var(--font-display);font-weight:900;text-transform:uppercase;letter-spacing:var(--tracking-tight);font-size:clamp(40px,6.5vw,74px);line-height:0.98;color:#fff;margin:18px 0 0;max-width:13ch;}
+  .ds-lead{font-size:var(--text-lg);line-height:var(--leading-normal);color:var(--slate-300);max-width:60ch;margin:22px 0 0;}
+  .ds-metrics{display:flex;flex-wrap:wrap;gap:14px;margin-top:36px;}
+  .ds-metric{display:flex;flex-direction:column;gap:2px;padding:14px 20px 12px;border:1px solid rgba(255,255,255,.10);border-radius:var(--radius-lg);background:var(--shell-800);min-width:104px;}
+  .ds-metric b{font-family:var(--font-display);font-weight:900;font-size:30px;line-height:1;color:#fff;}
+  .ds-metric span{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--slate-400);}
+  .ds-body{max-width:1120px;margin:0 auto;padding:60px clamp(20px,5vw,72px) 110px;display:flex;flex-direction:column;gap:68px;}
+  .ds-section{display:flex;flex-direction:column;gap:24px;}
+  .ds-head{display:flex;align-items:baseline;gap:16px;border-bottom:1px solid var(--border-strong);padding-bottom:14px;}
+  .ds-head h2{font-family:var(--font-display);font-weight:900;text-transform:uppercase;letter-spacing:var(--tracking-tight);font-size:22px;color:var(--text-strong);margin:0;}
+  .ds-head .n{font-family:var(--font-mono);font-size:12px;color:var(--lime-600);}
+  .ds-head p{margin:0 0 0 auto;font-size:var(--text-sm);color:var(--text-muted);max-width:44ch;text-align:right;}
+  .ds-card{background:var(--bg-card);border:1px solid var(--border-card);border-radius:var(--radius-xl);box-shadow:var(--shadow-card);padding:24px;}
+  .ds-swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1px;background:var(--border-strong);border:1px solid var(--border-strong);border-radius:var(--radius-lg);overflow:hidden;}
+  .ds-sw{background:var(--bg-card);padding:14px;display:flex;flex-direction:column;gap:10px;}
+  .ds-chip{height:46px;border-radius:var(--radius-md);border:1px solid rgba(15,23,42,.06);}
+  .ds-sw b{font-family:var(--font-mono);font-size:11px;color:var(--text-strong);}
+  .ds-sw small{font-family:var(--font-mono);font-size:10px;color:var(--text-muted);}
+  .ds-type-row{display:grid;grid-template-columns:120px 1fr;gap:20px;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--border-card);}
+  .ds-type-row:last-child{border-bottom:none;}
+  .ds-type-row .lab{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--lime-600);}
+  .ds-radius{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-end;}
+  .ds-radius figure{margin:0;display:flex;flex-direction:column;gap:8px;align-items:center;}
+  .ds-radius .box{width:82px;height:82px;background:var(--lime-400);box-shadow:var(--glow-lime);}
+  .ds-radius figcaption{font-family:var(--font-mono);font-size:10px;color:var(--text-muted);}
+  .ds-comp{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;}
+  .ds-specimen{display:flex;flex-direction:column;gap:16px;}
+  .ds-specimen .meta{display:flex;align-items:baseline;justify-content:space-between;gap:12px;}
+  .ds-specimen h3{font-family:var(--font-display);font-weight:900;text-transform:uppercase;font-size:14px;letter-spacing:var(--tracking-tight);color:var(--text-strong);margin:0;}
+  .ds-specimen .api{font-family:var(--font-mono);font-size:10px;color:var(--text-faint);}
+  .ds-specimen p{font-size:var(--text-sm);line-height:1.5;color:var(--text-muted);margin:0;}
+  .ds-demo{margin-top:auto;padding-top:16px;border-top:1px solid var(--border-card);display:flex;flex-wrap:wrap;gap:12px;align-items:center;}
+  .ds-sidebar{background:var(--shell-800);border-radius:var(--radius-xl);padding:12px;display:flex;flex-direction:column;gap:5px;width:100%;}
+  .ds-prompts{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px;}
+  .ds-prompt{display:flex;flex-direction:column;gap:12px;}
+  .ds-prompt .tag{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--lime-600);}
+  .ds-prompt h4{font-family:var(--font-body);font-weight:800;font-size:15px;color:var(--text-strong);margin:0;}
+  .ds-prompt pre{position:relative;margin:0;padding:14px;background:var(--surface-sunken);border:1px solid var(--border-card);border-radius:var(--radius-md);}
+  .ds-prompt code{font-family:var(--font-mono);font-size:11.5px;line-height:1.55;color:var(--text-body);white-space:pre-wrap;word-break:break-word;display:block;}
+  .ds-copy{position:absolute;top:10px;right:10px;display:inline-flex;align-items:center;gap:5px;border:1px solid var(--border-strong);background:var(--bg-card);color:var(--text-body);font-family:var(--font-mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:6px 9px;border-radius:var(--radius-sm);min-height:30px;cursor:pointer;}
+  .ds-copy.ok{color:var(--green-500);border-color:var(--green-400);}
+  .ds-foot{font-size:var(--text-sm);color:var(--text-muted);border-top:1px solid var(--border-strong);padding-top:24px;}
+  .ds-foot b{color:var(--text-strong);}
+  .ds-icon svg{width:22px;height:22px;}
+  @media (max-width:760px){.ds-head{flex-wrap:wrap;}.ds-head p{margin-left:0;text-align:left;}.ds-type-row{grid-template-columns:1fr;gap:6px;}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+const { useState, useEffect } = React;
+const NS = window.FitnessSinceraDesignSystem_06b67f || {};
+const { Avatar, Badge, Button, Card, IconTile, ProgressBar, RingGauge, StatCard, Brand, NavItem } = NS;
+
+// Lucide icon node - replaced with an <svg> after mount by lucide.createIcons()
+const Ic = ({ name, ...rest }) => <i data-lucide={name} className="ds-icon" {...rest}></i>;
+
+const SWATCHES = [
+  ["--lime-400", "#d4f54c", "--accent · ação"],
+  ["--lime-500", "#c4e500", "--accent-hover"],
+  ["--purple-500", "#7c69ef", "--context-treino"],
+  ["--green-400", "#10b981", "--context-nutricao"],
+  ["--shell-900", "#111111", "--bg-app · shell"],
+  ["--shell-800", "#1a1c1e", "--bg-sidebar"],
+  ["--slate-900", "#0f172a", "--text-strong"],
+  ["--slate-500", "#64748b", "--text-muted"],
+  ["--slate-200", "#e2e8f0", "--border-strong"],
+  ["--surface-app", "#e9e9e9", "--bg-work"],
+];
+
+const RADII = [
+  ["var(--radius-md)", "md · 12"], ["var(--radius-lg)", "lg · 16"],
+  ["var(--radius-xl)", "xl · 24"], ["var(--radius-2xl)", "2xl · 28"],
+  ["var(--radius-4xl)", "4xl · 40"], ["var(--radius-pill)", "pill"],
+];
+
+const PROMPTS = [
+  { key:"novo", tag:"01 · Novo entregável", title:"Começar uma tela, deck ou doc",
+    prompt:'Crie um novo [Nome].html para [o que você precisa]. Carregue _ds_bundle.js + styles.css, leia os componentes de window.FitnessSinceraDesignSystem_06b67f e componha-os - não recrie HTML cru. Ancore no DESIGN.md e nos tokens. Gere só a visão principal.' },
+  { key:"ds", tag:"02 · Anti-drift", title:"Forçar o uso do design system",
+    prompt:'Antes de gerar, leia BOUND_DS.json e liste quais tokens e quais componentes do namespace você vai aplicar nesta tela, conforme o DESIGN.md. Componha os componentes - nunca restilize HTML cru. Se algo faltar, pergunte em vez de inventar.' },
+  { key:"aluno", tag:"03 · App do aluno", title:"Tela routine-first",
+    prompt:'Desenhe uma tela do app do aluno: shell dark (--bg-app) com cards brancos flutuando. Mostre a próxima refeição com botão de check, um RingGauge de bem-estar e ProgressBars de metas. Copy em pt-BR, imperativa e calorosa. Number-first: kcal e horários em mono.' },
+  { key:"fino", tag:"04 · Ajuste fino", title:"Mexer em uma coisa só",
+    prompt:'Apenas ajustes pontuais, não reconstrua a tela: [ex.: aumentar o contraste do CTA, apertar o espaçamento do hero]. Mantenha todo o resto idêntico.' },
+];
+
+function Section({ n, title, note, children }) {
+  return (
+    <section className="ds-section">
+      <div className="ds-head"><span className="n">{n}</span><h2>{title}</h2><p>{note}</p></div>
+      {children}
+    </section>
+  );
+}
+
+function Specimen({ name, api, desc, children, demoStyle }) {
+  return (
+    <div className="ds-card ds-specimen">
+      <div className="meta"><h3>{name}</h3><span className="api">{api}</span></div>
+      <p>{desc}</p>
+      <div className="ds-demo" style={demoStyle}>{children}</div>
+    </div>
+  );
+}
+
+function PromptCard({ p }) {
+  const [ok, setOk] = useState(false);
+  const copy = () => {
+    const done = () => { setOk(true); setTimeout(() => setOk(false), 1600); };
+    try {
+      const r = navigator.clipboard && navigator.clipboard.writeText(p.prompt);
+      if (r && r.then) r.then(done).catch(done); else done();
+    } catch (e) { done(); }
+  };
+  return (
+    <div className="ds-card ds-prompt">
+      <span className="tag">{p.tag}</span>
+      <h4>{p.title}</h4>
+      <pre>
+        <button className={"ds-copy" + (ok ? " ok" : "")} onClick={copy}>{ok ? "Copiado" : "Copiar"}</button>
+        <code>{p.prompt}</code>
+      </pre>
+    </div>
+  );
+}
+
+function App() {
+  useEffect(() => { try { window.lucide && window.lucide.createIcons(); } catch (e) {} });
+  return (
+    <div className="ds-page">
+      <header className="ds-hero">
+        <div className="ds-wrap">
+          <Brand variant="full" onDark={true} />
+          <p className="ds-eyebrow" style={{ marginTop: 30 }}>Design system vinculado · builder · root "."</p>
+          <h1>Tudo que este sistema expõe.</h1>
+          <p className="ds-lead">A fonte de verdade do "flux" / Fitness Sincera: tokens, tipografia e os 10 componentes reais que sustentam o app do aluno e o painel do nutricionista. Inspecione antes de desenhar telas novas - <em>Routine First, not Data First</em>.</p>
+          <div className="ds-metrics">
+            <div className="ds-metric"><b>10</b><span>Componentes</span></div>
+            <div className="ds-metric"><b>124</b><span>Tokens</span></div>
+            <div className="ds-metric"><b>3</b><span>Fontes</span></div>
+            <div className="ds-metric"><b>5</b><span>Specimens</span></div>
+            <div className="ds-metric"><b>NOITE</b><span>Tema · dark</span></div>
+          </div>
+        </div>
+      </header>
+
+      <main className="ds-body">
+        <Section n="01" title="Cor" note="Uma cor de ação, dois contextos, sobre a rampa slate. Lime nunca é fundo grande - é o brilho.">
+          <div className="ds-card">
+            <div className="ds-swatches">
+              {SWATCHES.map(([v, hex, lab]) => (
+                <div className="ds-sw" key={v}>
+                  <div className="ds-chip" style={{ background: `var(${v})` }}></div>
+                  <b>{lab.split(" · ")[0]}</b>
+                  <small>{hex}{lab.includes(" · ") ? " · " + lab.split(" · ")[1] : ""}</small>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Section>
+
+        <Section n="02" title="Tipografia" note="Inter no corpo e UI; títulos em Archivo Black MAIÚSCULO; pôsteres em Anton; números e tempos em mono.">
+          <div className="ds-card">
+            <div className="ds-type-row"><span className="lab">Display · Archivo 900</span><span style={{ fontFamily: "var(--font-display)", fontWeight: 900, textTransform: "uppercase", letterSpacing: "var(--tracking-tight)", fontSize: 46, lineHeight: 1, color: "var(--text-strong)" }}>Visão geral de saúde</span></div>
+            <div className="ds-type-row"><span className="lab">Poster · Anton</span><span style={{ fontFamily: "var(--font-poster)", textTransform: "uppercase", fontSize: 46, lineHeight: 1, color: "var(--text-strong)" }}>Consistência diária</span></div>
+            <div className="ds-type-row"><span className="lab">Body · Inter</span><span style={{ fontSize: 18, color: "var(--text-body)" }}>Coma 3 ovos mexidos com aveia. Toque para confirmar a refeição.</span></div>
+            <div className="ds-type-row"><span className="lab">Mono · números</span><span style={{ fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: 26, color: "var(--text-strong)" }}>07:00 · 320 kcal</span></div>
+            <div className="ds-type-row"><span className="lab">Eyebrow</span><span className="fs-eyebrow">A SEGUIR · TOTAL DIÁRIO</span></div>
+          </div>
+        </Section>
+
+        <Section n="03" title="Raio & Sombra" note="O traço de assinatura: cantos generosos e sombra suave de baixa opacidade no branco.">
+          <div className="ds-card">
+            <div className="ds-radius">
+              {RADII.map(([r, cap]) => (
+                <figure key={cap}><div className="box" style={{ borderRadius: r }}></div><figcaption>{cap}</figcaption></figure>
+              ))}
+            </div>
+          </div>
+        </Section>
+
+        <Section n="04" title="Componentes" note="Os 10 componentes do namespace, montados ao vivo a partir do bundle.">
+          <div className="ds-comp">
+            <Specimen name="Button" api="variant · size · icon" desc="Pílula de ação. Lime é o padrão; verde/roxo carregam contexto; outline/ghost são discretos.">
+              <Button variant="primary" icon={<Ic name="check" />}>Confirmar</Button>
+              <Button variant="green">Nutrição</Button>
+              <Button variant="purple">Treino</Button>
+              <Button variant="outline" icon={<Ic name="refresh-cw" />}>Substituir</Button>
+              <Button variant="dark" size="sm">Editar</Button>
+            </Specimen>
+
+            <Specimen name="Badge" api="tone · solid · dot" desc="Pílula de status totalmente arredondada. Tons macios com texto saturado, ou preenchida.">
+              <Badge tone="green" dot>No prazo</Badge>
+              <Badge tone="amber">Em risco</Badge>
+              <Badge tone="protein">Proteína 32g</Badge>
+              <Badge tone="carbs">Carbo 48g</Badge>
+              <Badge tone="lime" solid>flux</Badge>
+            </Specimen>
+
+            <Specimen name="IconTile" api="tone · glow · size" desc="O contêiner rounded-square dos ícones Lucide: logo, blocos de refeição, glifos de nav.">
+              <IconTile tone="lime" glow><Ic name="zap" /></IconTile>
+              <IconTile tone="green"><Ic name="apple" /></IconTile>
+              <IconTile tone="purple"><Ic name="dumbbell" /></IconTile>
+              <IconTile tone="dark"><Ic name="flame" /></IconTile>
+              <IconTile tone="white"><Ic name="droplets" /></IconTile>
+            </Specimen>
+
+            <Specimen name="Avatar" api="initials · src · tone" desc="Iniciais ou imagem, anel branco por padrão. Compõe pilhas de clientes no painel pro.">
+              <Avatar initials="SM" tone="slate" />
+              <Avatar initials="JP" tone="green" />
+              <Avatar initials="AL" tone="lime" />
+              <Avatar initials="RC" tone="dark" />
+            </Specimen>
+
+            <Specimen name="StatCard" api="label · value · slot" desc="Tile de métrica do dashboard: label discreto, número preto enorme, slot opcional." demoStyle={{ display: "block" }}>
+              <StatCard label="Clientes ativos" value="48" slot={<Avatar initials="+6" tone="lime" size={32} />} style={{ width: "100%" }} />
+            </Specimen>
+
+            <Specimen name="RingGauge" api="value · tone · label" desc="Gauge circular de bem-estar: arco grosso arredondado, número grande no centro." demoStyle={{ justifyContent: "center" }}>
+              <RingGauge value={82} tone="purple" label="Bem-estar" />
+              <RingGauge value={64} tone="green" size={120} stroke={10} label="Meta" />
+            </Specimen>
+
+            <Specimen name="ProgressBar" api="value · tone · height" desc="Trilho fino arredondado. A cor codifica a métrica: lime energia, roxo atividade, verde água." demoStyle={{ display: "block" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 14, width: "100%" }}>
+                <ProgressBar value={74} tone="lime" />
+                <ProgressBar value={52} tone="purple" />
+                <ProgressBar value={38} tone="green" />
+              </div>
+            </Specimen>
+
+            <Specimen name="NavItem" api="active · context · count" desc="Linha do sidebar dark. Ativo = tile preenchido (lime, ou roxo no Treino); ocioso é slate." demoStyle={{ display: "block" }}>
+              <div className="ds-sidebar">
+                <NavItem icon={<Ic name="layout-dashboard" />} label="Visão Geral" active />
+                <NavItem icon={<Ic name="apple" />} label="Nutrição" count={3} />
+                <NavItem icon={<Ic name="dumbbell" />} label="Treino" context="purple" />
+                <NavItem icon={<Ic name="message-square" />} label="Mensagens" />
+              </div>
+            </Specimen>
+
+            <Specimen name="Card & Brand" api="interactive · variant" desc="A superfície branca canônica (sombra suave, raio generoso) e o lock-up da marca." demoStyle={{ display: "block" }}>
+              <Card interactive style={{ width: "100%" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
+                  <Brand variant="wordmark" onDark={false} />
+                  <Badge tone="green" dot>ativo</Badge>
+                </div>
+              </Card>
+            </Specimen>
+          </div>
+        </Section>
+
+        <Section n="05" title="Prompts" note="Copie um prompt depois de inspecionar o sistema. Troque o que está entre [colchetes].">
+          <div className="ds-prompts">
+            {PROMPTS.map(p => <PromptCard key={p.key} p={p} />)}
+          </div>
+        </Section>
+
+        <p className="ds-foot">Gerado pelo harness a partir do design system detectado (<b>Fitness Sincera</b> · namespace <b>FitnessSinceraDesignSystem_06b67f</b>). Para criar um entregável novo, carregue <b>_ds_bundle.js</b> + <b>styles.css</b> e componha a partir do namespace, ou copie o bloco de <b>ds-helmet.snippet.html</b>.</p>
+      </main>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

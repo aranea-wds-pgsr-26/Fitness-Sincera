@@ -1,0 +1,14 @@
+/* ============================================================
+   Fitness Sincera - Fonts
+   Display/headings : "Gogh" (brand) → Archivo substitute
+   Poster headline  : Anton (explosive gym-poster voice)
+   Body / UI        : "Resolve Sans" (brand) → Inter substitute
+   The athletic register comes from Archivo (heavy grotesque, used
+   uppercase + black for hero titles) and Anton for poster-size
+   headlines. Inter stays on body/UI for legibility; numbers/times
+   ride JetBrains Mono. Archivo/Anton are flagged substitutes for
+   the real Gogh face - drop the binaries here and swap @font-face
+   src to go pixel-true.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Archivo:wght@500;600;700;800;900&family=Anton&family=JetBrains+Mono:wght@500;700&display=swap');

@@ -1,0 +1,72 @@
+<!-- @dsCard group="Components" viewport="700x340" name="Data - ProgressBar, RingGauge, StatCard" subtitle="Progress tracks, the wellness gauge, and KPI tiles." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  body { margin: 0; background: var(--surface-app); font-family: var(--font-body); padding: 24px; }
+  .grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 16px; align-items: start; }
+  .panel { background: #fff; border-radius: 24px; box-shadow: var(--shadow-card); padding: 22px; }
+  .lbl { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .14em; color: var(--slate-400); margin-bottom: 16px; }
+  .metric { margin-bottom: 18px; }
+  .metric:last-child { margin-bottom: 0; }
+  .mrow { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; }
+  .mrow b { font-weight: 800; color: var(--slate-800); }
+  .mrow span { color: var(--slate-500); }
+</style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+  <script src="https://unpkg.com/lucide-react@0.544.0/dist/umd/lucide-react.min.js"></script>
+  <script src="../../_ds_bundle.js"></script>
+  <script type="text/babel">
+    const { ProgressBar, RingGauge, StatCard, Badge } = window.FitnessSinceraDesignSystem_06b67f;
+
+    function AvatarStack() {
+      return (
+        <div style={{ display: "flex" }}>
+          {["#cbd5e1","#94a3b8","#64748b"].map((c,i)=>(
+            <div key={i} style={{ width: 26, height: 26, borderRadius: "50%", background: c, border: "2px solid #fff", marginLeft: i? -8:0 }} />
+          ))}
+        </div>
+      );
+    }
+
+    function Demo() {
+      return (
+        <div className="grid">
+          <div className="panel">
+            <div className="lbl">ProgressBar</div>
+            <div className="metric">
+              <div className="mrow"><span>Calorias Queimadas</span><b>2,340</b></div>
+              <ProgressBar value={78} tone="lime" />
+            </div>
+            <div className="metric">
+              <div className="mrow"><span>Passos</span><b>8,547</b></div>
+              <ProgressBar value={85} tone="purple" />
+            </div>
+            <div className="metric">
+              <div className="mrow"><span>Hidratação</span><b>1.8L</b></div>
+              <ProgressBar value={60} tone="green" />
+            </div>
+            <div style={{ marginTop: 22 }}>
+              <StatCard label="Total de Clientes" value="24" slot={<AvatarStack />} />
+            </div>
+          </div>
+
+          <div className="panel" style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <div className="lbl" style={{ alignSelf: "flex-start" }}>RingGauge</div>
+            <RingGauge value={72} label="Wellness" />
+            <div style={{ marginTop: 14 }}><Badge tone="green" dot>+5% vs semana</Badge></div>
+          </div>
+        </div>
+      );
+    }
+    ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+  </script>
+</body>
+</html>
