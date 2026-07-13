@@ -1,0 +1,1 @@
+Espaço reservado para tipos compartilhados do backend.

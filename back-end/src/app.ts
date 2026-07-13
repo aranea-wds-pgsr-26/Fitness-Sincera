@@ -1,22 +1,19 @@
 import express from "express";
 import apiRouter from "./routes";
+import { notFound } from "./middleware/notFound";
+import { errorHandler } from "./middleware/errorHandler";
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
 app.use("/api", apiRouter);
 
-app.use((err: unknown, _req: express.Request, res: express.Response, next: express.NextFunction) => {
-  if (res.headersSent) {
-    return next(err);
-  }
+// Middleware para rotas inexistentes
+app.use(notFound);
 
-  if (err instanceof Error) {
-    return res.status(500).json({ message: err.message });
-  }
-
-  return res.status(500).json({ message: "Unexpected server error" });
-});
+// Middleware global de tratamento de erros (sempre por último)
+app.use(errorHandler);
 
 export default app;

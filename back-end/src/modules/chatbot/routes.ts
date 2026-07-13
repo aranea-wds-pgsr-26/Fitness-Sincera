@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { createChatMessage, listChatMessagesForUser } from "../../lib/store";
+// import { createChatMessage, listChatMessagesForUser } from "../../lib/store";
+import { ChatRepository } from "../../repositories/chatRepository";
 import { requireAuth } from "../../middleware/auth";
 
 const router = Router();
@@ -11,7 +12,7 @@ router.post("/message", requireAuth, async (req, res) => {
     return res.status(400).json({ message: "message is required" });
   }
 
-  await createChatMessage(req.user!.id, message, "user");
+  await ChatRepository.create(req.user!.id, message, "user");
 
   const lowerMessage = message.toLowerCase();
   let reply = "I can help with nutrition, workouts, and wearable insights.";
@@ -24,12 +25,12 @@ router.post("/message", requireAuth, async (req, res) => {
     reply = "I can help you sync a wearable device and summarize sleep, steps and heart rate.";
   }
 
-  const entry = await createChatMessage(req.user!.id, reply, "assistant");
+  const entry = await ChatRepository.create(req.user!.id, reply, "assistant");
   return res.json({ reply, entry });
 });
 
 router.get("/history", requireAuth, async (req, res) => {
-  const history = await listChatMessagesForUser(req.user!.id);
+  const history = await ChatRepository.listByUser(req.user!.id);
   return res.json(history);
 });
 
