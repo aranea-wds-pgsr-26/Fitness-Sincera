@@ -37,3 +37,30 @@ A aplicacao ficou testavel em producao local, com frontend carregando corretamen
 - `server/` permanece como legado funcional para servir a aplicacao atual.
 - `back-end/src` passa a ser o alvo da migracao arquitetural.
 - O proximo ciclo deve iniciar a Sprint 1, focada em transformar `back-end/src` em backend funcional, testavel e documentado.
+
+# Sprint 1 - Fundacao do backend novo
+
+## Objetivo
+
+Criar a base funcional e testavel do backend novo em `back-end/src`.
+
+## Alteracoes
+
+- Adicionado middleware `requestId`.
+- Adicionados endpoints publicos de health, readiness e meta.
+- Adicionado router versionado `/api/v1`.
+- Removido log de `DATABASE_URL`.
+- Backend novo passa a subir health checks mesmo sem `DATABASE_URL`.
+- Adicionado teste HTTP automatizado da fundacao do backend.
+- Adicionado script `test:backend`.
+- Criada documentacao da API de fundacao.
+- Criado workflow de branches/tags por sprint.
+
+## Validacoes
+
+- `npm.cmd run test:backend`
+- `npm.cmd run check`
+
+## Resultado
+
+O backend novo agora possui uma base publica verificavel sem depender da inicializacao do banco, pronta para receber os modulos reais nas proximas sprints.

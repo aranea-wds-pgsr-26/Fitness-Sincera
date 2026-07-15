@@ -1,18 +1,16 @@
 import { Router } from "express";
 import authRouter from "../modules/auth/routes";
-import mealsRouter from "../modules/meals/routes";
-import dietsRouter from "../modules/diets/routes";
-import workoutsRouter from "../modules/workouts/routes";
 import chatbotRouter from "../modules/chatbot/routes";
-import wearablesRouter from "../modules/wearables/routes";
+import dietsRouter from "../modules/diets/routes";
+import mealsRouter from "../modules/meals/routes";
 import systemRouter from "../modules/system/routes";
-import v1Router from "./v1";
+import wearablesRouter from "../modules/wearables/routes";
+import workoutsRouter from "../modules/workouts/routes";
 
 const router = Router();
 
 router.use("/", systemRouter);
-router.use("/v1", v1Router);
-
+router.use("/system", systemRouter);
 router.use("/auth", authRouter);
 router.use("/meals", mealsRouter);
 router.use("/diets", dietsRouter);
