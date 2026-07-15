@@ -36,12 +36,19 @@
 - Configurar variaveis:
   - `DATABASE_URL`
   - `NODE_ENV=production`
+- Conferir `vercel.json`:
+  - `/api/:path*` deve ir para `/api/index`;
+  - `/:path*` deve ir para `/index.html`.
 - Validar build em ambiente remoto.
 - Confirmar que rotas SPA funcionam:
   - `/`
   - `/login`
   - `/app`
   - `/admin/dashboard`
+- Confirmar que rotas API funcionam:
+  - `/api/health`
+  - `/api/public/leads`
+  - `/api/admin/site-leads`
 
 ## Pos-release recomendado
 

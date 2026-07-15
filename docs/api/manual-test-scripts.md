@@ -148,6 +148,24 @@ O script usa `DATABASE_URL` e valida o fluxo publico:
 
 Este script acessa o Supabase e pode precisar ser executado fora de ambientes com rede bloqueada.
 
+## Deploy Vercel com Supabase
+
+```powershell
+npm.cmd run manual:deploy:vercel
+```
+
+O script valida o fluxo local equivalente ao deploy:
+
+- confirma que `dist/public/index.html` existe;
+- sobe o Express no modo serverless;
+- valida `GET /api/health`;
+- envia um lead por `POST /api/public/leads`;
+- autentica o admin;
+- valida `GET /api/admin/site-leads`;
+- remove os dados temporarios ao final.
+
+Este script acessa o Supabase e pode precisar ser executado fora de ambientes com rede bloqueada.
+
 ## Auth com Supabase
 
 ```powershell

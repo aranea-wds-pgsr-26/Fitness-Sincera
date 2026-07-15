@@ -71,6 +71,7 @@ NODE_ENV=development
 | `npm.cmd run db:generate` | Gera migrations Drizzle |
 | `npm.cmd run db:migrate` | Aplica migrations Drizzle |
 | `npm.cmd run db:studio` | Abre Drizzle Studio |
+| `npm.cmd run manual:deploy:vercel` | Valida o fluxo local equivalente ao deploy Vercel + Supabase |
 
 ## Testes manuais
 
@@ -132,3 +133,13 @@ npm.cmd run db:seed:users
 - Pagamentos ainda nao foram definidos.
 - Ficha de anamnese e perfis profissionais detalhados ficam para proximas sprints.
 - `server/` ainda existe como camada de transicao ate a migracao completa para `back-end/`.
+
+## Deploy
+
+O projeto possui configuracao inicial para Vercel:
+
+- `vercel.json` entrega o front-end estatico em `dist/public`.
+- `api/index.ts` expõe o Express como funcao serverless para `/api/*`.
+- O teste `npm.cmd run manual:deploy:vercel` valida localmente API serverless, build estatico e Supabase.
+
+Para publicar, configure `DATABASE_URL` na Vercel e conecte a branch de deploy pelo painel da Vercel ou use a Vercel CLI autenticada.

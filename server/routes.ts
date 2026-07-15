@@ -19,6 +19,23 @@ export async function registerRoutes(
   app: Express
 ): Promise<Server> {
 
+  app.get("/api/health", (_req, res) => {
+    res.json({
+      status: "ok",
+      service: "fitness-sincera",
+    });
+  });
+
+  app.get("/api/readiness", (_req, res) => {
+    res.json({
+      status: "ok",
+      service: "fitness-sincera",
+      database: {
+        configured: Boolean(process.env.DATABASE_URL),
+      },
+    });
+  });
+
   // ─── Professional Dashboards ─────────────────────────────────────────────────
 
   app.get("/api/nutritionist/dashboard", (_req, res) => {

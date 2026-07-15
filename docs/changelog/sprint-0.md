@@ -451,3 +451,34 @@ Preparar o projeto para subir ao GitHub como candidato de release.
 ## Resultado
 
 O projeto ficou pronto para publicacao no GitHub e para uma proxima sprint de deploy.
+
+# Sprint 16 - Deploy Vercel + Supabase
+
+## Objetivo
+
+Preparar a aplicacao para deploy na Vercel usando Supabase.
+
+## Alteracoes
+
+- Criado `server/app.ts` para reutilizar o Express sem acoplar ao `listen`.
+- `server/index.ts` passou a iniciar apenas o servidor local/producao.
+- Criado `api/index.ts` como funcao serverless da Vercel.
+- Atualizado `vercel.json` para rotear `/api/*` para a funcao e manter fallback SPA.
+- Adicionadas rotas `GET /api/health` e `GET /api/readiness` na camada de transicao.
+- Criado script `manual:deploy:vercel`.
+- Criado alias `test:deploy:vercel`.
+- README e checklist de deploy atualizados.
+
+## Validacoes
+
+- `npm.cmd run check`
+- `npm.cmd run build`
+- `npm.cmd run manual:deploy:vercel`
+
+## Resultado
+
+O fluxo local equivalente a Vercel + Supabase passou, incluindo API serverless, escrita de lead no Supabase e leitura pelo admin.
+
+## Bloqueio
+
+Deploy hospedado nao foi publicado porque a Vercel CLI nao esta instalada e `VERCEL_TOKEN` nao esta configurado nesta maquina.
