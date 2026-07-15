@@ -9,9 +9,14 @@ Esta pasta concentra a infraestrutura de acesso ao banco do backend novo.
 
 ## Direcao
 
-Durante a Sprint 2, o Drizzle passou a ter schema e migracao versionada, mas os repositories ainda usam o `store.ts` com SQL manual.
+Durante a Sprint 2, o Drizzle passou a ter schema e migracao versionada.
 
-A migracao dos repositories para Drizzle deve acontecer de forma incremental nas proximas sprints, modulo por modulo.
+A migracao dos repositories para Drizzle acontece de forma incremental, modulo por modulo.
+
+## Modulos ja migrados
+
+- Auth/users/sessions.
+- Meals.
 
 ## Comandos uteis
 

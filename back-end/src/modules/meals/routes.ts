@@ -27,12 +27,8 @@ router.post(
   "/",
   requireAuth,
   asyncHandler(async (req, res) => {
-  const payload = validateCreateMealPayload(req.body);
-
-  const meal = await MealRepository.create(
-  req.user!.id,
-  payload
-);
+    const payload = validateCreateMealPayload(req.body);
+    const meal = await MealRepository.create(req.user!.id, payload);
 
     return res.status(201).json({
       success: true,
@@ -45,19 +41,14 @@ router.put(
   "/:id",
   requireAuth,
   asyncHandler(async (req, res) => {
-  const payload = validateUpdateMealPayload(req.body);
+    const payload = validateUpdateMealPayload(req.body);
+    const mealId = req.params.id;
 
-  const mealId = req.params.id;
+    if (Array.isArray(mealId)) {
+      throw new AppError("Invalid meal id", 400);
+    }
 
-  if (Array.isArray(mealId)) {
-    throw new AppError("Invalid meal id", 400);
-  }
-
-  const meal = await MealRepository.update(
-    mealId,
-    req.user!.id,
-    payload
-  );
+    const meal = await MealRepository.update(mealId, req.user!.id, payload);
 
     if (!meal) {
       throw new AppError("Meal not found", 404);
@@ -70,20 +61,17 @@ router.put(
   })
 );
 
-router.delete<{id: string}>(
+router.delete<{ id: string }>(
   "/:id",
   requireAuth,
   asyncHandler(async (req, res) => {
     const mealId = req.params.id;
 
-if (Array.isArray(mealId)) {
-  throw new AppError("Invalid meal id", 400);
-}
+    if (Array.isArray(mealId)) {
+      throw new AppError("Invalid meal id", 400);
+    }
 
-const deleted = await MealRepository.delete(
-  mealId,
-  req.user!.id
-);
+    const deleted = await MealRepository.delete(mealId, req.user!.id);
 
     if (!deleted) {
       throw new AppError("Meal not found", 404);

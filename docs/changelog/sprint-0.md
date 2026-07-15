@@ -147,3 +147,27 @@ Facilitar os testes manuais criando usuarios fixos no banco e adicionando o Admi
 ## Resultado
 
 O banco agora possui quatro usuarios padrao para testes de modulos e o frontend atual permite entrar como Admin pela tela de login demo.
+
+# Sprint 5 - Meals com Drizzle
+
+## Objetivo
+
+Migrar o modulo de refeicoes para Drizzle.
+
+## Alteracoes
+
+- `MealRepository` deixou de usar `store.ts`.
+- CRUD de meals passou a usar `fitness_meals` via Drizzle.
+- Rotas de meals foram formatadas sem alterar contrato.
+- Script manual `manual:backend:meals` passou a validar o repository Drizzle.
+
+## Validacoes
+
+- `npm.cmd run check`
+- `npm.cmd run manual:backend:meals`
+- `npm.cmd run manual:backend:health`
+- `npm.cmd run build`
+
+## Resultado
+
+O primeiro modulo de dominio foi migrado para Drizzle com teste manual de ciclo completo passando no Supabase.
