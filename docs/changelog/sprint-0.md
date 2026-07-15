@@ -94,3 +94,29 @@ Criar a base versionada de banco do backend novo com Drizzle.
 ## Resultado
 
 O projeto agora tem uma base Drizzle versionada e scripts manuais para validar APIs sem Postman.
+
+# Sprint 3 - Auth e usuarios com Drizzle
+
+## Objetivo
+
+Migrar usuarios e sessoes do backend novo para Drizzle.
+
+## Alteracoes
+
+- Criado tipo compartilhado de usuario autenticado.
+- `UserRepository` passou a usar Drizzle.
+- `SessionRepository` passou a delegar para `UserRepository`.
+- Middleware `requireAuth` deixou de depender diretamente de `store.ts`.
+- Criado script manual de auth.
+- Criado script `test:backend:auth`.
+- Script de auth limpa a sessao e o usuario de teste ao final.
+
+## Validacoes
+
+- `npm.cmd run manual:backend:health`
+- `npm.cmd run check`
+- `npm.cmd run manual:backend:auth`
+
+## Resultado
+
+Os endpoints de auth do backend novo agora usam Drizzle para persistir usuarios e sessoes no Supabase.

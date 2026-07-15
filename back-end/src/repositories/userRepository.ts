@@ -1,33 +1,82 @@
-import {
-  createUser,
-  findUserByEmail,
-  createSessionToken,
-  getSessionUser,
-  revokeSession,
-  type User,
-  type UserRole,
-} from "../lib/store";
+import { randomUUID } from "node:crypto";
+import { eq, sql } from "drizzle-orm";
+import { db } from "../database/client";
+import { fitnessSessions, fitnessUsers } from "../database/schema";
+import type { AuthUser, CreateUserInput, UserRole } from "../modules/auth/types";
+
+function mapUser(row: typeof fitnessUsers.$inferSelect): AuthUser {
+  return {
+    id: row.id,
+    name: row.name,
+    email: row.email,
+    password: row.password,
+    role: row.role as UserRole,
+    createdAt: row.createdAt,
+  };
+}
 
 export const UserRepository = {
-  create(payload: Parameters<typeof createUser>[0]) {
-    return createUser(payload);
+  async create(payload: CreateUserInput) {
+    const [user] = await db
+      .insert(fitnessUsers)
+      .values({
+        id: randomUUID(),
+        name: payload.name,
+        email: payload.email,
+        password: payload.password,
+        role: payload.role,
+      })
+      .returning();
+
+    return mapUser(user);
   },
 
-  findByEmail(email: string) {
-    return findUserByEmail(email);
+  async findByEmail(email: string) {
+    const [user] = await db
+      .select()
+      .from(fitnessUsers)
+      .where(sql`lower(${fitnessUsers.email}) = lower(${email})`)
+      .limit(1);
+
+    return user ? mapUser(user) : null;
   },
 
-  createSession(user: Parameters<typeof createSessionToken>[0]) {
-    return createSessionToken(user);
+  async createSession(user: AuthUser) {
+    const token = randomUUID();
+
+    await db.insert(fitnessSessions).values({
+      token,
+      userId: user.id,
+    });
+
+    return token;
   },
 
-  getSessionUser(token: string) {
-    return getSessionUser(token);
+  async getSessionUser(token: string) {
+    const [row] = await db
+      .select({
+        id: fitnessUsers.id,
+        name: fitnessUsers.name,
+        email: fitnessUsers.email,
+        password: fitnessUsers.password,
+        role: fitnessUsers.role,
+        createdAt: fitnessUsers.createdAt,
+      })
+      .from(fitnessSessions)
+      .innerJoin(fitnessUsers, eq(fitnessUsers.id, fitnessSessions.userId))
+      .where(eq(fitnessSessions.token, token))
+      .limit(1);
+
+    return row ? mapUser(row) : null;
   },
 
-  revokeSession(token: string) {
-    return revokeSession(token);
+  async revokeSession(token: string) {
+    await db.delete(fitnessSessions).where(eq(fitnessSessions.token, token));
+  },
+
+  async deleteByEmail(email: string) {
+    await db.delete(fitnessUsers).where(sql`lower(${fitnessUsers.email}) = lower(${email})`);
   },
 };
 
-export { type User, type UserRole };
+export { type AuthUser as User, type UserRole };

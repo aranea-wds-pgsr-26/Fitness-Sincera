@@ -36,10 +36,27 @@ O script usa `DATABASE_URL` e valida o fluxo completo:
 
 Este script acessa o Supabase e pode precisar ser executado fora de ambientes com rede bloqueada.
 
+## Auth com Supabase
+
+```powershell
+npm.cmd run manual:backend:auth
+```
+
+O script sobe o app em uma porta aleatoria local e valida:
+
+- `POST /api/auth/register`
+- `POST /api/auth/login`
+- `GET /api/auth/me`
+
+No final, o script revoga a sessao e remove o usuario de teste criado.
+
+Este script acessa o Supabase e pode precisar ser executado fora de ambientes com rede bloqueada.
+
 ## Testes automatizados relacionados
 
 ```powershell
 npm.cmd run test:backend:foundation
+npm.cmd run test:backend:auth
 npm.cmd run test:backend:meals
 ```
 

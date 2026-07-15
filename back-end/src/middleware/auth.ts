@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import { getSessionUser, type User } from "../lib/store";
+import { UserRepository, type User } from "../repositories/userRepository";
 
 declare global {
   namespace Express {
@@ -17,7 +17,7 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
     return res.status(401).json({ message: "Authentication required" });
   }
 
-  const user = await getSessionUser(token);
+  const user = await UserRepository.getSessionUser(token);
   if (!user) {
     return res.status(401).json({ message: "Authentication required" });
   }
