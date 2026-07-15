@@ -43,10 +43,18 @@ v0.5.0-drizzle-database
 ```powershell
 npm.cmd run check
 npm.cmd run test:backend
+npm.cmd run manual:backend:health
 ```
 
 Quando houver alteracao no frontend ou no servidor legado de producao:
 
 ```powershell
 npm.cmd run build
+```
+
+Quando a sprint tocar banco ou repositories:
+
+```powershell
+npm.cmd run db:generate
+npm.cmd run manual:backend:meals
 ```

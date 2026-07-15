@@ -64,3 +64,33 @@ Criar a base funcional e testavel do backend novo em `back-end/src`.
 ## Resultado
 
 O backend novo agora possui uma base publica verificavel sem depender da inicializacao do banco, pronta para receber os modulos reais nas proximas sprints.
+
+# Sprint 2 - Banco de dados e Drizzle
+
+## Objetivo
+
+Criar a base versionada de banco do backend novo com Drizzle.
+
+## Alteracoes
+
+- Criado schema Drizzle real para as tabelas `fitness_*`.
+- Criado cliente Drizzle do backend novo.
+- Atualizado `drizzle.config.ts` para usar o schema do backend.
+- Adicionado `DATABASE_URL` ao `.env.example`.
+- `drizzle/` deixou de ser ignorado pelo Git.
+- Gerada a primeira migracao versionada.
+- Criados scripts manuais para testar health e meals pelo terminal.
+- Limpas as mensagens do teste de meals.
+- Documentados os scripts manuais de teste.
+
+## Validacoes
+
+- `npm.cmd run db:generate`
+- `npm.cmd run manual:backend:health`
+- `npm.cmd run test:backend:foundation`
+- `npm.cmd run check`
+- `npm.cmd run manual:backend:meals`
+
+## Resultado
+
+O projeto agora tem uma base Drizzle versionada e scripts manuais para validar APIs sem Postman.

@@ -5,8 +5,7 @@ server/public
 vite.config.ts.*
 *.tar.gz
 
-# Drizzle (DATABASE)
-drizzle/
+# Drizzle migrations and seeds are versioned.
 
 # Environment & Secrets (AIOS)
 .env
