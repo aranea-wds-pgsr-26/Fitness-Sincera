@@ -7,6 +7,7 @@ import {
   authMockData,
   INITIAL_MEAL_PLANS,
 } from "./data/mockData";
+import { UserRepository } from "../back-end/src/repositories/userRepository";
 
 // DEMO: In production, userId comes from req.session.userId (Passport.js)
 const DEMO_USER_ID = "user-1";
@@ -171,6 +172,42 @@ export async function registerRoutes(
       trainer: { userId: "pt-1", role: "trainer", name: "Coach Ricardo", email: "ricardo@fitnesssincera.com" },
     };
     res.json(sessions[role] ?? sessions.client);
+  });
+
+  app.post("/api/auth/login", async (req, res) => {
+    const { email, password } = req.body as { email?: string; password?: string };
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "email and password are required" });
+    }
+
+    const user = await UserRepository.findByEmail(email);
+
+    if (!user || user.password !== password) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const token = await UserRepository.createSession(user);
+    return res.json({ user, token });
+  });
+
+  app.get("/api/auth/me", async (req, res) => {
+    const authorization = req.headers.authorization;
+    const token = authorization?.startsWith("Bearer ")
+      ? authorization.slice("Bearer ".length)
+      : undefined;
+
+    if (!token) {
+      return res.status(401).json({ message: "Missing bearer token" });
+    }
+
+    const user = await UserRepository.getSessionUser(token);
+
+    if (!user) {
+      return res.status(401).json({ message: "Invalid session" });
+    }
+
+    return res.json({ user });
   });
 
   // ─── Meal Plans (Nutritionist → Client) ────────────────────────────────────

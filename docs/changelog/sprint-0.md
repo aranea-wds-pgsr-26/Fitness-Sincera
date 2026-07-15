@@ -331,3 +331,29 @@ Adicionar suporte inicial a tema claro e escuro.
 ## Resultado
 
 A aplicacao agora possui base persistente para alternar entre tema claro e escuro, pronta para refinamento visual por tela.
+
+# Sprint 12 - Login Real
+
+## Objetivo
+
+Criar a tela de login real usando email e senha.
+
+## Alteracoes
+
+- Tela de login passou a ter formulario de credenciais.
+- Login real chama `POST /api/auth/login`.
+- Sessao do front-end passou a guardar token bearer.
+- Requisicoes do front-end passam a enviar `Authorization` quando houver token salvo.
+- Atalhos de teste dos quatro perfis foram mantidos.
+- Servidor legado recebeu ponte temporaria para `POST /api/auth/login` e `GET /api/auth/me`.
+
+## Validacoes
+
+- `npm.cmd run check`
+- `npm.cmd run manual:backend:default-users`
+- `npm.cmd run manual:backend:auth`
+- `npm.cmd run build`
+
+## Resultado
+
+O sistema agora possui login real com os usuarios padrao do Supabase, mantendo agilidade para testes por perfil.

@@ -7,6 +7,27 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
+function getStoredAuthToken() {
+  try {
+    const raw = localStorage.getItem("fs_auth_session");
+    if (!raw) return null;
+
+    const parsed = JSON.parse(raw) as { token?: string };
+    return parsed.token ?? null;
+  } catch {
+    return null;
+  }
+}
+
+function authHeaders(data?: unknown) {
+  const token = getStoredAuthToken();
+
+  return {
+    ...(data ? { "Content-Type": "application/json" } : {}),
+    ...(token ? { authorization: `Bearer ${token}` } : {}),
+  };
+}
+
 export async function apiRequest(
   method: string,
   url: string,
@@ -14,7 +35,7 @@ export async function apiRequest(
 ): Promise<Response> {
   const res = await fetch(url, {
     method,
-    headers: data ? { "Content-Type": "application/json" } : {},
+    headers: authHeaders(data),
     body: data ? JSON.stringify(data) : undefined,
     credentials: "include",
   });
@@ -30,6 +51,7 @@ export const getQueryFn: <T>(options: {
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
     const res = await fetch(queryKey.join("/") as string, {
+      headers: authHeaders(),
       credentials: "include",
     });
 
