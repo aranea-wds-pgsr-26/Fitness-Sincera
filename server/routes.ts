@@ -15,6 +15,7 @@ import { WorkoutRepository } from "../back-end/src/repositories/workoutRepositor
 import { FoodRepository } from "../back-end/src/repositories/foodRepository";
 import { MealRepository } from "../back-end/src/repositories/mealRepository";
 import { ClientOnboardingRepository } from "../back-end/src/repositories/clientOnboardingRepository";
+import { checkDatabaseConnection } from "../back-end/src/lib/db";
 
 // DEMO: In production, userId comes from req.session.userId (Passport.js)
 const DEMO_USER_ID = "user-1";
@@ -31,13 +32,13 @@ export async function registerRoutes(
     });
   });
 
-  app.get("/api/readiness", (_req, res) => {
-    res.json({
-      status: "ok",
+  app.get("/api/readiness", async (_req, res) => {
+    const database = await checkDatabaseConnection();
+
+    res.status(database.ok ? 200 : 503).json({
+      status: database.ok ? "ok" : "degraded",
       service: "fitness-sincera",
-      database: {
-        configured: Boolean(process.env.DATABASE_URL),
-      },
+      database,
     });
   });
 

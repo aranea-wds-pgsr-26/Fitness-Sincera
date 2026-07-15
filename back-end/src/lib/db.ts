@@ -1,9 +1,43 @@
 import { Pool } from "pg";
 
+const connectionString = process.env.DATABASE_URL;
+const requiresSsl =
+  connectionString?.includes("supabase") || connectionString?.includes("sslmode=require");
+
 export const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL?.includes("supabase") ? { rejectUnauthorized: false } : undefined,
+  connectionString,
+  connectionTimeoutMillis: 10_000,
+  idleTimeoutMillis: 10_000,
+  max: Number(process.env.PG_POOL_MAX ?? 1),
+  ssl: requiresSsl ? { rejectUnauthorized: false } : undefined,
 });
+
+export async function checkDatabaseConnection() {
+  if (!connectionString) {
+    return {
+      ok: false,
+      configured: false,
+      message: "DATABASE_URL is not configured",
+    };
+  }
+
+  try {
+    await pool.query("select 1");
+    return {
+      ok: true,
+      configured: true,
+      message: "Database connection ok",
+    };
+  } catch (error) {
+    const dbError = error as NodeJS.ErrnoException & { code?: string };
+    return {
+      ok: false,
+      configured: true,
+      code: dbError.code,
+      message: dbError.message,
+    };
+  }
+}
 
 export async function initializeDatabase() {
   await pool.query(`

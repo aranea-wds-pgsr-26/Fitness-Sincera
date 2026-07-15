@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 import type { AddressInfo } from "node:net";
 import app from "../../app";
 

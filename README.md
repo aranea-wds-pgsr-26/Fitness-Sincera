@@ -146,6 +146,8 @@ O projeto possui configuracao inicial para Vercel:
 
 - `vercel.json` entrega o front-end estatico em `dist/public`.
 - `api/index.ts` expõe o Express como funcao serverless para `/api/*`.
+- `/api/health` valida se a function esta respondendo.
+- `/api/readiness` valida a conexao real com o Supabase.
 - O teste `npm.cmd run manual:deploy:vercel` valida localmente API serverless, build estatico e Supabase.
 
-Para publicar, configure `DATABASE_URL` na Vercel e conecte a branch de deploy pelo painel da Vercel ou use a Vercel CLI autenticada.
+Para publicar, configure `DATABASE_URL` na Vercel e conecte a branch de deploy pelo painel da Vercel ou use a Vercel CLI autenticada. Em producao serverless, prefira a connection string do Supabase Pooler/Supavisor com `sslmode=require`.

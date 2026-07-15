@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { env } from "../../config";
+import { checkDatabaseConnection } from "../../lib/db";
 
 const router = Router();
 
@@ -11,13 +12,13 @@ router.get("/health", (req, res) => {
   });
 });
 
-router.get("/readiness", (req, res) => {
-  res.json({
-    status: "ok",
+router.get("/readiness", async (req, res) => {
+  const database = await checkDatabaseConnection();
+
+  res.status(database.ok ? 200 : 503).json({
+    status: database.ok ? "ok" : "degraded",
     service: "fitness-sincera-backend",
-    database: {
-      configured: Boolean(env.DATABASE_URL),
-    },
+    database,
     requestId: req.requestId,
   });
 });

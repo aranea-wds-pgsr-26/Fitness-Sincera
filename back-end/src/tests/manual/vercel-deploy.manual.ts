@@ -65,6 +65,14 @@ async function run() {
 
     console.log("OK - Serverless API health route responds");
 
+    const readiness = await requestJson(baseUrl, "/api/readiness");
+
+    if (readiness.response.status !== 200 || readiness.body.database?.ok !== true) {
+      throw new Error(`Vercel API readiness failed: ${JSON.stringify(readiness.body)}`);
+    }
+
+    console.log("OK - Serverless API readiness confirms Supabase connection");
+
     const submitted = await jsonRequest(baseUrl, "/api/public/leads", {
       method: "POST",
       body: JSON.stringify({

@@ -543,3 +543,23 @@ Criar onboarding real de cliente com cadastro, anamnese inicial e sessao pronta 
 ## Resultado
 
 Clientes podem se cadastrar, preencher a ficha inicial e acessar o painel com dados persistidos no Supabase.
+
+# Sprint 19 - Estabilidade de Producao e Limpeza
+
+## Objetivo
+
+Melhorar o diagnostico do erro 500 em producao na Vercel e remover arquivos legados comprovadamente fora do fluxo atual.
+
+## Alteracoes
+
+- Pool PostgreSQL ajustado para ambiente serverless.
+- `/api/readiness` passou a testar conexao real com Supabase.
+- Readiness do backend modular tambem passou a testar conexao real.
+- Removido alias Vite `@assets` sem uso.
+- Removida pasta vazia `fronte-end/`.
+- Removidos arquivos legados nao montados de rotas/controladores profissionais antigos.
+- Removida rota antiga de meals fora do router modular.
+
+## Resultado
+
+O deploy passa a ter um endpoint de diagnostico mais claro para separar erro de function, erro de variavel de ambiente e erro de conexao com Supabase.
