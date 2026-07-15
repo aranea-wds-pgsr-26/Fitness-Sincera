@@ -1,21 +1,22 @@
 import { Router } from "express";
-import { createDiet, deleteDiet, listDietsForUser, updateDiet } from "../../lib/store";
+// import { createDiet, deleteDiet, listDietsForUser, updateDiet } from "../../lib/store";
+import { DietRepository } from "../../repositories/dietRepository";
 import { requireAuth } from "../../middleware/auth";
 
 const router = Router();
 
 router.get("/", requireAuth, async (req, res) => {
-  const diets = await listDietsForUser(req.user!.id);
+  const diets = await DietRepository.listByUser(req.user!.id);
   return res.json(diets);
 });
 
 router.post("/", requireAuth, async (req, res) => {
-  const plan = await createDiet(req.user!.id, req.body);
+  const plan = await DietRepository.create(req.user!.id, req.body);
   return res.status(201).json(plan);
 });
 
 router.put("/:id", requireAuth, async (req, res) => {
-  const plan = await updateDiet(req.params.id, req.user!.id, req.body);
+  const plan = await DietRepository.update(req.params.id as string, req.user!.id, req.body);
   if (!plan) {
     return res.status(404).json({ message: "Diet plan not found" });
   }
@@ -24,7 +25,7 @@ router.put("/:id", requireAuth, async (req, res) => {
 });
 
 router.delete("/:id", requireAuth, async (req, res) => {
-  const deleted = await deleteDiet(req.params.id, req.user!.id);
+  const deleted = await DietRepository.delete(req.params.id as string, req.user!.id);
   if (!deleted) {
     return res.status(404).json({ message: "Diet plan not found" });
   }

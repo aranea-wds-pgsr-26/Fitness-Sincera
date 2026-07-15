@@ -1,21 +1,26 @@
 import { Router } from "express";
-import { createWorkout, deleteWorkout, listWorkoutsForUser, updateWorkout } from "../../lib/store";
+// import { createWorkout, deleteWorkout, listWorkoutsForUser, updateWorkout } from "../../lib/store";
+import { WorkoutRepository } from "../../repositories/workoutRepository";
 import { requireAuth } from "../../middleware/auth";
 
 const router = Router();
 
 router.get("/", requireAuth, async (req, res) => {
-  const workouts = await listWorkoutsForUser(req.user!.id);
+  const workouts = await WorkoutRepository.listByUser(req.user!.id);
   return res.json(workouts);
 });
 
 router.post("/", requireAuth, async (req, res) => {
-  const workout = await createWorkout(req.user!.id, req.body);
+  const workout = await WorkoutRepository.create(req.user!.id, req.body);
   return res.status(201).json(workout);
 });
 
 router.put("/:id", requireAuth, async (req, res) => {
-  const workout = await updateWorkout(req.params.id, req.user!.id, req.body);
+  const workout = await WorkoutRepository.update(
+    req.params.id as string,
+    req.user!.id,
+    req.body
+  );
   if (!workout) {
     return res.status(404).json({ message: "Workout plan not found" });
   }
@@ -24,7 +29,10 @@ router.put("/:id", requireAuth, async (req, res) => {
 });
 
 router.delete("/:id", requireAuth, async (req, res) => {
-  const deleted = await deleteWorkout(req.params.id, req.user!.id);
+  const deleted = await WorkoutRepository.delete(
+    req.params.id as string,
+    req.user!.id
+  );
   if (!deleted) {
     return res.status(404).json({ message: "Workout plan not found" });
   }

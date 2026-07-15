@@ -1,11 +1,21 @@
 import "dotenv/config";
 import app from "./app";
+import { env } from "./config";
 import { initializeStore } from "./lib/store";
 
 async function start() {
-  await initializeStore();
+  if (env.DATABASE_URL) {
+    try {
+      await initializeStore();
+    } catch (error) {
+      console.warn("Database initialization failed. Health checks will remain available.");
+      console.warn(error);
+    }
+  } else {
+    console.warn("DATABASE_URL not configured. Database-backed routes will be unavailable.");
+  }
 
-  const port = Number(process.env.PORT ?? 4001);
+  const port = env.PORT;
   app.listen(port, "0.0.0.0", () => {
     console.log(`Backend listening on port ${port}`);
   });

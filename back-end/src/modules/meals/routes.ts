@@ -1,35 +1,84 @@
-import { Router } from "express";
-import { createMeal, deleteMeal, listMealsForUser, updateMeal } from "../../lib/store";
+import { Request, Router } from "express";
+import {
+  validateCreateMealPayload,
+  validateUpdateMealPayload,
+} from "./validators";
+import { MealRepository } from "../../repositories/mealRepository";
 import { requireAuth } from "../../middleware/auth";
+import { asyncHandler } from "../../shared/utils/asyncHandler";
+import { AppError } from "../../shared/errors/AppError";
 
 const router = Router();
 
-router.get("/", requireAuth, async (req, res) => {
-  const meals = await listMealsForUser(req.user!.id);
-  return res.json(meals);
-});
+router.get(
+  "/",
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    const meals = await MealRepository.listByUser(req.user!.id);
 
-router.post("/", requireAuth, async (req, res) => {
-  const meal = await createMeal(req.user!.id, req.body);
-  return res.status(201).json(meal);
-});
+    return res.json({
+      success: true,
+      data: meals,
+    });
+  })
+);
 
-router.put("/:id", requireAuth, async (req, res) => {
-  const meal = await updateMeal(req.params.id, req.user!.id, req.body);
-  if (!meal) {
-    return res.status(404).json({ message: "Meal not found" });
-  }
+router.post(
+  "/",
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    const payload = validateCreateMealPayload(req.body);
+    const meal = await MealRepository.create(req.user!.id, payload);
 
-  return res.json(meal);
-});
+    return res.status(201).json({
+      success: true,
+      data: meal,
+    });
+  })
+);
 
-router.delete("/:id", requireAuth, async (req, res) => {
-  const deleted = await deleteMeal(req.params.id, req.user!.id);
-  if (!deleted) {
-    return res.status(404).json({ message: "Meal not found" });
-  }
+router.put(
+  "/:id",
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    const payload = validateUpdateMealPayload(req.body);
+    const mealId = req.params.id;
 
-  return res.status(204).send();
-});
+    if (Array.isArray(mealId)) {
+      throw new AppError("Invalid meal id", 400);
+    }
+
+    const meal = await MealRepository.update(mealId, req.user!.id, payload);
+
+    if (!meal) {
+      throw new AppError("Meal not found", 404);
+    }
+
+    return res.json({
+      success: true,
+      data: meal,
+    });
+  })
+);
+
+router.delete<{ id: string }>(
+  "/:id",
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    const mealId = req.params.id;
+
+    if (Array.isArray(mealId)) {
+      throw new AppError("Invalid meal id", 400);
+    }
+
+    const deleted = await MealRepository.delete(mealId, req.user!.id);
+
+    if (!deleted) {
+      throw new AppError("Meal not found", 404);
+    }
+
+    return res.status(204).send();
+  })
+);
 
 export default router;

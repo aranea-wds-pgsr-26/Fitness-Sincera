@@ -1,0 +1,1 @@
+Espaço reservado para erros padronizados da aplicação.

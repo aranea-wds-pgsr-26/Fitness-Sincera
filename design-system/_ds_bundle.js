@@ -1073,7 +1073,7 @@ window.PageHeader = PageHeader;
 // ui_kits/aluno/data.js
 try { (() => {
 // Fitness Sincera - Aluno (client) mock data
-// Mirrors client/src/lib/mockData.ts + the meal-plan block shape.
+// Mirrors front-end/src/lib/mockData.ts + the meal-plan block shape.
 
 window.ALUNO = window.ALUNO || {};
 window.ALUNO.user = {

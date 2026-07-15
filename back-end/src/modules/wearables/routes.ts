@@ -1,16 +1,17 @@
 import { Router } from "express";
-import { createSyncEvent, createWearable, listWearablesForUser } from "../../lib/store";
+// import { createSyncEvent, createWearable, listWearablesForUser } from "../../lib/store";
+import { WearableRepository } from "../../repositories/wearableRepository";
 import { requireAuth } from "../../middleware/auth";
 
 const router = Router();
 
 router.get("/devices", requireAuth, async (req, res) => {
-  const devices = await listWearablesForUser(req.user!.id);
+  const devices = await WearableRepository.listByUser(req.user!.id);
   return res.json(devices);
 });
 
 router.post("/devices", requireAuth, async (req, res) => {
-  const device = await createWearable(req.user!.id, req.body);
+  const device = await WearableRepository.create(req.user!.id, req.body);
   return res.status(201).json(device);
 });
 
@@ -21,7 +22,7 @@ router.post("/sync", requireAuth, async (req, res) => {
     return res.status(400).json({ message: "provider and payload are required" });
   }
 
-  const syncResult = await createSyncEvent(provider, payload);
+  const syncResult = await WearableRepository.sync(provider, payload);
   return res.json({
     message: "Wearable sync request captured",
     ...syncResult,

@@ -1,14 +1,15 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import nutritionistRoutes from "./routes/nutritionist";
-import trainerRoutes from "./routes/trainer";
 import {
   nutritionistMockData,
   trainerMockData,
   authMockData,
   INITIAL_MEAL_PLANS,
 } from "./data/mockData";
+import { UserRepository } from "../back-end/src/repositories/userRepository";
+import { AdminRepository } from "../back-end/src/repositories/adminRepository";
+import { SiteLeadRepository } from "../back-end/src/repositories/siteLeadRepository";
 
 // DEMO: In production, userId comes from req.session.userId (Passport.js)
 const DEMO_USER_ID = "user-1";
@@ -18,10 +19,22 @@ export async function registerRoutes(
   app: Express
 ): Promise<Server> {
 
-  // --- Professional Dashboards (with auth) ---
-  app.use("/api/nutritionist", nutritionistRoutes);
-  app.use("/api/trainer", trainerRoutes);
+  app.get("/api/health", (_req, res) => {
+    res.json({
+      status: "ok",
+      service: "fitness-sincera",
+    });
+  });
 
+  app.get("/api/readiness", (_req, res) => {
+    res.json({
+      status: "ok",
+      service: "fitness-sincera",
+      database: {
+        configured: Boolean(process.env.DATABASE_URL),
+      },
+    });
+  });
 
   // ─── Professional Dashboards ─────────────────────────────────────────────────
 
@@ -180,6 +193,149 @@ export async function registerRoutes(
     res.json(sessions[role] ?? sessions.client);
   });
 
+  app.post("/api/auth/login", async (req, res) => {
+    const { email, password } = req.body as { email?: string; password?: string };
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "email and password are required" });
+    }
+
+    const user = await UserRepository.findByEmail(email);
+
+    if (!user || user.password !== password) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const token = await UserRepository.createSession(user);
+    return res.json({ user, token });
+  });
+
+  app.get("/api/auth/me", async (req, res) => {
+    const authorization = req.headers.authorization;
+    const token = authorization?.startsWith("Bearer ")
+      ? authorization.slice("Bearer ".length)
+      : undefined;
+
+    if (!token) {
+      return res.status(401).json({ message: "Missing bearer token" });
+    }
+
+    const user = await UserRepository.getSessionUser(token);
+
+    if (!user) {
+      return res.status(401).json({ message: "Invalid session" });
+    }
+
+    return res.json({ user });
+  });
+
+  app.post("/api/public/leads", async (req, res) => {
+    const { name, email, phone, audience, interest, message } = req.body as {
+      name?: string;
+      email?: string;
+      phone?: string;
+      audience?: "client" | "nutritionist" | "trainer" | "company";
+      interest?: "complete" | "nutrition" | "training" | "professional" | "partnership";
+      message?: string;
+    };
+
+    if (!name || !email || !audience || !interest) {
+      return res.status(400).json({ message: "name, email, audience and interest are required" });
+    }
+
+    if (!["client", "nutritionist", "trainer", "company"].includes(audience)) {
+      return res.status(400).json({ message: "audience is invalid" });
+    }
+
+    if (!["complete", "nutrition", "training", "professional", "partnership"].includes(interest)) {
+      return res.status(400).json({ message: "interest is invalid" });
+    }
+
+    const lead = await SiteLeadRepository.create({
+      name,
+      email,
+      phone,
+      audience,
+      interest,
+      message,
+    });
+
+    return res.status(201).json({ success: true, data: { id: lead.id, status: lead.status } });
+  });
+
+  async function requireAdminFromRequest(req: any, res: any) {
+    const authorization = req.headers.authorization;
+    const token = authorization?.startsWith("Bearer ")
+      ? authorization.slice("Bearer ".length)
+      : undefined;
+
+    if (!token) {
+      res.status(401).json({ message: "Missing bearer token" });
+      return null;
+    }
+
+    const user = await UserRepository.getSessionUser(token);
+
+    if (!user || user.role !== "admin") {
+      res.status(403).json({ message: "Forbidden" });
+      return null;
+    }
+
+    return user;
+  }
+
+  app.get("/api/admin/dashboard", async (req, res) => {
+    const user = await requireAdminFromRequest(req, res);
+    if (!user) return;
+
+    const dashboard = await AdminRepository.getDashboard();
+    return res.json({ success: true, data: dashboard });
+  });
+
+  app.get("/api/admin/professionals", async (req, res) => {
+    const user = await requireAdminFromRequest(req, res);
+    if (!user) return;
+
+    const professionals = await AdminRepository.listProfessionals();
+    return res.json({ success: true, data: professionals });
+  });
+
+  app.get("/api/admin/site-leads", async (req, res) => {
+    const user = await requireAdminFromRequest(req, res);
+    if (!user) return;
+
+    const leads = await AdminRepository.listSiteLeads();
+    return res.json({ success: true, data: leads });
+  });
+
+  app.post("/api/admin/professionals", async (req, res) => {
+    const user = await requireAdminFromRequest(req, res);
+    if (!user) return;
+
+    const { name, email, password, role } = req.body as {
+      name?: string;
+      email?: string;
+      password?: string;
+      role?: "nutritionist" | "trainer";
+    };
+
+    if (!name || !email || !password || !role) {
+      return res.status(400).json({ message: "name, email, password and role are required" });
+    }
+
+    if (!["nutritionist", "trainer"].includes(role)) {
+      return res.status(400).json({ message: "role must be nutritionist or trainer" });
+    }
+
+    const professional = await AdminRepository.createProfessional({ name, email, password, role });
+
+    if (!professional) {
+      return res.status(409).json({ message: "Professional already exists" });
+    }
+
+    return res.status(201).json({ success: true, data: professional });
+  });
+
   // ─── Meal Plans (Nutritionist → Client) ────────────────────────────────────
 
   // Seed in-memory meal plans (will move to DB in Sprint 2)
@@ -317,4 +473,3 @@ export async function registerRoutes(
 
   return httpServer;
 }
-

@@ -257,10 +257,9 @@ export type MealSwapRequest = z.infer<typeof mealSwapRequestSchema>;
 /** Auth session type — used by AuthContext on the client */
 export const authSessionSchema = z.object({
   userId: z.string(),
-  role: z.enum(["client", "nutritionist", "trainer"]),
+  role: z.enum(["admin", "client", "nutritionist", "trainer"]),
   name: z.string(),
   email: z.string(),
   avatar: z.string().optional(),
 });
 export type AuthSession = z.infer<typeof authSessionSchema>;
-

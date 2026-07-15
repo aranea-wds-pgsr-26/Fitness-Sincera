@@ -16,9 +16,9 @@ This design system is reverse-engineered from the live React/Vite/Tailwind build
 ## Sources (for whoever maintains this)
 
 - **GitHub - `wesleyds71/Fitness-Sincera`** (private) - the React 19 + Wouter + Tailwind 4 + shadcn/ui app.
-  Key reads: `client/src/features/client/*` (aluno screens), `client/src/features/nutritionist/*`
-  (pro screens, incl. the Notion-style `meal-plans/MealPlanEditor.tsx`), `client/src/layout/*`
-  (the dark "flux" shell + sidebar), `client/src/index.css` (token source), `client/src/lib/mockData.ts`.
+  Key reads: `front-end/src/features/client/*` (aluno screens), `front-end/src/features/nutritionist/*`
+  (pro screens, incl. the Notion-style `meal-plans/MealPlanEditor.tsx`), `front-end/src/layout/*`
+  (the dark "flux" shell + sidebar), `front-end/src/index.css` (token source), `front-end/src/lib/mockData.ts`.
 - **In-repo design docs** under `attached_assets/`: `DESIGN_SYSTEM_SPECIFICATION.md`,
   `COLOR_REFERENCE_GUIDE.md`, `VISUAL_SPECIFICATIONS.md`, and the master `PRD`.
 - Two visual generations exist in the repo. The **original spec** was a dark-mode neon dashboard
