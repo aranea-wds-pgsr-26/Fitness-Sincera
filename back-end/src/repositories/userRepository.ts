@@ -77,6 +77,21 @@ export const UserRepository = {
   async deleteByEmail(email: string) {
     await db.delete(fitnessUsers).where(sql`lower(${fitnessUsers.email}) = lower(${email})`);
   },
+
+  async updateByEmail(email: string, payload: CreateUserInput) {
+    const [user] = await db
+      .update(fitnessUsers)
+      .set({
+        name: payload.name,
+        email: payload.email,
+        password: payload.password,
+        role: payload.role,
+      })
+      .where(sql`lower(${fitnessUsers.email}) = lower(${email})`)
+      .returning();
+
+    return user ? mapUser(user) : null;
+  },
 };
 
 export { type AuthUser as User, type UserRole };

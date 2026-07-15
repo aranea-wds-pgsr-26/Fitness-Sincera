@@ -56,6 +56,7 @@ Quando a sprint tocar banco ou repositories:
 
 ```powershell
 npm.cmd run db:generate
+npm.cmd run db:seed:users
 npm.cmd run manual:backend:auth
 npm.cmd run manual:backend:meals
 ```

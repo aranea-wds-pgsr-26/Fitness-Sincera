@@ -1,10 +1,19 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import type { AuthSession } from "@shared/schema";
 
+export type AuthRole = AuthSession["role"];
+
 // ─── Demo sessions (no real backend auth yet — Sprint 1 stub) ─────────────────
 // In Sprint 2 this will be replaced by a real POST /api/auth/login call.
 
-export const DEMO_SESSIONS: Record<string, AuthSession> = {
+export const DEMO_SESSIONS: Record<AuthRole, AuthSession> = {
+    admin: {
+        userId: "admin-1",
+        role: "admin",
+        name: "Admin Fitness Sincera",
+        email: "admin@fitnesssincera.com",
+        avatar: undefined,
+    },
     client: {
         userId: "user-1",
         role: "client",
@@ -35,7 +44,7 @@ const STORAGE_KEY = "fs_auth_session";
 interface AuthContextValue {
     session: AuthSession | null;
     isLoading: boolean;
-    login: (role: "client" | "nutritionist" | "trainer") => void;
+    login: (role: AuthRole) => void;
     logout: () => void;
 }
 
@@ -59,7 +68,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
     }, []);
 
-    const login = useCallback((role: "client" | "nutritionist" | "trainer") => {
+    const login = useCallback((role: AuthRole) => {
         const newSession = DEMO_SESSIONS[role];
         setSession(newSession);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(newSession));

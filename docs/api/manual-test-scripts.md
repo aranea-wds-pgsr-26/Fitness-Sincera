@@ -52,12 +52,34 @@ No final, o script revoga a sessao e remove o usuario de teste criado.
 
 Este script acessa o Supabase e pode precisar ser executado fora de ambientes com rede bloqueada.
 
+## Usuarios padrao
+
+```powershell
+npm.cmd run manual:backend:default-users
+```
+
+Alias:
+
+```powershell
+npm.cmd run db:seed:users
+```
+
+O script cria ou atualiza quatro usuarios fixos para testes:
+
+| Papel | Email | Senha |
+|---|---|---|
+| admin | `admin@fitnesssincera.com` | `admin123` |
+| client | `bennet02@gmail.com` | `client123` |
+| nutritionist | `sofia.almeida@fitnesssincera.com` | `nutritionist123` |
+| trainer | `ricardo@fitnesssincera.com` | `trainer123` |
+
 ## Testes automatizados relacionados
 
 ```powershell
 npm.cmd run test:backend:foundation
 npm.cmd run test:backend:auth
 npm.cmd run test:backend:meals
+npm.cmd run manual:backend:default-users
 ```
 
 Por enquanto, `test:backend:meals` e `manual:backend:meals` executam o mesmo fluxo, pois a validacao de meals ainda e um teste de integracao manual assistido.

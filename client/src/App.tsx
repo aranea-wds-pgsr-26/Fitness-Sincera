@@ -34,7 +34,7 @@ import NotFound from "@/pages/not-found";
 
 interface ProtectedRouteProps {
   component: React.ComponentType;
-  allowedRoles?: ("client" | "nutritionist" | "trainer")[];
+  allowedRoles?: ("admin" | "client" | "nutritionist" | "trainer")[];
 }
 
 function ProtectedRoute({ component: Component, allowedRoles }: ProtectedRouteProps) {
@@ -43,6 +43,10 @@ function ProtectedRoute({ component: Component, allowedRoles }: ProtectedRoutePr
   if (isLoading) return null; // or a spinner
 
   if (!session) return <Redirect to="/login" />;
+
+  if (session.role === "admin") {
+    return <Component />;
+  }
 
   if (allowedRoles && !allowedRoles.includes(session.role)) {
     // Redirect to the correct home for their role
@@ -64,6 +68,7 @@ function RootRedirect() {
   const { session, isLoading } = useAuth();
   if (isLoading) return null;
   if (!session) return <Redirect to="/login" />;
+  if (session.role === "admin") return <Redirect to="/nutritionist/alimentos" />;
   if (session.role === "nutritionist") return <Redirect to="/nutritionist/dashboard" />;
   if (session.role === "trainer") return <Redirect to="/trainer/dashboard" />;
   return <Redirect to="/dashboard" />;
@@ -94,7 +99,7 @@ function Router() {
         <ProtectedRoute component={ProfilePage} allowedRoles={["client"]} />
       </Route>
       <Route path="/chat">
-        <ProtectedRoute component={ChatPage} allowedRoles={["client", "nutritionist", "trainer"]} />
+        <ProtectedRoute component={ChatPage} allowedRoles={["client", "nutritionist", "trainer", "admin"]} />
       </Route>
 
       {/* ── Nutritionist routes ───────────────────────────────── */}

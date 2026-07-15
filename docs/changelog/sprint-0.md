@@ -120,3 +120,30 @@ Migrar usuarios e sessoes do backend novo para Drizzle.
 ## Resultado
 
 Os endpoints de auth do backend novo agora usam Drizzle para persistir usuarios e sessoes no Supabase.
+
+# Sprint 4 - Usuarios padrao e login Admin
+
+## Objetivo
+
+Facilitar os testes manuais criando usuarios fixos no banco e adicionando o Admin ao login demo.
+
+## Alteracoes
+
+- Criado seed idempotente com quatro usuarios padrao.
+- Adicionado script `manual:backend:default-users`.
+- Adicionado alias `db:seed:users`.
+- Adicionado papel `admin` ao schema de sessao do frontend.
+- Adicionado card Admin na tela de login.
+- Admin pode acessar rotas protegidas existentes enquanto nao ha dashboard administrativo dedicado.
+
+## Validacoes
+
+- `npm.cmd run check`
+- `npm.cmd run manual:backend:default-users`
+- `npm.cmd run manual:backend:auth`
+- `npm.cmd run manual:backend:health`
+- `npm.cmd run build`
+
+## Resultado
+
+O banco agora possui quatro usuarios padrao para testes de modulos e o frontend atual permite entrar como Admin pela tela de login demo.

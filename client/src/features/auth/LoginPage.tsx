@@ -5,6 +5,17 @@ import { Dumbbell, Apple, Crown, User, ArrowRight, Zap } from "lucide-react";
 
 const ROLES = [
     {
+        key: "admin" as const,
+        label: "Administrador",
+        description: "Acesse todos os módulos de gestão",
+        icon: Crown,
+        accent: "#facc15",
+        bg: "bg-amber-400",
+        text: "text-black",
+        iconColor: "text-black",
+        name: DEMO_SESSIONS.admin.name,
+    },
+    {
         key: "client" as const,
         label: "Cliente",
         description: "Acompanhe dieta, treinos e evolução",
@@ -43,10 +54,12 @@ export default function LoginPage() {
     const { login } = useAuth();
     const [, navigate] = useLocation();
 
-    const handleLogin = (role: "client" | "nutritionist" | "trainer") => {
+    const handleLogin = (role: keyof typeof DEMO_SESSIONS) => {
         login(role);
         const dest =
-            role === "client"
+            role === "admin"
+                ? "/nutritionist/alimentos"
+                : role === "client"
                 ? "/dashboard"
                 : role === "nutritionist"
                     ? "/nutritionist/dashboard"
