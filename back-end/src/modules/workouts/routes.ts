@@ -16,7 +16,11 @@ router.post("/", requireAuth, async (req, res) => {
 });
 
 router.put("/:id", requireAuth, async (req, res) => {
-  const workout = await WorkoutRepository.update(req.params.id, req.user!.id, req.body);
+  const workout = await WorkoutRepository.update(
+    req.params.id as string,
+    req.user!.id,
+    req.body
+  );
   if (!workout) {
     return res.status(404).json({ message: "Workout plan not found" });
   }
@@ -25,7 +29,10 @@ router.put("/:id", requireAuth, async (req, res) => {
 });
 
 router.delete("/:id", requireAuth, async (req, res) => {
-  const deleted = await WorkoutRepository.delete(req.params.id, req.user!.id);
+  const deleted = await WorkoutRepository.delete(
+    req.params.id as string,
+    req.user!.id
+  );
   if (!deleted) {
     return res.status(404).json({ message: "Workout plan not found" });
   }

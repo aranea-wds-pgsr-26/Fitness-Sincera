@@ -27,12 +27,23 @@ export interface UseNutritionistClientsOptions {
   page?: number;
 }
 
+interface ClientsPageResponse {
+  data: ClientListItem[];
+  pagination: {
+    page: number;
+    pageSize: number;
+    total: number;
+    totalPages: number;
+    totalItems?: number;
+  };
+}
+
 export function useNutritionistClients(options: UseNutritionistClientsOptions = {}) {
   const { status, search, page = 1 } = options;
 
   return useQuery({
     queryKey: ["nutritionist", "clients", { status, search, page }],
-    queryFn: async () => {
+    queryFn: async (): Promise<ClientsPageResponse> => {
       const params = new URLSearchParams();
       if (status && status !== "all") params.append("status", status);
       if (search) params.append("search", search);

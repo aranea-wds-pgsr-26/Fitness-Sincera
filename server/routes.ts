@@ -1,8 +1,6 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import nutritionistRoutes from "./routes/nutritionist";
-import trainerRoutes from "./routes/trainer";
 import {
   nutritionistMockData,
   trainerMockData,
@@ -17,11 +15,6 @@ export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
-
-  // --- Professional Dashboards (with auth) ---
-  app.use("/api/nutritionist", nutritionistRoutes);
-  app.use("/api/trainer", trainerRoutes);
-
 
   // ─── Professional Dashboards ─────────────────────────────────────────────────
 
@@ -317,4 +310,3 @@ export async function registerRoutes(
 
   return httpServer;
 }
-

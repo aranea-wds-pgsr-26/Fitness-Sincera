@@ -1,6 +1,6 @@
 import { Router } from "express";
 // import { createDiet, deleteDiet, listDietsForUser, updateDiet } from "../../lib/store";
-import {DietRepository} from "../../repositories/dietRepository";
+import { DietRepository } from "../../repositories/dietRepository";
 import { requireAuth } from "../../middleware/auth";
 
 const router = Router();
@@ -16,7 +16,7 @@ router.post("/", requireAuth, async (req, res) => {
 });
 
 router.put("/:id", requireAuth, async (req, res) => {
-  const plan = await DietRepository.update(req.params.id, req.user!.id, req.body);
+  const plan = await DietRepository.update(req.params.id as string, req.user!.id, req.body);
   if (!plan) {
     return res.status(404).json({ message: "Diet plan not found" });
   }
@@ -25,7 +25,7 @@ router.put("/:id", requireAuth, async (req, res) => {
 });
 
 router.delete("/:id", requireAuth, async (req, res) => {
-  const deleted = await DietRepository.delete(req.params.id, req.user!.id);
+  const deleted = await DietRepository.delete(req.params.id as string, req.user!.id);
   if (!deleted) {
     return res.status(404).json({ message: "Diet plan not found" });
   }

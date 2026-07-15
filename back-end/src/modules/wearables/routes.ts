@@ -1,6 +1,6 @@
 import { Router } from "express";
 // import { createSyncEvent, createWearable, listWearablesForUser } from "../../lib/store";
-import {WearableRepository} from "../repositories/wearable.repository";
+import { WearableRepository } from "../../repositories/wearableRepository";
 import { requireAuth } from "../../middleware/auth";
 
 const router = Router();
