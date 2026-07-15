@@ -75,7 +75,7 @@ function userToSession(user: {
 }
 
 function redirectForRole(role: AuthRole) {
-  if (role === "admin") return "/nutritionist/alimentos";
+  if (role === "admin") return "/admin/dashboard";
   if (role === "client") return "/dashboard";
   if (role === "nutritionist") return "/nutritionist/dashboard";
   return "/trainer/dashboard";

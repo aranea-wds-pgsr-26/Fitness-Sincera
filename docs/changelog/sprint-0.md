@@ -357,3 +357,39 @@ Criar a tela de login real usando email e senha.
 ## Resultado
 
 O sistema agora possui login real com os usuarios padrao do Supabase, mantendo agilidade para testes por perfil.
+
+# Sprint 13 - Admin Foundation
+
+## Objetivo
+
+Criar a primeira base funcional do painel administrativo.
+
+## Alteracoes
+
+- Criado `AdminRepository` com Drizzle.
+- Criadas APIs administrativas protegidas por admin:
+  - `GET /api/admin/dashboard`
+  - `GET /api/admin/professionals`
+  - `POST /api/admin/professionals`
+- Rotas admin tambem disponiveis em `/api/v1/admin`.
+- Criada tela `/admin/dashboard`.
+- Admin agora e redirecionado para o painel administrativo apos login.
+- Painel exibe metricas gerais da plataforma.
+- Painel permite cadastrar nutricionista ou personal trainer.
+- Criado script manual `manual:backend:admin`.
+- Criado alias `test:backend:admin`.
+
+## Validacoes
+
+- `npm.cmd run check`
+- `npm.cmd run manual:backend:admin`
+- `npm.cmd run manual:backend:health`
+- `npm.cmd run build`
+
+## Resultado
+
+O sistema agora possui uma fundacao administrativa real, com painel inicial e cadastro de profissionais conectado ao Supabase.
+
+## Observacao
+
+A seguranca forte do login, com expiracao de token, refresh token, cookies seguros e hash robusto, fica para uma sprint dedicada de Auth Hardening.

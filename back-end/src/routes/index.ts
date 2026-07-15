@@ -1,4 +1,5 @@
 import { Router } from "express";
+import adminRouter from "../modules/admin/routes";
 import authRouter from "../modules/auth/routes";
 import mealsRouter from "../modules/meals/routes";
 import dietsRouter from "../modules/diets/routes";
@@ -15,6 +16,7 @@ router.use("/", systemRouter);
 router.use("/v1", v1Router);
 
 router.use("/auth", authRouter);
+router.use("/admin", adminRouter);
 router.use("/meals", mealsRouter);
 router.use("/diets", dietsRouter);
 router.use("/foods", foodsRouter);

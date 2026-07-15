@@ -114,6 +114,23 @@ O script usa `DATABASE_URL` e valida o fluxo completo:
 
 Este script acessa o Supabase e pode precisar ser executado fora de ambientes com rede bloqueada.
 
+## Admin com Supabase
+
+```powershell
+npm.cmd run manual:backend:admin
+```
+
+O script usa `DATABASE_URL` e valida o fluxo administrativo:
+
+- busca o usuario admin padrao;
+- cria uma sessao temporaria;
+- valida `GET /api/admin/dashboard`;
+- valida `GET /api/admin/professionals`;
+- cria um profissional temporario com `POST /api/admin/professionals`;
+- revoga a sessao e remove o profissional temporario ao final.
+
+Este script acessa o Supabase e pode precisar ser executado fora de ambientes com rede bloqueada.
+
 ## Auth com Supabase
 
 ```powershell
@@ -161,7 +178,8 @@ npm.cmd run test:backend:diets
 npm.cmd run test:backend:workouts
 npm.cmd run test:backend:chat
 npm.cmd run test:backend:foods
+npm.cmd run test:backend:admin
 npm.cmd run manual:backend:default-users
 ```
 
-Por enquanto, `test:backend:meals`, `manual:backend:meals`, `test:backend:diets`, `manual:backend:diets`, `test:backend:workouts`, `manual:backend:workouts`, `test:backend:chat`, `manual:backend:chat`, `test:backend:foods` e `manual:backend:foods` executam seus respectivos fluxos de integracao manual assistida.
+Por enquanto, `test:backend:meals`, `manual:backend:meals`, `test:backend:diets`, `manual:backend:diets`, `test:backend:workouts`, `manual:backend:workouts`, `test:backend:chat`, `manual:backend:chat`, `test:backend:foods`, `manual:backend:foods`, `test:backend:admin` e `manual:backend:admin` executam seus respectivos fluxos de integracao manual assistida.

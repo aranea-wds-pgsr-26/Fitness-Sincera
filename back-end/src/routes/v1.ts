@@ -1,4 +1,5 @@
 import { Router } from "express";
+import adminRouter from "../modules/admin/routes";
 import authRouter from "../modules/auth/routes";
 import chatbotRouter from "../modules/chatbot/routes";
 import dietsRouter from "../modules/diets/routes";
@@ -13,6 +14,7 @@ const router = Router();
 router.use("/", systemRouter);
 router.use("/system", systemRouter);
 router.use("/auth", authRouter);
+router.use("/admin", adminRouter);
 router.use("/meals", mealsRouter);
 router.use("/diets", dietsRouter);
 router.use("/foods", foodsRouter);

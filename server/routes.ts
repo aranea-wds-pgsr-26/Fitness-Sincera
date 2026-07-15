@@ -8,6 +8,7 @@ import {
   INITIAL_MEAL_PLANS,
 } from "./data/mockData";
 import { UserRepository } from "../back-end/src/repositories/userRepository";
+import { AdminRepository } from "../back-end/src/repositories/adminRepository";
 
 // DEMO: In production, userId comes from req.session.userId (Passport.js)
 const DEMO_USER_ID = "user-1";
@@ -208,6 +209,71 @@ export async function registerRoutes(
     }
 
     return res.json({ user });
+  });
+
+  async function requireAdminFromRequest(req: any, res: any) {
+    const authorization = req.headers.authorization;
+    const token = authorization?.startsWith("Bearer ")
+      ? authorization.slice("Bearer ".length)
+      : undefined;
+
+    if (!token) {
+      res.status(401).json({ message: "Missing bearer token" });
+      return null;
+    }
+
+    const user = await UserRepository.getSessionUser(token);
+
+    if (!user || user.role !== "admin") {
+      res.status(403).json({ message: "Forbidden" });
+      return null;
+    }
+
+    return user;
+  }
+
+  app.get("/api/admin/dashboard", async (req, res) => {
+    const user = await requireAdminFromRequest(req, res);
+    if (!user) return;
+
+    const dashboard = await AdminRepository.getDashboard();
+    return res.json({ success: true, data: dashboard });
+  });
+
+  app.get("/api/admin/professionals", async (req, res) => {
+    const user = await requireAdminFromRequest(req, res);
+    if (!user) return;
+
+    const professionals = await AdminRepository.listProfessionals();
+    return res.json({ success: true, data: professionals });
+  });
+
+  app.post("/api/admin/professionals", async (req, res) => {
+    const user = await requireAdminFromRequest(req, res);
+    if (!user) return;
+
+    const { name, email, password, role } = req.body as {
+      name?: string;
+      email?: string;
+      password?: string;
+      role?: "nutritionist" | "trainer";
+    };
+
+    if (!name || !email || !password || !role) {
+      return res.status(400).json({ message: "name, email, password and role are required" });
+    }
+
+    if (!["nutritionist", "trainer"].includes(role)) {
+      return res.status(400).json({ message: "role must be nutritionist or trainer" });
+    }
+
+    const professional = await AdminRepository.createProfessional({ name, email, password, role });
+
+    if (!professional) {
+      return res.status(409).json({ message: "Professional already exists" });
+    }
+
+    return res.status(201).json({ success: true, data: professional });
   });
 
   // ─── Meal Plans (Nutritionist → Client) ────────────────────────────────────

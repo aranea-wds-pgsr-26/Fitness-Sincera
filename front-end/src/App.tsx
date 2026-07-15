@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 
 // Auth
 import { AuthProvider, useAuth } from "@/features/auth/AuthProvider";
+import AdminDashboardPage from "@/features/admin/AdminDashboardPage";
 
 // Pages — Client
 import DashboardPage from "@/features/client/dashboard/DashboardPage";
@@ -68,7 +69,7 @@ function RootRedirect() {
   const { session, isLoading } = useAuth();
   if (isLoading) return null;
   if (!session) return <Redirect to="/login" />;
-  if (session.role === "admin") return <Redirect to="/nutritionist/alimentos" />;
+  if (session.role === "admin") return <Redirect to="/admin/dashboard" />;
   if (session.role === "nutritionist") return <Redirect to="/nutritionist/dashboard" />;
   if (session.role === "trainer") return <Redirect to="/trainer/dashboard" />;
   return <Redirect to="/dashboard" />;
@@ -100,6 +101,10 @@ function Router() {
       </Route>
       <Route path="/chat">
         <ProtectedRoute component={ChatPage} allowedRoles={["client", "nutritionist", "trainer", "admin"]} />
+      </Route>
+
+      <Route path="/admin/dashboard">
+        <ProtectedRoute component={AdminDashboardPage} allowedRoles={["admin"]} />
       </Route>
 
       {/* ── Nutritionist routes ───────────────────────────────── */}
