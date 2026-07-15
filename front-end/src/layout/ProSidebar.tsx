@@ -13,6 +13,7 @@ import {
     Crown,
 } from "lucide-react";
 import { useAuth } from "@/features/auth/AuthProvider";
+import { ThemeToggle } from "@/features/theme/ThemeToggle";
 
 // ─── Nav Definitions ─────────────────────────────────────────────────────────
 
@@ -86,7 +87,12 @@ export function ProSidebar({ role = "trainer" }: ProSidebarProps) {
             </nav>
 
             {/* Footer */}
-            <div className="p-4 border-t border-white/5 space-y-1">
+            <div className="p-4 border-t border-white/5 space-y-3">
+                <div className="flex items-center justify-between px-4">
+                    <span className="text-xs font-bold uppercase tracking-widest text-slate-500">Tema</span>
+                    <ThemeToggle className="h-9 w-9" />
+                </div>
+
                 <Link
                     href="/configuracoes"
                     className="flex items-center px-4 py-3 text-sm font-bold text-slate-400 hover:text-white rounded-2xl hover:bg-white/5 transition-all duration-300"

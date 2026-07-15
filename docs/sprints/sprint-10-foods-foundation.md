@@ -57,6 +57,10 @@ Criar a fundacao do banco de alimentos para apoiar a criacao de dietas, com tabe
 
 Observacao: `drizzle-kit migrate` falhou nesta execucao sem mensagem util e `drizzle-kit push` exigiu prompt interativo. Para validar o ambiente, o SQL versionado da migration foi aplicado diretamente no Supabase e o seed/API foram executados com sucesso.
 
+## Bug conhecido
+
+- `npm.cmd run db:migrate` nao concluiu a aplicacao da migration `0001_sleepy_bill_hollister` nesta maquina. A tabela foi criada aplicando o SQL versionado diretamente, mas o fluxo do Drizzle migrate precisa ser revisado antes das proximas migrations.
+
 ## Fontes externas futuras
 
 A tabela ja possui `source` e `externalId` para permitir importacao futura de uma base externa de alimentos. A recomendacao e usar API externa apenas para gerar/importar seeds controlados, mantendo o app dependente do nosso banco em tempo de uso.

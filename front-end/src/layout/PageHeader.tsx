@@ -1,6 +1,7 @@
 import { Search, Bell, ChevronDown } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useProfile } from "@/lib/hooks/use-profile";
+import { ThemeToggle } from "@/features/theme/ThemeToggle";
 
 interface PageHeaderProps {
     searchPlaceholder?: string;
@@ -40,6 +41,7 @@ export function PageHeader({
             </div>
 
             <div className="flex items-center gap-4">
+                <ThemeToggle />
                 <div className="relative flex-1 md:flex-none">
                     <Search
                         className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"

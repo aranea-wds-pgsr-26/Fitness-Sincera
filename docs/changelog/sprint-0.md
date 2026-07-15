@@ -304,3 +304,30 @@ Criar a base de alimentos para apoiar a construcao de dietas.
 ## Resultado
 
 O projeto agora possui um catalogo inicial de alimentos em banco, com seed idempotente e API de busca para futuras telas de dietas.
+
+## Bug conhecido
+
+- `npm.cmd run db:migrate` nao concluiu a migration `0001_sleepy_bill_hollister` nesta maquina. A tabela foi criada aplicando o SQL versionado diretamente no Supabase.
+
+# Sprint 11 - Theme Light/Dark
+
+## Objetivo
+
+Adicionar suporte inicial a tema claro e escuro.
+
+## Alteracoes
+
+- Criado `ThemeProvider` com `next-themes`.
+- Criado `ThemeToggle`.
+- Tema escuro mantido como padrao.
+- Preferencia persistida em `localStorage`.
+- Alternador adicionado no login, header mobile, header do cliente e sidebar profissional.
+- Tokens CSS base ajustados para tema claro e `.dark`.
+
+## Validacoes
+
+- `npm.cmd run check`
+
+## Resultado
+
+A aplicacao agora possui base persistente para alternar entre tema claro e escuro, pronta para refinamento visual por tela.
