@@ -39,7 +39,8 @@ npm run dev
 | Comando | Descricao |
 |---------|-----------|
 | `npm run dev` | Inicia o servidor completo (backend + frontend via Vite) |
-| `npm run dev:client` | Inicia apenas o frontend |
+| `npm run dev:front-end` | Inicia apenas o front-end |
+| `npm run dev:client` | Alias legado para iniciar apenas o front-end |
 | `npm run build` | Gera o build de producao |
 | `npm start` | Inicia o servidor em modo producao |
 | `npm run check` | Verifica os tipos TypeScript |
@@ -49,7 +50,7 @@ npm run dev
 
 ```
 Fitness-Sincera/
-├── client/               # Aplicacao frontend React
+├── front-end/            # Aplicacao front-end React
 │   └── src/
 │       ├── components/   # Componentes reutilizaveis (ui/, layout/, dashboard/, features/)
 │       ├── pages/        # Paginas da aplicacao

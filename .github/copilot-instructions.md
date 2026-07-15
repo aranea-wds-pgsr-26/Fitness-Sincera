@@ -20,7 +20,7 @@ Welcome to the repository knowledge base. Start with the project overview, then 
 
 ## Repository Snapshot
 - `attached_assets/`
-- `client/`
+- `front-end/`
 - `components.json/`
 - `drizzle.config.ts/`
 - `package-lock.json/`
@@ -66,4 +66,3 @@ Generated: 2026-02-14T18:29:33.390Z
 
 - [How is data stored and accessed?](./database.md)
 - [What API endpoints are available?](./api-endpoints.md)
-

@@ -4,6 +4,7 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
+    "dev:front-end": "vite dev --port 5000",
     "dev:client": "vite dev --port 5000",
     "dev:back": "tsx back-end/src/server.ts",
     "dev": "cross-env NODE_ENV=development tsx server/index.ts",

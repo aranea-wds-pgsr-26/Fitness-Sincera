@@ -13,7 +13,7 @@ Estabilizar o projeto antes da migracao arquitetural para o backend novo em `bac
   - `back-end/src/modules/wearables/routes.ts`
 - Corrigido import quebrado do modulo de wearables.
 - Tipado o retorno do hook `useNutritionistClients`.
-- Ajustado `vite.config.ts` para usar o frontend real em `client/`.
+- Ajustado `vite.config.ts` para usar o frontend real, hoje padronizado em `front-end/`.
 - Ajustado `script/build.ts` para carregar a configuracao Vite diretamente e funcionar no Windows/OneDrive.
 - Removida a montagem das rotas profissionais protegidas antigas no servidor legado de demo, liberando os endpoints mockados usados pelo frontend.
 - Compatibilizado o middleware legado `server/middleware/auth.ts` com a tipagem global de `req.user`.
@@ -221,3 +221,27 @@ Migrar o modulo de treinos para Drizzle.
 ## Resultado
 
 O modulo de treinos agora usa Drizzle e possui teste manual de ciclo completo passando no Supabase.
+
+# Sprint 8 - Padronizacao da pasta front-end
+
+## Objetivo
+
+Padronizar a pasta do frontend para `front-end/`.
+
+## Alteracoes
+
+- Frontend ativo movido de `client/` para `front-end/`.
+- Pasta antiga `fronte-end/` removida.
+- Configuracoes de Vite, TypeScript, servidor legado e components atualizadas.
+- Script `dev:front-end` adicionado.
+- Alias `dev:client` mantido para compatibilidade.
+- Documentacao atualizada com a nova estrutura.
+
+## Validacoes
+
+- `npm.cmd run check`
+- `npm.cmd run build`
+
+## Resultado
+
+O projeto agora segue a estrutura `front-end/` e `back-end/`, com build validado.

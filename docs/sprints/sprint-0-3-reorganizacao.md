@@ -23,7 +23,7 @@ Esta sprint estabiliza a aplicacao existente antes da migracao arquitetural comp
 
 - TypeScript sem erros.
 - Build de producao concluido.
-- Frontend principal apontando para `client/`.
+- Frontend principal apontando para a pasta real da aplicacao, hoje padronizada em `front-end/`.
 - Telas principais testadas manualmente.
 - Sem tela branca nas rotas de Cliente, Nutricionista e Personal Trainer.
 

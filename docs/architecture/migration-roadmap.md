@@ -2,7 +2,7 @@
 
 ## Direcao
 
-O projeto esta em migracao de um monolito React + Express em `server/` para uma arquitetura com frontend em `client/` e backend novo em `back-end/src`.
+O projeto esta em migracao de um monolito React + Express em `server/` para uma arquitetura com front-end em `front-end/` e backend novo em `back-end/src`.
 
 Durante a transicao:
 

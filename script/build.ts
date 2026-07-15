@@ -37,7 +37,7 @@ const allowlist = [
 async function buildAll() {
   await rm("dist", { recursive: true, force: true });
 
-  console.log("building client...");
+  console.log("building front-end...");
   await viteBuild({
     ...viteConfig,
     configFile: false,
