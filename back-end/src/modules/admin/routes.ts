@@ -24,6 +24,15 @@ router.get(
   })
 );
 
+router.get(
+  "/site-leads",
+  asyncHandler(async (req, res) => {
+    const limit = typeof req.query.limit === "string" ? Number(req.query.limit) : undefined;
+    const leads = await AdminRepository.listSiteLeads(limit);
+    return res.json({ success: true, data: leads });
+  })
+);
+
 router.post(
   "/professionals",
   asyncHandler(async (req, res) => {

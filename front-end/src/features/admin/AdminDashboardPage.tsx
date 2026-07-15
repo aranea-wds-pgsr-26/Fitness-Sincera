@@ -27,6 +27,14 @@ interface AdminDashboard {
   workouts: number;
   foods: number;
   chatMessages: number;
+  siteLeads: number;
+  notifications: {
+    siteUnread: number;
+    email: {
+      status: string;
+      provider: string | null;
+    };
+  };
   revenue: {
     monthlyRecurring: number;
     currency: string;
@@ -42,6 +50,18 @@ interface Professional {
   createdAt?: string;
 }
 
+interface SiteLead {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string | null;
+  audience: string;
+  interest: string;
+  message?: string | null;
+  status: string;
+  createdAt?: string;
+}
+
 const emptyDashboard: AdminDashboard = {
   users: 0,
   clients: 0,
@@ -52,6 +72,14 @@ const emptyDashboard: AdminDashboard = {
   workouts: 0,
   foods: 0,
   chatMessages: 0,
+  siteLeads: 0,
+  notifications: {
+    siteUnread: 0,
+    email: {
+      status: "pending_integration",
+      provider: null,
+    },
+  },
   revenue: {
     monthlyRecurring: 0,
     currency: "BRL",
@@ -68,6 +96,7 @@ export default function AdminDashboardPage() {
   const [, navigate] = useLocation();
   const [dashboard, setDashboard] = useState<AdminDashboard>(emptyDashboard);
   const [professionals, setProfessionals] = useState<Professional[]>([]);
+  const [siteLeads, setSiteLeads] = useState<SiteLead[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -88,6 +117,7 @@ export default function AdminDashboardPage() {
       { label: "Treinos", value: dashboard.workouts, icon: Dumbbell },
       { label: "Alimentos", value: dashboard.foods, icon: Apple },
       { label: "Mensagens IA", value: dashboard.chatMessages, icon: MessageCircle },
+      { label: "Leads do site", value: dashboard.siteLeads, icon: MessageCircle },
     ],
     [dashboard]
   );
@@ -95,16 +125,19 @@ export default function AdminDashboardPage() {
   async function loadAdminData() {
     setIsLoading(true);
     try {
-      const [dashboardResponse, professionalsResponse] = await Promise.all([
+      const [dashboardResponse, professionalsResponse, leadsResponse] = await Promise.all([
         apiRequest("GET", "/api/admin/dashboard"),
         apiRequest("GET", "/api/admin/professionals"),
+        apiRequest("GET", "/api/admin/site-leads"),
       ]);
 
       const dashboardBody = await dashboardResponse.json();
       const professionalsBody = await professionalsResponse.json();
+      const leadsBody = await leadsResponse.json();
 
       setDashboard(dashboardBody.data ?? emptyDashboard);
       setProfessionals(professionalsBody.data ?? []);
+      setSiteLeads(leadsBody.data ?? []);
     } finally {
       setIsLoading(false);
     }
@@ -207,6 +240,45 @@ export default function AdminDashboardPage() {
               <p className="text-xs font-bold uppercase text-slate-400">{stat.label}</p>
             </div>
           ))}
+        </section>
+
+        <section className="px-5 pt-6 md:px-8">
+          <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-white/5">
+            <div className="mb-5 flex items-center justify-between">
+              <div>
+                <h2 className="text-lg font-black uppercase">Solicitacoes do site</h2>
+                <p className="text-sm text-slate-500">Inscricoes, associacoes e contatos recebidos pela pagina publica.</p>
+              </div>
+              <MessageCircle className="h-5 w-5 text-slate-400" />
+            </div>
+
+            <div className="grid gap-3 lg:grid-cols-3">
+              {siteLeads.slice(0, 6).map((lead) => (
+                <div
+                  key={lead.id}
+                  className="rounded-lg border border-slate-100 bg-slate-50 p-4 dark:border-white/10 dark:bg-black/20"
+                >
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                      <p className="font-bold">{lead.name}</p>
+                      <p className="text-xs text-slate-500">{lead.email}</p>
+                      {lead.phone && <p className="text-xs text-slate-500">{lead.phone}</p>}
+                    </div>
+                    <span className="rounded-lg bg-[#d4f54c] px-3 py-1 text-[10px] font-black uppercase text-black">
+                      {lead.interest}
+                    </span>
+                  </div>
+                  {lead.message && <p className="mt-3 text-sm text-slate-600 dark:text-slate-300">{lead.message}</p>}
+                </div>
+              ))}
+
+              {!isLoading && siteLeads.length === 0 && (
+                <p className="rounded-lg bg-slate-50 p-4 text-sm text-slate-500 dark:bg-black/20">
+                  Nenhuma solicitacao recebida ainda.
+                </p>
+              )}
+            </div>
+          </div>
         </section>
 
         <section className="grid gap-5 px-5 py-6 lg:grid-cols-[1fr_420px] md:px-8">

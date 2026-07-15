@@ -393,3 +393,38 @@ O sistema agora possui uma fundacao administrativa real, com painel inicial e ca
 ## Observacao
 
 A seguranca forte do login, com expiracao de token, refresh token, cookies seguros e hash robusto, fica para uma sprint dedicada de Auth Hardening.
+
+# Sprint 14 - Site Publico e Captacao
+
+## Objetivo
+
+Criar a primeira pagina publica da Fitness Sincera e conectar contatos ao painel administrativo.
+
+## Alteracoes
+
+- `/` passou a exibir o site publico.
+- `/app` passou a ser o redirecionador interno por perfil logado.
+- Criada pagina publica com hero, carrossel vertical, historia, relatos, avaliacoes, planos e formulario.
+- Criada tabela `fitness_site_leads`.
+- Criada migration `0002_public_site_leads`.
+- Criado `SiteLeadRepository`.
+- Criada API publica `POST /api/public/leads`.
+- Criada API admin `GET /api/admin/site-leads`.
+- Dashboard admin passou a exibir metricas e lista de leads do site.
+- Criado script manual `manual:backend:public-site`.
+- Criado alias `test:backend:public-site`.
+
+## Validacoes
+
+- `npm.cmd run check`
+- `npm.cmd run manual:backend:public-site`
+- `npm.cmd run manual:backend:admin`
+- `npm.cmd run build`
+
+## Resultado
+
+O sistema agora tem uma camada publica de divulgacao e captacao, com solicitacoes chegando ao painel administrativo.
+
+## Observacao
+
+Email real, notificacao em tempo real, ficha de anamnese, validacao documental profissional e monetizacao ficam para sprints dedicadas.

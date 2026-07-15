@@ -9,6 +9,7 @@ import {
 } from "./data/mockData";
 import { UserRepository } from "../back-end/src/repositories/userRepository";
 import { AdminRepository } from "../back-end/src/repositories/adminRepository";
+import { SiteLeadRepository } from "../back-end/src/repositories/siteLeadRepository";
 
 // DEMO: In production, userId comes from req.session.userId (Passport.js)
 const DEMO_USER_ID = "user-1";
@@ -211,6 +212,40 @@ export async function registerRoutes(
     return res.json({ user });
   });
 
+  app.post("/api/public/leads", async (req, res) => {
+    const { name, email, phone, audience, interest, message } = req.body as {
+      name?: string;
+      email?: string;
+      phone?: string;
+      audience?: "client" | "nutritionist" | "trainer" | "company";
+      interest?: "complete" | "nutrition" | "training" | "professional" | "partnership";
+      message?: string;
+    };
+
+    if (!name || !email || !audience || !interest) {
+      return res.status(400).json({ message: "name, email, audience and interest are required" });
+    }
+
+    if (!["client", "nutritionist", "trainer", "company"].includes(audience)) {
+      return res.status(400).json({ message: "audience is invalid" });
+    }
+
+    if (!["complete", "nutrition", "training", "professional", "partnership"].includes(interest)) {
+      return res.status(400).json({ message: "interest is invalid" });
+    }
+
+    const lead = await SiteLeadRepository.create({
+      name,
+      email,
+      phone,
+      audience,
+      interest,
+      message,
+    });
+
+    return res.status(201).json({ success: true, data: { id: lead.id, status: lead.status } });
+  });
+
   async function requireAdminFromRequest(req: any, res: any) {
     const authorization = req.headers.authorization;
     const token = authorization?.startsWith("Bearer ")
@@ -246,6 +281,14 @@ export async function registerRoutes(
 
     const professionals = await AdminRepository.listProfessionals();
     return res.json({ success: true, data: professionals });
+  });
+
+  app.get("/api/admin/site-leads", async (req, res) => {
+    const user = await requireAdminFromRequest(req, res);
+    if (!user) return;
+
+    const leads = await AdminRepository.listSiteLeads();
+    return res.json({ success: true, data: leads });
   });
 
   app.post("/api/admin/professionals", async (req, res) => {

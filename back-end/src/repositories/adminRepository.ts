@@ -5,10 +5,12 @@ import {
   fitnessDietPlans,
   fitnessFoods,
   fitnessMeals,
+  fitnessSiteLeads,
   fitnessUsers,
   fitnessWorkoutPlans,
 } from "../database/schema";
 import { UserRepository } from "./userRepository";
+import { SiteLeadRepository } from "./siteLeadRepository";
 import type { CreateUserInput, UserRole } from "../modules/auth/types";
 
 export interface CreateProfessionalInput {
@@ -42,6 +44,7 @@ export const AdminRepository = {
       workouts,
       foods,
       chatMessages,
+      siteLeads,
       clients,
       nutritionists,
       trainers,
@@ -52,6 +55,7 @@ export const AdminRepository = {
       tableCount(fitnessWorkoutPlans),
       tableCount(fitnessFoods),
       tableCount(fitnessChatMessages),
+      tableCount(fitnessSiteLeads),
       this.countUsersByRole("client"),
       this.countUsersByRole("nutritionist"),
       this.countUsersByRole("trainer"),
@@ -67,12 +71,24 @@ export const AdminRepository = {
       workouts,
       foods,
       chatMessages,
+      siteLeads,
+      notifications: {
+        siteUnread: siteLeads,
+        email: {
+          status: "pending_integration",
+          provider: null,
+        },
+      },
       revenue: {
         monthlyRecurring: 0,
         currency: "BRL",
         status: "not_configured",
       },
     };
+  },
+
+  async listSiteLeads(limit?: number) {
+    return SiteLeadRepository.list(limit);
   },
 
   async countUsersByRole(role: UserRole) {

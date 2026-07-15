@@ -98,6 +98,19 @@ export const fitnessWearableDevices = pgTable("fitness_wearable_devices", {
   syncedAt: timestamp("synced_at", { withTimezone: true }).default(sql`now()`),
 });
 
+export const fitnessSiteLeads = pgTable("fitness_site_leads", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  phone: text("phone"),
+  audience: text("audience").notNull(),
+  interest: text("interest").notNull(),
+  message: text("message"),
+  source: text("source").default("public_site"),
+  status: text("status").default("new"),
+  createdAt: timestamp("created_at", { withTimezone: true }).default(sql`now()`),
+});
+
 export const fitnessUsersRelations = relations(fitnessUsers, ({ many }) => ({
   sessions: many(fitnessSessions),
   meals: many(fitnessMeals),
@@ -151,9 +164,13 @@ export const fitnessWearableDevicesRelations = relations(fitnessWearableDevices,
   }),
 }));
 
+export const fitnessSiteLeadsRelations = relations(fitnessSiteLeads, () => ({}));
+
 export type FitnessUser = typeof fitnessUsers.$inferSelect;
 export type NewFitnessUser = typeof fitnessUsers.$inferInsert;
 export type FitnessMeal = typeof fitnessMeals.$inferSelect;
 export type NewFitnessMeal = typeof fitnessMeals.$inferInsert;
 export type FitnessFood = typeof fitnessFoods.$inferSelect;
 export type NewFitnessFood = typeof fitnessFoods.$inferInsert;
+export type FitnessSiteLead = typeof fitnessSiteLeads.$inferSelect;
+export type NewFitnessSiteLead = typeof fitnessSiteLeads.$inferInsert;

@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 // Auth
 import { AuthProvider, useAuth } from "@/features/auth/AuthProvider";
 import AdminDashboardPage from "@/features/admin/AdminDashboardPage";
+import PublicSitePage from "@/features/public/PublicSitePage";
 
 // Pages — Client
 import DashboardPage from "@/features/client/dashboard/DashboardPage";
@@ -81,7 +82,12 @@ function Router() {
   return (
     <Switch>
       {/* Root — smart redirect based on role */}
-      <Route path="/" component={RootRedirect} />
+      <Route path="/" component={PublicSitePage} />
+      <Route path="/app" component={RootRedirect} />
+      <Route path="/relatos" component={PublicSitePage} />
+      <Route path="/avaliacoes" component={PublicSitePage} />
+      <Route path="/historia" component={PublicSitePage} />
+      <Route path="/planos" component={PublicSitePage} />
 
       {/* Auth */}
       <Route path="/login" component={LoginPage} />
