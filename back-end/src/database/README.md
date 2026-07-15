@@ -20,6 +20,7 @@ A migracao dos repositories para Drizzle acontece de forma incremental, modulo p
 - Diets.
 - Workouts.
 - Chat messages.
+- Foods.
 
 ## Comandos uteis
 
@@ -37,4 +38,5 @@ npm.cmd run manual:backend:meals
 npm.cmd run manual:backend:diets
 npm.cmd run manual:backend:workouts
 npm.cmd run manual:backend:chat
+npm.cmd run manual:backend:foods
 ```

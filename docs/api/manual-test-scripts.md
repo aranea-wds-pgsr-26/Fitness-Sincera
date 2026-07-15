@@ -74,6 +74,29 @@ O script usa `DATABASE_URL` e valida o fluxo completo:
 
 Este script acessa o Supabase e pode precisar ser executado fora de ambientes com rede bloqueada.
 
+## Foods com Supabase
+
+```powershell
+npm.cmd run manual:backend:foods
+```
+
+Alias:
+
+```powershell
+npm.cmd run db:seed:foods
+```
+
+O script usa `DATABASE_URL` e valida o fluxo completo:
+
+- cria ou atualiza o seed inicial de alimentos;
+- lista alimentos do banco;
+- valida alimentos principais do seed;
+- busca alimentos por categoria;
+- sobe o backend novo localmente;
+- valida a rota autenticada `GET /api/foods`.
+
+Este script acessa o Supabase e pode precisar ser executado fora de ambientes com rede bloqueada.
+
 ## Chat com Supabase
 
 ```powershell
@@ -137,7 +160,8 @@ npm.cmd run test:backend:meals
 npm.cmd run test:backend:diets
 npm.cmd run test:backend:workouts
 npm.cmd run test:backend:chat
+npm.cmd run test:backend:foods
 npm.cmd run manual:backend:default-users
 ```
 
-Por enquanto, `test:backend:meals`, `manual:backend:meals`, `test:backend:diets`, `manual:backend:diets`, `test:backend:workouts`, `manual:backend:workouts`, `test:backend:chat` e `manual:backend:chat` executam seus respectivos fluxos de integracao manual assistida.
+Por enquanto, `test:backend:meals`, `manual:backend:meals`, `test:backend:diets`, `manual:backend:diets`, `test:backend:workouts`, `manual:backend:workouts`, `test:backend:chat`, `manual:backend:chat`, `test:backend:foods` e `manual:backend:foods` executam seus respectivos fluxos de integracao manual assistida.

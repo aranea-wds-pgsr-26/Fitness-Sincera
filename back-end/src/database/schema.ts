@@ -38,6 +38,24 @@ export const fitnessMeals = pgTable("fitness_meals", {
   createdAt: timestamp("created_at", { withTimezone: true }).default(sql`now()`),
 });
 
+export const fitnessFoods = pgTable("fitness_foods", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  brand: text("brand"),
+  category: text("category"),
+  servingSize: doublePrecision("serving_size").default(100),
+  servingUnit: text("serving_unit").default("g"),
+  calories: doublePrecision("calories").default(0),
+  protein: doublePrecision("protein").default(0),
+  carbs: doublePrecision("carbs").default(0),
+  fat: doublePrecision("fat").default(0),
+  fiber: doublePrecision("fiber").default(0),
+  sodium: doublePrecision("sodium").default(0),
+  source: text("source").default("manual"),
+  externalId: text("external_id"),
+  createdAt: timestamp("created_at", { withTimezone: true }).default(sql`now()`),
+});
+
 export const fitnessDietPlans = pgTable("fitness_diet_plans", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
   userId: uuid("user_id")
@@ -103,6 +121,8 @@ export const fitnessMealsRelations = relations(fitnessMeals, ({ one }) => ({
   }),
 }));
 
+export const fitnessFoodsRelations = relations(fitnessFoods, () => ({}));
+
 export const fitnessDietPlansRelations = relations(fitnessDietPlans, ({ one }) => ({
   user: one(fitnessUsers, {
     fields: [fitnessDietPlans.userId],
@@ -135,3 +155,5 @@ export type FitnessUser = typeof fitnessUsers.$inferSelect;
 export type NewFitnessUser = typeof fitnessUsers.$inferInsert;
 export type FitnessMeal = typeof fitnessMeals.$inferSelect;
 export type NewFitnessMeal = typeof fitnessMeals.$inferInsert;
+export type FitnessFood = typeof fitnessFoods.$inferSelect;
+export type NewFitnessFood = typeof fitnessFoods.$inferInsert;

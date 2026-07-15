@@ -275,3 +275,32 @@ Criar a primeira camada funcional do chat sem API externa.
 ## Resultado
 
 O chat agora possui persistencia real no Supabase e uma primeira camada de inteligencia interna por perfil de usuario.
+
+# Sprint 10 - Foods Foundation
+
+## Objetivo
+
+Criar a base de alimentos para apoiar a construcao de dietas.
+
+## Alteracoes
+
+- Criada tabela Drizzle `fitness_foods`.
+- Gerada migration versionada `0001_sleepy_bill_hollister`.
+- Criado `FoodRepository`.
+- Criado seed inicial com 10 alimentos comuns.
+- Criada API autenticada:
+  - `GET /api/foods`
+  - `GET /api/v1/foods`
+- Criado script manual `manual:backend:foods`.
+- Criados aliases `test:backend:foods` e `db:seed:foods`.
+- Documentado caminho futuro para importacao de fonte externa de alimentos.
+
+## Validacoes
+
+- `npm.cmd run db:generate`
+- `npm.cmd run manual:backend:foods`
+- `npm.cmd run check`
+
+## Resultado
+
+O projeto agora possui um catalogo inicial de alimentos em banco, com seed idempotente e API de busca para futuras telas de dietas.
