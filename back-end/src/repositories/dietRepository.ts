@@ -1,28 +1,77 @@
-import {
-  createDiet,
-  deleteDiet,
-  listDietsForUser,
-  updateDiet,
-} from "../lib/store";
+import { randomUUID } from "node:crypto";
+import { and, desc, eq } from "drizzle-orm";
+import { db } from "../database/client";
+import { fitnessDietPlans } from "../database/schema";
+
+export interface DietPayload {
+  name?: string;
+  description?: string;
+  meals?: string[];
+}
+
+function mapDiet(row: typeof fitnessDietPlans.$inferSelect) {
+  return {
+    id: row.id,
+    userId: row.userId,
+    name: row.name,
+    description: row.description ?? "",
+    meals: row.meals ?? [],
+    createdAt: row.createdAt,
+  };
+}
 
 export const DietRepository = {
-  listByUser(userId: string) {
-    return listDietsForUser(userId);
+  async listByUser(userId: string) {
+    const rows = await db
+      .select()
+      .from(fitnessDietPlans)
+      .where(eq(fitnessDietPlans.userId, userId))
+      .orderBy(desc(fitnessDietPlans.createdAt));
+
+    return rows.map(mapDiet);
   },
 
-  create(userId: string, payload: Parameters<typeof createDiet>[1]) {
-    return createDiet(userId, payload);
+  async create(userId: string, payload: DietPayload) {
+    const [diet] = await db
+      .insert(fitnessDietPlans)
+      .values({
+        id: randomUUID(),
+        userId,
+        name: payload.name ?? "Diet",
+        description: payload.description ?? "",
+        meals: payload.meals ?? [],
+      })
+      .returning();
+
+    return mapDiet(diet);
   },
 
-  update(
-    id: string,
-    userId: string,
-    payload: Parameters<typeof updateDiet>[2]
-  ) {
-    return updateDiet(id, userId, payload);
+  async update(id: string, userId: string, payload: DietPayload) {
+    const updatePayload: Partial<typeof fitnessDietPlans.$inferInsert> = {};
+
+    if (payload.name !== undefined) updatePayload.name = payload.name;
+    if (payload.description !== undefined) updatePayload.description = payload.description;
+    if (payload.meals !== undefined) updatePayload.meals = payload.meals;
+
+    if (Object.keys(updatePayload).length === 0) {
+      return null;
+    }
+
+    const [diet] = await db
+      .update(fitnessDietPlans)
+      .set(updatePayload)
+      .where(and(eq(fitnessDietPlans.id, id), eq(fitnessDietPlans.userId, userId)))
+      .returning();
+
+    return diet ? mapDiet(diet) : null;
   },
 
-  delete(id: string, userId: string) {
-    return deleteDiet(id, userId);
+  async delete(id: string, userId: string) {
+    const deleted = await db
+      .delete(fitnessDietPlans)
+      .where(and(eq(fitnessDietPlans.id, id), eq(fitnessDietPlans.userId, userId)))
+      .returning({ id: fitnessDietPlans.id });
+
+    return deleted.length > 0;
   },
 };

@@ -171,3 +171,28 @@ Migrar o modulo de refeicoes para Drizzle.
 ## Resultado
 
 O primeiro modulo de dominio foi migrado para Drizzle com teste manual de ciclo completo passando no Supabase.
+
+# Sprint 6 - Diets com Drizzle
+
+## Objetivo
+
+Migrar o modulo de dietas para Drizzle.
+
+## Alteracoes
+
+- `DietRepository` deixou de usar `store.ts`.
+- CRUD de diets passou a usar `fitness_diet_plans` via Drizzle.
+- Criado script manual `manual:backend:diets`.
+- Criado alias `test:backend:diets`.
+- Documentados o script manual e a sprint.
+
+## Validacoes
+
+- `npm.cmd run check`
+- `npm.cmd run manual:backend:diets`
+- `npm.cmd run manual:backend:health`
+- `npm.cmd run build`
+
+## Resultado
+
+O modulo de dietas agora usa Drizzle e possui teste manual de ciclo completo passando no Supabase.
