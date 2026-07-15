@@ -10,6 +10,10 @@ import {
 import { UserRepository } from "../back-end/src/repositories/userRepository";
 import { AdminRepository } from "../back-end/src/repositories/adminRepository";
 import { SiteLeadRepository } from "../back-end/src/repositories/siteLeadRepository";
+import { DietRepository } from "../back-end/src/repositories/dietRepository";
+import { WorkoutRepository } from "../back-end/src/repositories/workoutRepository";
+import { FoodRepository } from "../back-end/src/repositories/foodRepository";
+import { MealRepository } from "../back-end/src/repositories/mealRepository";
 
 // DEMO: In production, userId comes from req.session.userId (Passport.js)
 const DEMO_USER_ID = "user-1";
@@ -263,7 +267,7 @@ export async function registerRoutes(
     return res.status(201).json({ success: true, data: { id: lead.id, status: lead.status } });
   });
 
-  async function requireAdminFromRequest(req: any, res: any) {
+  async function requireUserFromRequest(req: any, res: any) {
     const authorization = req.headers.authorization;
     const token = authorization?.startsWith("Bearer ")
       ? authorization.slice("Bearer ".length)
@@ -276,13 +280,196 @@ export async function registerRoutes(
 
     const user = await UserRepository.getSessionUser(token);
 
-    if (!user || user.role !== "admin") {
+    if (!user) {
+      res.status(401).json({ message: "Invalid session" });
+      return null;
+    }
+
+    return user;
+  }
+
+  async function requireAdminFromRequest(req: any, res: any) {
+    const user = await requireUserFromRequest(req, res);
+
+    if (!user) return null;
+
+    if (user.role !== "admin") {
       res.status(403).json({ message: "Forbidden" });
       return null;
     }
 
     return user;
   }
+
+  app.get("/api/diets", async (req, res) => {
+    const user = await requireUserFromRequest(req, res);
+    if (!user) return;
+
+    const diets = await DietRepository.listByUser(user.id);
+    return res.json({ success: true, data: diets });
+  });
+
+  app.post("/api/diets", async (req, res) => {
+    const user = await requireUserFromRequest(req, res);
+    if (!user) return;
+
+    const diet = await DietRepository.create(user.id, req.body);
+    return res.status(201).json({ success: true, data: diet });
+  });
+
+  app.put("/api/diets/:id", async (req, res) => {
+    const user = await requireUserFromRequest(req, res);
+    if (!user) return;
+
+    const diet = await DietRepository.update(req.params.id, user.id, req.body);
+
+    if (!diet) {
+      return res.status(404).json({ message: "Diet plan not found" });
+    }
+
+    return res.json({ success: true, data: diet });
+  });
+
+  app.delete("/api/diets/:id", async (req, res) => {
+    const user = await requireUserFromRequest(req, res);
+    if (!user) return;
+
+    const deleted = await DietRepository.delete(req.params.id, user.id);
+
+    if (!deleted) {
+      return res.status(404).json({ message: "Diet plan not found" });
+    }
+
+    return res.status(204).send();
+  });
+
+  app.get("/api/workout-plans", async (req, res) => {
+    const user = await requireUserFromRequest(req, res);
+    if (!user) return;
+
+    const workouts = await WorkoutRepository.listByUser(user.id);
+    return res.json({ success: true, data: workouts });
+  });
+
+  app.post("/api/workout-plans", async (req, res) => {
+    const user = await requireUserFromRequest(req, res);
+    if (!user) return;
+
+    const workout = await WorkoutRepository.create(user.id, req.body);
+    return res.status(201).json({ success: true, data: workout });
+  });
+
+  app.put("/api/workout-plans/:id", async (req, res) => {
+    const user = await requireUserFromRequest(req, res);
+    if (!user) return;
+
+    const workout = await WorkoutRepository.update(req.params.id, user.id, req.body);
+
+    if (!workout) {
+      return res.status(404).json({ message: "Workout plan not found" });
+    }
+
+    return res.json({ success: true, data: workout });
+  });
+
+  app.delete("/api/workout-plans/:id", async (req, res) => {
+    const user = await requireUserFromRequest(req, res);
+    if (!user) return;
+
+    const deleted = await WorkoutRepository.delete(req.params.id, user.id);
+
+    if (!deleted) {
+      return res.status(404).json({ message: "Workout plan not found" });
+    }
+
+    return res.status(204).send();
+  });
+
+  app.get("/api/foods", async (req, res) => {
+    const user = await requireUserFromRequest(req, res);
+    if (!user) return;
+
+    const search = typeof req.query.search === "string" ? req.query.search : undefined;
+    const limit = typeof req.query.limit === "string" ? Number(req.query.limit) : undefined;
+    const foods = await FoodRepository.list({ search, limit });
+    return res.json({ success: true, data: foods });
+  });
+
+  app.post("/api/foods", async (req, res) => {
+    const user = await requireUserFromRequest(req, res);
+    if (!user) return;
+
+    const food = await FoodRepository.create(req.body);
+    return res.status(201).json({ success: true, data: food });
+  });
+
+  app.put("/api/foods/:id", async (req, res) => {
+    const user = await requireUserFromRequest(req, res);
+    if (!user) return;
+
+    const food = await FoodRepository.update(req.params.id, req.body);
+
+    if (!food) {
+      return res.status(404).json({ message: "Food not found" });
+    }
+
+    return res.json({ success: true, data: food });
+  });
+
+  app.delete("/api/foods/:id", async (req, res) => {
+    const user = await requireUserFromRequest(req, res);
+    if (!user) return;
+
+    const deleted = await FoodRepository.delete(req.params.id);
+
+    if (!deleted) {
+      return res.status(404).json({ message: "Food not found" });
+    }
+
+    return res.status(204).send();
+  });
+
+  app.get("/api/meals", async (req, res) => {
+    const user = await requireUserFromRequest(req, res);
+    if (!user) return;
+
+    const meals = await MealRepository.listByUser(user.id);
+    return res.json({ success: true, data: meals });
+  });
+
+  app.post("/api/meals", async (req, res) => {
+    const user = await requireUserFromRequest(req, res);
+    if (!user) return;
+
+    const meal = await MealRepository.create(user.id, req.body);
+    return res.status(201).json({ success: true, data: meal });
+  });
+
+  app.put("/api/meals/:id", async (req, res) => {
+    const user = await requireUserFromRequest(req, res);
+    if (!user) return;
+
+    const meal = await MealRepository.update(req.params.id, user.id, req.body);
+
+    if (!meal) {
+      return res.status(404).json({ message: "Meal not found" });
+    }
+
+    return res.json({ success: true, data: meal });
+  });
+
+  app.delete("/api/meals/:id", async (req, res) => {
+    const user = await requireUserFromRequest(req, res);
+    if (!user) return;
+
+    const deleted = await MealRepository.delete(req.params.id, user.id);
+
+    if (!deleted) {
+      return res.status(404).json({ message: "Meal not found" });
+    }
+
+    return res.status(204).send();
+  });
 
   app.get("/api/admin/dashboard", async (req, res) => {
     const user = await requireAdminFromRequest(req, res);

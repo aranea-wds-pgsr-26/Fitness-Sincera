@@ -482,3 +482,33 @@ O fluxo local equivalente a Vercel + Supabase passou, incluindo API serverless, 
 ## Bloqueio
 
 Deploy hospedado nao foi publicado porque a Vercel CLI nao esta instalada e `VERCEL_TOKEN` nao esta configurado nesta maquina.
+
+# Sprint 17 - CRUD Funcional com Supabase
+
+## Objetivo
+
+Conectar botoes importantes das telas profissionais ao Supabase.
+
+## Alteracoes
+
+- Adicionadas rotas CRUD reais para dietas, treinos, alimentos e refeicoes na camada de transicao.
+- `FoodRepository` ganhou update e delete.
+- Tela de templates do personal trainer passou a usar `/api/workout-plans`.
+- Tela de alimentos/refeicoes do nutricionista passou a usar `/api/foods` e `/api/meals`.
+- Criado script manual `manual:backend:functional-crud`.
+- Criado alias `test:backend:functional-crud`.
+
+## Validacoes
+
+- `npm.cmd run check`
+- `npm.cmd run manual:backend:functional-crud`
+- `npm.cmd run build`
+- `npm.cmd run manual:deploy:vercel`
+
+## Resultado
+
+Criar, editar, duplicar e excluir templates de treino; criar, editar e excluir alimentos; e criar, editar e excluir refeicoes agora persistem no Supabase.
+
+## Observacao
+
+O editor avancado de plano alimentar por blocos ricos continua pendente de modelagem especifica.

@@ -102,6 +102,39 @@ export const FoodRepository = {
     return mapFood(food);
   },
 
+  async update(id: string, payload: FoodPayload) {
+    const [food] = await db
+      .update(fitnessFoods)
+      .set({
+        name: payload.name,
+        brand: payload.brand ?? null,
+        category: payload.category ?? null,
+        servingSize: Number(payload.servingSize ?? 100),
+        servingUnit: payload.servingUnit ?? "g",
+        calories: Number(payload.calories ?? 0),
+        protein: Number(payload.protein ?? 0),
+        carbs: Number(payload.carbs ?? 0),
+        fat: Number(payload.fat ?? 0),
+        fiber: Number(payload.fiber ?? 0),
+        sodium: Number(payload.sodium ?? 0),
+        source: payload.source ?? "manual",
+        externalId: payload.externalId ?? null,
+      })
+      .where(eq(fitnessFoods.id, id))
+      .returning();
+
+    return food ? mapFood(food) : null;
+  },
+
+  async delete(id: string) {
+    const deleted = await db
+      .delete(fitnessFoods)
+      .where(eq(fitnessFoods.id, id))
+      .returning({ id: fitnessFoods.id });
+
+    return deleted.length > 0;
+  },
+
   async upsertByName(payload: FoodPayload) {
     const existing = await this.findByName(payload.name);
 
