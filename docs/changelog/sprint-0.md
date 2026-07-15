@@ -245,3 +245,33 @@ Padronizar a pasta do frontend para `front-end/`.
 ## Resultado
 
 O projeto agora segue a estrutura `front-end/` e `back-end/`, com build validado.
+
+# Sprint 9 - Chat Foundation
+
+## Objetivo
+
+Criar a primeira camada funcional do chat sem API externa.
+
+## Alteracoes
+
+- `ChatRepository` deixou de usar `store.ts`.
+- Historico de chat passou a usar `fitness_chat_messages` via Drizzle.
+- Criado responder interno contextual por papel:
+  - cliente;
+  - nutricionista;
+  - personal trainer;
+  - admin.
+- Rota `POST /api/chatbot/message` passou a gerar respostas contextualizadas.
+- Rota `GET /api/chatbot/history` passou a listar historico real em ordem cronologica.
+- Criado script manual `manual:backend:chat`.
+- Criado alias `test:backend:chat`.
+- Documentada a Sprint 14 de site publico e captacao.
+
+## Validacoes
+
+- `npm.cmd run check`
+- `npm.cmd run manual:backend:chat`
+
+## Resultado
+
+O chat agora possui persistencia real no Supabase e uma primeira camada de inteligencia interna por perfil de usuario.

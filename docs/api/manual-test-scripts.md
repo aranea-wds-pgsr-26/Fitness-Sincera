@@ -74,6 +74,23 @@ O script usa `DATABASE_URL` e valida o fluxo completo:
 
 Este script acessa o Supabase e pode precisar ser executado fora de ambientes com rede bloqueada.
 
+## Chat com Supabase
+
+```powershell
+npm.cmd run manual:backend:chat
+```
+
+O script usa `DATABASE_URL` e valida o fluxo completo:
+
+- cria usuarios temporarios para cada papel;
+- autentica cliente, nutricionista, personal trainer e admin;
+- envia uma mensagem para `POST /api/chatbot/message`;
+- valida resposta contextual por papel;
+- consulta `GET /api/chatbot/history`;
+- remove os dados temporarios ao final.
+
+Este script acessa o Supabase e pode precisar ser executado fora de ambientes com rede bloqueada.
+
 ## Auth com Supabase
 
 ```powershell
@@ -119,7 +136,8 @@ npm.cmd run test:backend:auth
 npm.cmd run test:backend:meals
 npm.cmd run test:backend:diets
 npm.cmd run test:backend:workouts
+npm.cmd run test:backend:chat
 npm.cmd run manual:backend:default-users
 ```
 
-Por enquanto, `test:backend:meals`, `manual:backend:meals`, `test:backend:diets`, `manual:backend:diets`, `test:backend:workouts` e `manual:backend:workouts` executam seus respectivos fluxos de integracao manual assistida.
+Por enquanto, `test:backend:meals`, `manual:backend:meals`, `test:backend:diets`, `manual:backend:diets`, `test:backend:workouts`, `manual:backend:workouts`, `test:backend:chat` e `manual:backend:chat` executam seus respectivos fluxos de integracao manual assistida.

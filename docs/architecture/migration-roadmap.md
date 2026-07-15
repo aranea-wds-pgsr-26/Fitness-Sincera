@@ -18,18 +18,20 @@ Durante a transicao:
 - Criar tag local ao final de cada sprint.
 - Evitar grandes refatores sem criterio de aceite testavel.
 
-## Sequencia sugerida
+## Sequencia atualizada
 
 1. Sprint 0.3 - Reorganizacao da casa.
 2. Sprint 1 - Fundacao do backend novo.
 3. Sprint 2 - Banco de dados e Drizzle.
-4. Sprint 3 - Autenticacao.
-5. Sprint 4 - Usuarios.
-6. Sprint 5 - Trainer.
-7. Sprint 6 - Nutritionist.
-8. Sprint 7 - API publica, versionamento e OpenAPI.
-9. Sprint 8 - Frontend conectado ao backend novo.
-10. Sprint 9 - Testes ampliados.
-11. Sprint 10 - Qualidade, CI/CD e observabilidade.
-12. Sprint 11 - Remocao do legado.
-13. Sprint 12 - Release 1.0.
+4. Sprint 3 - Auth e usuarios com Drizzle.
+5. Sprint 4 - Usuarios padrao e login Admin.
+6. Sprint 5 - Meals com Drizzle.
+7. Sprint 6 - Diets com Drizzle.
+8. Sprint 7 - Workouts com Drizzle.
+9. Sprint 8 - Padronizacao da pasta `front-end/`.
+10. Sprint 9 - Chat Foundation sem API externa.
+11. Sprint 10 - Foods Foundation e seed de alimentos.
+12. Sprint 11 - Tema light/dark.
+13. Sprint 12 - Login real e cadastro inicial.
+14. Sprint 13 - Admin Foundation.
+15. Sprint 14 - Site publico, captacao, leads, planos e anamnese.
