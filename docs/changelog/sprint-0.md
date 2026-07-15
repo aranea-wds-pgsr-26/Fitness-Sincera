@@ -428,3 +428,26 @@ O sistema agora tem uma camada publica de divulgacao e captacao, com solicitacoe
 ## Observacao
 
 Email real, notificacao em tempo real, ficha de anamnese, validacao documental profissional e monetizacao ficam para sprints dedicadas.
+
+# Sprint 15 - Release Candidate
+
+## Objetivo
+
+Preparar o projeto para subir ao GitHub como candidato de release.
+
+## Alteracoes
+
+- Criada branch final `release/final-candidate`.
+- README atualizado para refletir a arquitetura atual.
+- Criada documentacao de checklist de release/deploy.
+- Criada documentacao da Sprint 15.
+
+## Validacoes
+
+- `npm.cmd run check`
+- `npm.cmd run db:generate`
+- `npm.cmd run build`
+
+## Resultado
+
+O projeto ficou pronto para publicacao no GitHub e para uma proxima sprint de deploy.
