@@ -1,190 +1,311 @@
-import React, { useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { ProSidebar } from "@/layout/ProSidebar";
 import {
-    Search, Filter, HelpCircle, ChevronLeft, ChevronRight,
-    Pencil, FilePlus, Copy, Trash2
+  ChevronLeft,
+  ChevronRight,
+  Copy,
+  Dumbbell,
+  Filter,
+  HelpCircle,
+  Loader2,
+  Pencil,
+  Plus,
+  Search,
+  Trash2,
 } from "lucide-react";
+import { apiRequest } from "@/lib/queryClient";
 
-// ─── Data ──────────────────────────────────────────────────────────────────────
-
-interface WorkoutTemplate {
-    id: string;
-    name: string;
-    workoutsCount: number;
+interface WorkoutPlan {
+  id: string;
+  name: string;
+  description: string;
+  exercises: string[];
+  createdAt?: string;
 }
-
-const MOCK_TEMPLATES: WorkoutTemplate[] = [
-    { id: "1", name: "Treino Iniciante Massacre Muscular", workoutsCount: 2 },
-    { id: "2", name: "Treino Intermediário Morte Lenta", workoutsCount: 3 },
-    { id: "3", name: "Treino Avançado Surrando O Shape", workoutsCount: 3 },
-    { id: "4", name: "Treinando Em Casa (Body Pump)", workoutsCount: 1 },
-    { id: "5", name: "Legião De Ferro (H)", workoutsCount: 3 },
-    { id: "6", name: "Hipertrofia Express", workoutsCount: 4 },
-    { id: "7", name: "Full Body Funcional", workoutsCount: 3 },
-    { id: "8", name: "Protocolo Força Máxima", workoutsCount: 5 },
-    { id: "9", name: "Cardio e Mobilidade", workoutsCount: 2 },
-    { id: "10", name: "Shape Total — Corte", workoutsCount: 4 },
-];
 
 const PAGE_SIZE = 10;
 
-// ─── Create Template Modal (simple) ──────────────────────────────────────────
-
-function CreateTemplateModal({ onClose }: { onClose: () => void }) {
-    const [name, setName] = useState("");
-    return (
-        <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-50">
-            <div className="bg-white rounded-2xl shadow-xl p-8 w-96">
-                <h2 className="text-lg font-bold text-slate-800 mb-4">Criar Template</h2>
-                <label className="block text-sm font-medium text-slate-600 mb-1">Nome do Template</label>
-                <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Ex: Treino Iniciante..."
-                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-purple-300 mb-6"
-                />
-                <div className="flex gap-3 justify-end">
-                    <button
-                        onClick={onClose}
-                        className="px-4 py-2 text-sm text-slate-500 hover:text-slate-700 transition-colors"
-                    >
-                        Cancelar
-                    </button>
-                    <button
-                        onClick={onClose}
-                        className="px-4 py-2 bg-[#475569] text-white rounded-lg text-sm font-bold hover:bg-slate-700 transition-colors"
-                    >
-                        Criar
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
+function parseExercises(value: string) {
+  return value
+    .split("\n")
+    .map((item) => item.trim())
+    .filter(Boolean);
 }
 
-// ─── Template Card ───────────────────────────────────────────────────────────
+function WorkoutPlanModal({
+  initialPlan,
+  onClose,
+  onSave,
+}: {
+  initialPlan?: WorkoutPlan | null;
+  onClose: () => void;
+  onSave: (payload: { name: string; description: string; exercises: string[] }) => Promise<void>;
+}) {
+  const [name, setName] = useState(initialPlan?.name ?? "");
+  const [description, setDescription] = useState(initialPlan?.description ?? "");
+  const [exercises, setExercises] = useState(initialPlan?.exercises.join("\n") ?? "");
+  const [isSaving, setIsSaving] = useState(false);
 
-function TemplateCard({ template, onDelete }: { template: WorkoutTemplate; onDelete: (id: string) => void }) {
-    return (
-        <div className="bg-white border border-gray-100 rounded-xl p-6 shadow-sm flex flex-col items-center text-center hover:-translate-y-0.5 hover:shadow-md transition-all duration-200">
-            <h3 className="text-sm font-bold text-slate-700 h-10 flex items-center justify-center leading-tight mb-2">
-                {template.name}
-            </h3>
-            <p className="text-xs text-slate-400 font-medium mb-6">
-                Treinos: {template.workoutsCount}
-            </p>
-            <div className="flex items-center gap-4 text-slate-400">
-                <button className="hover:text-slate-600 transition-colors" title="Editar">
-                    <Pencil className="w-4 h-4" />
-                </button>
-                <button className="hover:text-slate-600 transition-colors" title="Adicionar treino">
-                    <FilePlus className="w-4 h-4" />
-                </button>
-                <button className="hover:text-slate-600 transition-colors" title="Duplicar">
-                    <Copy className="w-4 h-4" />
-                </button>
-                <button
-                    onClick={() => onDelete(template.id)}
-                    className="hover:text-red-500 transition-colors"
-                    title="Eliminar"
-                >
-                    <Trash2 className="w-4 h-4 text-red-400" />
-                </button>
-            </div>
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setIsSaving(true);
+
+    try {
+      await onSave({
+        name,
+        description,
+        exercises: parseExercises(exercises),
+      });
+      onClose();
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4">
+      <form onSubmit={handleSubmit} className="w-full max-w-lg rounded-lg bg-white p-6 shadow-xl">
+        <h2 className="mb-4 text-lg font-bold text-slate-800">
+          {initialPlan ? "Editar treino" : "Criar treino"}
+        </h2>
+        <div className="space-y-3">
+          <input
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            placeholder="Nome do treino"
+            className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-slate-300"
+            required
+          />
+          <textarea
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
+            placeholder="Descricao"
+            className="min-h-20 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-slate-300"
+          />
+          <textarea
+            value={exercises}
+            onChange={(event) => setExercises(event.target.value)}
+            placeholder={"Exercicios, um por linha\nSupino reto 4x10\nRemada baixa 4x12"}
+            className="min-h-32 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-slate-300"
+          />
         </div>
-    );
+        <div className="mt-6 flex justify-end gap-3">
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg px-4 py-2 text-sm font-bold text-slate-500 hover:bg-slate-50"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            disabled={isSaving}
+            className="flex items-center gap-2 rounded-lg bg-[#475569] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-slate-700 disabled:opacity-60"
+          >
+            {isSaving && <Loader2 className="h-4 w-4 animate-spin" />}
+            Salvar
+          </button>
+        </div>
+      </form>
+    </div>
+  );
 }
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
+function TemplateCard({
+  plan,
+  onEdit,
+  onDuplicate,
+  onDelete,
+}: {
+  plan: WorkoutPlan;
+  onEdit: (plan: WorkoutPlan) => void;
+  onDuplicate: (plan: WorkoutPlan) => void;
+  onDelete: (id: string) => void;
+}) {
+  return (
+    <div className="flex flex-col rounded-lg border border-gray-100 bg-white p-6 text-center shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
+      <div className="mx-auto mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100">
+        <Dumbbell className="h-5 w-5 text-slate-600" />
+      </div>
+      <h3 className="mb-2 flex min-h-10 items-center justify-center text-sm font-bold leading-tight text-slate-700">
+        {plan.name}
+      </h3>
+      <p className="mb-2 line-clamp-2 min-h-10 text-xs text-slate-400">
+        {plan.description || "Sem descricao"}
+      </p>
+      <p className="mb-6 text-xs font-medium text-slate-400">
+        Exercicios: {plan.exercises.length}
+      </p>
+      <div className="mt-auto flex items-center justify-center gap-4 text-slate-400">
+        <button onClick={() => onEdit(plan)} className="transition-colors hover:text-slate-700" title="Editar">
+          <Pencil className="h-4 w-4" />
+        </button>
+        <button onClick={() => onDuplicate(plan)} className="transition-colors hover:text-slate-700" title="Duplicar">
+          <Copy className="h-4 w-4" />
+        </button>
+        <button onClick={() => onDelete(plan.id)} className="transition-colors hover:text-red-500" title="Eliminar">
+          <Trash2 className="h-4 w-4 text-red-400" />
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export default function TemplatesPage() {
-    const [search, setSearch] = useState("");
-    const [page, setPage] = useState(1);
-    const [templates, setTemplates] = useState(MOCK_TEMPLATES);
-    const [showCreate, setShowCreate] = useState(false);
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [plans, setPlans] = useState<WorkoutPlan[]>([]);
+  const [editingPlan, setEditingPlan] = useState<WorkoutPlan | null>(null);
+  const [showCreate, setShowCreate] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [message, setMessage] = useState<string | null>(null);
 
-    const filtered = templates.filter((t) =>
-        t.name.toLowerCase().includes(search.toLowerCase())
-    );
-    const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-    const paged = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  async function loadPlans() {
+    setIsLoading(true);
+    try {
+      const response = await apiRequest("GET", "/api/workout-plans");
+      const body = await response.json();
+      setPlans(body.data ?? []);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
-    const handleDelete = (id: string) => {
-        setTemplates((prev) => prev.filter((t) => t.id !== id));
-    };
+  useEffect(() => {
+    void loadPlans();
+  }, []);
 
-    return (
-        <div className="min-h-screen bg-[#F8FAFC] flex">
-            <ProSidebar role="trainer" />
+  const filtered = useMemo(
+    () => plans.filter((plan) => plan.name.toLowerCase().includes(search.toLowerCase())),
+    [plans, search]
+  );
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const paged = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
-            {showCreate && <CreateTemplateModal onClose={() => setShowCreate(false)} />}
+  async function createPlan(payload: { name: string; description: string; exercises: string[] }) {
+    const response = await apiRequest("POST", "/api/workout-plans", payload);
+    const body = await response.json();
+    setPlans((current) => [body.data, ...current]);
+    setMessage("Treino criado no Supabase.");
+  }
 
-            <main className="md:ml-64 flex-1 p-4 md:p-8">
-                {/* Header */}
-                <div className="flex justify-between items-center mb-10">
-                    <div className="flex items-center">
-                        <h1 className="text-xl font-bold text-slate-700">Templates</h1>
-                        <HelpCircle className="w-4 h-4 ml-2 text-slate-400 cursor-help" />
-                    </div>
-                    <button
-                        onClick={() => setShowCreate(true)}
-                        className="bg-[#475569] text-white px-6 py-2 rounded-md flex items-center text-sm font-bold hover:bg-slate-700 transition-all shadow-sm"
-                    >
-                        Criar Template
-                    </button>
-                </div>
+  async function updatePlan(payload: { name: string; description: string; exercises: string[] }) {
+    if (!editingPlan) return;
 
-                {/* Toolbar */}
-                <div className="flex flex-col md:flex-row items-center mb-8 gap-4">
-                    <div className="relative w-full md:w-80">
-                        <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                        <input
-                            type="text"
-                            placeholder="Pesquisar templates"
-                            value={search}
-                            onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-                            className="w-full bg-white border border-gray-100 rounded-md py-2.5 pl-10 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-purple-200 transition-all"
-                        />
-                    </div>
-                    <button className="bg-[#334155] text-white px-4 py-2 rounded-md flex items-center text-xs font-bold hover:bg-slate-700 transition-colors">
-                        <Filter className="w-3.5 h-3.5 mr-2" /> Filtro
-                    </button>
-                    <span className="text-sm text-slate-400">{filtered.length} templates</span>
-                </div>
+    const response = await apiRequest("PUT", `/api/workout-plans/${editingPlan.id}`, payload);
+    const body = await response.json();
+    setPlans((current) => current.map((plan) => (plan.id === editingPlan.id ? body.data : plan)));
+    setEditingPlan(null);
+    setMessage("Treino atualizado.");
+  }
 
-                {/* Templates Grid — 5 cols (xl), 3 (lg), 2 (sm), 1 (xs) */}
-                {paged.length === 0 ? (
-                    <div className="py-20 text-center text-slate-400 text-sm">
-                        Nenhum template encontrado
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-12">
-                        {paged.map((t) => (
-                            <TemplateCard key={t.id} template={t} onDelete={handleDelete} />
-                        ))}
-                    </div>
-                )}
+  async function duplicatePlan(plan: WorkoutPlan) {
+    const response = await apiRequest("POST", "/api/workout-plans", {
+      name: `${plan.name} copia`,
+      description: plan.description,
+      exercises: plan.exercises,
+    });
+    const body = await response.json();
+    setPlans((current) => [body.data, ...current]);
+    setMessage("Treino duplicado.");
+  }
 
-                {/* Pagination */}
-                <div className="flex items-center justify-center gap-6 mt-4">
-                    <button
-                        onClick={() => setPage((p) => Math.max(1, p - 1))}
-                        disabled={page <= 1}
-                        className="w-8 h-8 border border-gray-200 text-slate-400 rounded flex items-center justify-center hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                    >
-                        <ChevronLeft className="w-4 h-4" />
-                    </button>
-                    <span className="text-sm font-bold text-slate-600">{page} of {totalPages}</span>
-                    <button
-                        onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                        disabled={page >= totalPages}
-                        className="w-8 h-8 border border-gray-200 text-slate-400 rounded flex items-center justify-center hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                    >
-                        <ChevronRight className="w-4 h-4" />
-                    </button>
-                </div>
-            </main>
+  async function deletePlan(id: string) {
+    await apiRequest("DELETE", `/api/workout-plans/${id}`);
+    setPlans((current) => current.filter((plan) => plan.id !== id));
+    setMessage("Treino removido.");
+  }
+
+  return (
+    <div className="flex min-h-screen bg-[#F8FAFC]">
+      <ProSidebar role="trainer" />
+
+      {showCreate && (
+        <WorkoutPlanModal
+          onClose={() => setShowCreate(false)}
+          onSave={createPlan}
+        />
+      )}
+      {editingPlan && (
+        <WorkoutPlanModal
+          initialPlan={editingPlan}
+          onClose={() => setEditingPlan(null)}
+          onSave={updatePlan}
+        />
+      )}
+
+      <main className="flex-1 p-4 md:ml-64 md:p-8">
+        <div className="mb-10 flex items-center justify-between">
+          <div className="flex items-center">
+            <h1 className="text-xl font-bold text-slate-700">Templates</h1>
+            <HelpCircle className="ml-2 h-4 w-4 cursor-help text-slate-400" />
+          </div>
+          <button
+            onClick={() => setShowCreate(true)}
+            className="flex items-center gap-2 rounded-lg bg-[#475569] px-5 py-2 text-sm font-bold text-white shadow-sm transition-all hover:bg-slate-700"
+          >
+            <Plus className="h-4 w-4" />
+            Criar Template
+          </button>
         </div>
-    );
+
+        <div className="mb-8 flex flex-col items-center gap-4 md:flex-row">
+          <div className="relative w-full md:w-80">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Pesquisar templates"
+              value={search}
+              onChange={(event) => {
+                setSearch(event.target.value);
+                setPage(1);
+              }}
+              className="w-full rounded-lg border border-gray-100 bg-white py-2.5 pl-10 pr-4 text-sm outline-none transition-all focus:ring-1 focus:ring-slate-200"
+            />
+          </div>
+          <button className="flex items-center rounded-lg bg-[#334155] px-4 py-2 text-xs font-bold text-white transition-colors hover:bg-slate-700">
+            <Filter className="mr-2 h-3.5 w-3.5" /> Filtro
+          </button>
+          <span className="text-sm text-slate-400">{filtered.length} templates</span>
+          {message && <span className="text-sm font-bold text-emerald-600">{message}</span>}
+        </div>
+
+        {isLoading ? (
+          <div className="py-20 text-center text-sm text-slate-400">Carregando templates...</div>
+        ) : paged.length === 0 ? (
+          <div className="py-20 text-center text-sm text-slate-400">Nenhum template encontrado</div>
+        ) : (
+          <div className="mb-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+            {paged.map((plan) => (
+              <TemplateCard
+                key={plan.id}
+                plan={plan}
+                onEdit={setEditingPlan}
+                onDuplicate={(selectedPlan) => void duplicatePlan(selectedPlan)}
+                onDelete={(id) => void deletePlan(id)}
+              />
+            ))}
+          </div>
+        )}
+
+        <div className="mt-4 flex items-center justify-center gap-6">
+          <button
+            onClick={() => setPage((current) => Math.max(1, current - 1))}
+            disabled={page <= 1}
+            className="flex h-8 w-8 items-center justify-center rounded border border-gray-200 text-slate-400 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <span className="text-sm font-bold text-slate-600">{page} of {totalPages}</span>
+          <button
+            onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
+            disabled={page >= totalPages}
+            className="flex h-8 w-8 items-center justify-center rounded border border-gray-200 text-slate-400 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
+      </main>
+    </div>
+  );
 }

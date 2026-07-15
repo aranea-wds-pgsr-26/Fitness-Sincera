@@ -166,6 +166,23 @@ O script valida o fluxo local equivalente ao deploy:
 
 Este script acessa o Supabase e pode precisar ser executado fora de ambientes com rede bloqueada.
 
+## CRUD funcional com Supabase
+
+```powershell
+npm.cmd run manual:backend:functional-crud
+```
+
+O script valida os botoes/fluxos que usam CRUD real:
+
+- cria, atualiza e remove dieta;
+- cria, atualiza e remove treino;
+- cria, atualiza e remove alimento;
+- cria, atualiza e remove refeicao;
+- usa os usuarios padrao de nutricionista e personal trainer;
+- remove os registros temporarios ao final.
+
+Este script acessa o Supabase e pode precisar ser executado fora de ambientes com rede bloqueada.
+
 ## Auth com Supabase
 
 ```powershell
@@ -215,7 +232,8 @@ npm.cmd run test:backend:chat
 npm.cmd run test:backend:foods
 npm.cmd run test:backend:admin
 npm.cmd run test:backend:public-site
+npm.cmd run test:backend:functional-crud
 npm.cmd run manual:backend:default-users
 ```
 
-Por enquanto, `test:backend:meals`, `manual:backend:meals`, `test:backend:diets`, `manual:backend:diets`, `test:backend:workouts`, `manual:backend:workouts`, `test:backend:chat`, `manual:backend:chat`, `test:backend:foods`, `manual:backend:foods`, `test:backend:admin`, `manual:backend:admin`, `test:backend:public-site` e `manual:backend:public-site` executam seus respectivos fluxos de integracao manual assistida.
+Por enquanto, `test:backend:meals`, `manual:backend:meals`, `test:backend:diets`, `manual:backend:diets`, `test:backend:workouts`, `manual:backend:workouts`, `test:backend:chat`, `manual:backend:chat`, `test:backend:foods`, `manual:backend:foods`, `test:backend:admin`, `manual:backend:admin`, `test:backend:public-site`, `manual:backend:public-site`, `test:backend:functional-crud` e `manual:backend:functional-crud` executam seus respectivos fluxos de integracao manual assistida.

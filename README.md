@@ -88,6 +88,8 @@ npm.cmd run manual:backend:chat
 npm.cmd run manual:backend:foods
 npm.cmd run manual:backend:admin
 npm.cmd run manual:backend:public-site
+npm.cmd run manual:backend:functional-crud
+npm.cmd run manual:deploy:vercel
 ```
 
 Alguns scripts acessam o Supabase e precisam de `DATABASE_URL` valida.
