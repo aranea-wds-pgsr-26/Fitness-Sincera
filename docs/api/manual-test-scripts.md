@@ -55,6 +55,25 @@ O script usa `DATABASE_URL` e valida o fluxo completo:
 
 Este script acessa o Supabase e pode precisar ser executado fora de ambientes com rede bloqueada.
 
+## Workouts com Supabase
+
+```powershell
+npm.cmd run manual:backend:workouts
+```
+
+O script usa `DATABASE_URL` e valida o fluxo completo:
+
+- inicializa tabelas atuais;
+- busca o admin;
+- cria um plano de treino;
+- lista planos de treino;
+- atualiza descricao e exercicios;
+- valida a atualizacao;
+- remove o plano de teste;
+- valida a remocao.
+
+Este script acessa o Supabase e pode precisar ser executado fora de ambientes com rede bloqueada.
+
 ## Auth com Supabase
 
 ```powershell
@@ -99,7 +118,8 @@ npm.cmd run test:backend:foundation
 npm.cmd run test:backend:auth
 npm.cmd run test:backend:meals
 npm.cmd run test:backend:diets
+npm.cmd run test:backend:workouts
 npm.cmd run manual:backend:default-users
 ```
 
-Por enquanto, `test:backend:meals`, `manual:backend:meals`, `test:backend:diets` e `manual:backend:diets` executam seus respectivos fluxos de integracao manual assistida.
+Por enquanto, `test:backend:meals`, `manual:backend:meals`, `test:backend:diets`, `manual:backend:diets`, `test:backend:workouts` e `manual:backend:workouts` executam seus respectivos fluxos de integracao manual assistida.

@@ -196,3 +196,28 @@ Migrar o modulo de dietas para Drizzle.
 ## Resultado
 
 O modulo de dietas agora usa Drizzle e possui teste manual de ciclo completo passando no Supabase.
+
+# Sprint 7 - Workouts com Drizzle
+
+## Objetivo
+
+Migrar o modulo de treinos para Drizzle.
+
+## Alteracoes
+
+- `WorkoutRepository` deixou de usar `store.ts`.
+- CRUD de workouts passou a usar `fitness_workout_plans` via Drizzle.
+- Criado script manual `manual:backend:workouts`.
+- Criado alias `test:backend:workouts`.
+- Documentados o script manual e a sprint.
+
+## Validacoes
+
+- `npm.cmd run check`
+- `npm.cmd run manual:backend:workouts`
+- `npm.cmd run manual:backend:health`
+- `npm.cmd run build`
+
+## Resultado
+
+O modulo de treinos agora usa Drizzle e possui teste manual de ciclo completo passando no Supabase.
