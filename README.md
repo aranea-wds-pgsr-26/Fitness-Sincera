@@ -16,6 +16,7 @@ O projeto esta em migracao arquitetural de um app React + Express legado para um
 
 - Site publico em `/` com captacao de leads.
 - Login real em `/login` com usuarios padrao de teste.
+- Cadastro de cliente em `/cadastro` com anamnese inicial.
 - Redirecionamento interno por perfil em `/app`.
 - Painel admin em `/admin/dashboard`.
 - Modulos com Drizzle:
@@ -26,6 +27,7 @@ O projeto esta em migracao arquitetural de um app React + Express legado para um
   - chat;
   - foods;
   - site leads.
+  - client profiles e anamneses.
 - Tema claro/escuro.
 - Scripts manuais para testar APIs sem Postman.
 
@@ -89,6 +91,7 @@ npm.cmd run manual:backend:foods
 npm.cmd run manual:backend:admin
 npm.cmd run manual:backend:public-site
 npm.cmd run manual:backend:functional-crud
+npm.cmd run manual:backend:client-signup
 npm.cmd run manual:deploy:vercel
 ```
 
@@ -115,6 +118,7 @@ npm.cmd run db:seed:users
 |---|---|
 | `/` | Site publico |
 | `/login` | Login |
+| `/cadastro` | Cadastro de cliente com anamnese |
 | `/app` | Entrada interna com redirecionamento por perfil |
 | `/admin/dashboard` | Painel administrativo |
 | `/dashboard` | Painel cliente |
@@ -133,7 +137,7 @@ npm.cmd run db:seed:users
 - Login ainda usa token bearer simples, sem expiração ou refresh token.
 - Envio real de email ainda nao foi integrado.
 - Pagamentos ainda nao foram definidos.
-- Ficha de anamnese e perfis profissionais detalhados ficam para proximas sprints.
+- A ficha de anamnese inicial existe para clientes; perfis profissionais detalhados ficam para proximas sprints.
 - `server/` ainda existe como camada de transicao ate a migracao completa para `back-end/`.
 
 ## Deploy

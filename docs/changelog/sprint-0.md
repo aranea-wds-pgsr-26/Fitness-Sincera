@@ -512,3 +512,34 @@ Criar, editar, duplicar e excluir templates de treino; criar, editar e excluir a
 ## Observacao
 
 O editor avancado de plano alimentar por blocos ricos continua pendente de modelagem especifica.
+
+# Sprint 18 - Cadastro de Cliente e Anamnese
+
+## Objetivo
+
+Criar onboarding real de cliente com cadastro, anamnese inicial e sessao pronta para teste.
+
+## Alteracoes
+
+- Criada pagina `/cadastro`.
+- Landing page envia "Se inscreva" para o cadastro real.
+- Login ganhou link para criar conta de cliente.
+- Criadas tabelas `fitness_client_profiles` e `fitness_client_anamneses`.
+- Gerada migration versionada `0003_glorious_human_fly`.
+- Criado `ClientOnboardingRepository`.
+- Criada API `POST /api/public/client-signup`.
+- Backend modular e servidor de transicao receberam a mesma rota.
+- Criado script manual `manual:backend:client-signup`.
+- Criado alias `test:backend:client-signup`.
+
+## Validacoes
+
+- `npm.cmd run db:generate`
+- `npm.cmd run check`
+- `npm.cmd run manual:backend:client-signup`
+- `npm.cmd run build`
+- `npm.cmd run manual:deploy:vercel`
+
+## Resultado
+
+Clientes podem se cadastrar, preencher a ficha inicial e acessar o painel com dados persistidos no Supabase.

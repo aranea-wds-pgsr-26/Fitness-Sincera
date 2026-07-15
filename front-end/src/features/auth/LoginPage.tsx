@@ -185,6 +185,13 @@ export default function LoginPage() {
             </button>
           </form>
 
+          <a
+            href="/cadastro"
+            className="mt-4 flex h-11 w-full items-center justify-center rounded-2xl border border-slate-200 text-xs font-black uppercase tracking-widest text-slate-700 transition hover:bg-slate-50 dark:border-white/10 dark:text-slate-200 dark:hover:bg-white/10"
+          >
+            Criar conta de cliente
+          </a>
+
           <div className="mt-8 border-t border-slate-100 pt-6 dark:border-white/10">
             <p className="mb-3 text-xs font-black uppercase tracking-widest text-slate-400">
               Acesso rapido para testes

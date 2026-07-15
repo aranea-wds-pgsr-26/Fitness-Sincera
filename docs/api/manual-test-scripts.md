@@ -148,6 +148,23 @@ O script usa `DATABASE_URL` e valida o fluxo publico:
 
 Este script acessa o Supabase e pode precisar ser executado fora de ambientes com rede bloqueada.
 
+## Cadastro de cliente com Supabase
+
+```powershell
+npm.cmd run manual:backend:client-signup
+```
+
+O script usa `DATABASE_URL` e valida o onboarding inicial:
+
+- cria as tabelas de perfil e anamnese se necessario;
+- envia um cadastro por `POST /api/public/client-signup`;
+- confirma que o usuario criado recebe papel `client` e token;
+- valida login posterior com `POST /api/auth/login`;
+- valida bloqueio de email duplicado;
+- remove o usuario temporario ao final.
+
+Este script acessa o Supabase e pode precisar ser executado fora de ambientes com rede bloqueada.
+
 ## Deploy Vercel com Supabase
 
 ```powershell
@@ -233,7 +250,8 @@ npm.cmd run test:backend:foods
 npm.cmd run test:backend:admin
 npm.cmd run test:backend:public-site
 npm.cmd run test:backend:functional-crud
+npm.cmd run test:backend:client-signup
 npm.cmd run manual:backend:default-users
 ```
 
-Por enquanto, `test:backend:meals`, `manual:backend:meals`, `test:backend:diets`, `manual:backend:diets`, `test:backend:workouts`, `manual:backend:workouts`, `test:backend:chat`, `manual:backend:chat`, `test:backend:foods`, `manual:backend:foods`, `test:backend:admin`, `manual:backend:admin`, `test:backend:public-site`, `manual:backend:public-site`, `test:backend:functional-crud` e `manual:backend:functional-crud` executam seus respectivos fluxos de integracao manual assistida.
+Por enquanto, `test:backend:meals`, `manual:backend:meals`, `test:backend:diets`, `manual:backend:diets`, `test:backend:workouts`, `manual:backend:workouts`, `test:backend:chat`, `manual:backend:chat`, `test:backend:foods`, `manual:backend:foods`, `test:backend:admin`, `manual:backend:admin`, `test:backend:public-site`, `manual:backend:public-site`, `test:backend:functional-crud`, `manual:backend:functional-crud`, `test:backend:client-signup` e `manual:backend:client-signup` executam seus respectivos fluxos de integracao manual assistida.

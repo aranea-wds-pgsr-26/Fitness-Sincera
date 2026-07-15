@@ -14,6 +14,7 @@ import { DietRepository } from "../back-end/src/repositories/dietRepository";
 import { WorkoutRepository } from "../back-end/src/repositories/workoutRepository";
 import { FoodRepository } from "../back-end/src/repositories/foodRepository";
 import { MealRepository } from "../back-end/src/repositories/mealRepository";
+import { ClientOnboardingRepository } from "../back-end/src/repositories/clientOnboardingRepository";
 
 // DEMO: In production, userId comes from req.session.userId (Passport.js)
 const DEMO_USER_ID = "user-1";
@@ -265,6 +266,108 @@ export async function registerRoutes(
     });
 
     return res.status(201).json({ success: true, data: { id: lead.id, status: lead.status } });
+  });
+
+  app.post("/api/public/client-signup", async (req, res) => {
+    const {
+      name,
+      email,
+      password,
+      phone,
+      birthDate,
+      gender,
+      goal,
+      planInterest,
+      heightCm,
+      weightKg,
+      activityLevel,
+      restrictions,
+      injuries,
+      medications,
+      sleepQuality,
+      hydration,
+      notes,
+    } = req.body as {
+      name?: string;
+      email?: string;
+      password?: string;
+      phone?: string;
+      birthDate?: string;
+      gender?: string;
+      goal?: string;
+      planInterest?: string;
+      heightCm?: number | string;
+      weightKg?: number | string;
+      activityLevel?: string;
+      restrictions?: string;
+      injuries?: string;
+      medications?: string;
+      sleepQuality?: string;
+      hydration?: string;
+      notes?: string;
+    };
+
+    if (!name?.trim() || !email?.trim() || !password?.trim() || !goal?.trim() || !planInterest?.trim()) {
+      return res.status(400).json({
+        message: "name, email, password, goal and planInterest are required",
+      });
+    }
+
+    const existingUser = await UserRepository.findByEmail(email);
+
+    if (existingUser) {
+      return res.status(409).json({ message: "Email already registered" });
+    }
+
+    const user = await UserRepository.create({
+      name: name.trim(),
+      email: email.trim().toLowerCase(),
+      password,
+      role: "client",
+    });
+
+    try {
+      await ClientOnboardingRepository.createForUser(
+        user.id,
+        {
+          phone,
+          birthDate,
+          gender,
+          goal,
+          planInterest,
+        },
+        {
+          objective: goal,
+          heightCm: heightCm === undefined ? null : Number(heightCm),
+          weightKg: weightKg === undefined ? null : Number(weightKg),
+          activityLevel,
+          restrictions,
+          injuries,
+          medications,
+          sleepQuality,
+          hydration,
+          notes,
+        }
+      );
+    } catch (error) {
+      await UserRepository.deleteByEmail(email);
+      throw error;
+    }
+
+    const token = await UserRepository.createSession(user);
+
+    return res.status(201).json({
+      success: true,
+      data: {
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        },
+        token,
+      },
+    });
   });
 
   async function requireUserFromRequest(req: any, res: any) {

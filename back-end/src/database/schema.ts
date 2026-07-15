@@ -111,6 +111,37 @@ export const fitnessSiteLeads = pgTable("fitness_site_leads", {
   createdAt: timestamp("created_at", { withTimezone: true }).default(sql`now()`),
 });
 
+export const fitnessClientProfiles = pgTable("fitness_client_profiles", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => fitnessUsers.id, { onDelete: "cascade" }),
+  phone: text("phone"),
+  birthDate: text("birth_date"),
+  gender: text("gender"),
+  goal: text("goal").notNull(),
+  planInterest: text("plan_interest").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).default(sql`now()`),
+});
+
+export const fitnessClientAnamneses = pgTable("fitness_client_anamneses", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => fitnessUsers.id, { onDelete: "cascade" }),
+  objective: text("objective").notNull(),
+  heightCm: doublePrecision("height_cm"),
+  weightKg: doublePrecision("weight_kg"),
+  activityLevel: text("activity_level"),
+  restrictions: text("restrictions"),
+  injuries: text("injuries"),
+  medications: text("medications"),
+  sleepQuality: text("sleep_quality"),
+  hydration: text("hydration"),
+  notes: text("notes"),
+  createdAt: timestamp("created_at", { withTimezone: true }).default(sql`now()`),
+});
+
 export const fitnessUsersRelations = relations(fitnessUsers, ({ many }) => ({
   sessions: many(fitnessSessions),
   meals: many(fitnessMeals),
@@ -118,6 +149,8 @@ export const fitnessUsersRelations = relations(fitnessUsers, ({ many }) => ({
   workoutPlans: many(fitnessWorkoutPlans),
   chatMessages: many(fitnessChatMessages),
   wearableDevices: many(fitnessWearableDevices),
+  clientProfiles: many(fitnessClientProfiles),
+  clientAnamneses: many(fitnessClientAnamneses),
 }));
 
 export const fitnessSessionsRelations = relations(fitnessSessions, ({ one }) => ({
@@ -166,6 +199,20 @@ export const fitnessWearableDevicesRelations = relations(fitnessWearableDevices,
 
 export const fitnessSiteLeadsRelations = relations(fitnessSiteLeads, () => ({}));
 
+export const fitnessClientProfilesRelations = relations(fitnessClientProfiles, ({ one }) => ({
+  user: one(fitnessUsers, {
+    fields: [fitnessClientProfiles.userId],
+    references: [fitnessUsers.id],
+  }),
+}));
+
+export const fitnessClientAnamnesesRelations = relations(fitnessClientAnamneses, ({ one }) => ({
+  user: one(fitnessUsers, {
+    fields: [fitnessClientAnamneses.userId],
+    references: [fitnessUsers.id],
+  }),
+}));
+
 export type FitnessUser = typeof fitnessUsers.$inferSelect;
 export type NewFitnessUser = typeof fitnessUsers.$inferInsert;
 export type FitnessMeal = typeof fitnessMeals.$inferSelect;
@@ -174,3 +221,7 @@ export type FitnessFood = typeof fitnessFoods.$inferSelect;
 export type NewFitnessFood = typeof fitnessFoods.$inferInsert;
 export type FitnessSiteLead = typeof fitnessSiteLeads.$inferSelect;
 export type NewFitnessSiteLead = typeof fitnessSiteLeads.$inferInsert;
+export type FitnessClientProfile = typeof fitnessClientProfiles.$inferSelect;
+export type NewFitnessClientProfile = typeof fitnessClientProfiles.$inferInsert;
+export type FitnessClientAnamnesis = typeof fitnessClientAnamneses.$inferSelect;
+export type NewFitnessClientAnamnesis = typeof fitnessClientAnamneses.$inferInsert;

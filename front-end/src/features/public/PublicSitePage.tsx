@@ -131,7 +131,7 @@ export default function PublicSitePage() {
                 Uma plataforma profissional para conectar clientes, nutricionistas e personal trainers em um acompanhamento mais claro, humano e orientado por dados.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <a href="#inscricao" className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#d4f54c] px-5 py-3 text-sm font-black uppercase text-black">
+                <a href="/cadastro" className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#d4f54c] px-5 py-3 text-sm font-black uppercase text-black">
                   Se inscreva
                   <ArrowRight className="h-4 w-4" />
                 </a>
@@ -227,7 +227,7 @@ export default function PublicSitePage() {
         <section id="inscricao" className="bg-[#171914] py-20 text-white">
           <div className="mx-auto grid max-w-7xl gap-10 px-5 lg:grid-cols-[0.85fr_1.15fr]">
             <div>
-              <p className="text-sm font-black uppercase text-[#d4f54c]">Se inscreva, se associe, entre em contato</p>
+              <p className="text-sm font-black uppercase text-[#d4f54c]">Se associe, entre em contato</p>
               <h2 className="mt-3 text-4xl font-black uppercase">Conte para nos onde voce quer chegar.</h2>
               <p className="mt-4 text-slate-300">
                 As respostas chegam ao painel administrativo para triagem. A notificacao por email fica preparada para integracao em uma sprint de comunicacoes.

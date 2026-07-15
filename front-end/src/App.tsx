@@ -30,6 +30,7 @@ import StudentsPage from "@/features/trainer/students/StudentsPage";
 
 // Auth / Shared
 import LoginPage from "@/features/auth/LoginPage";
+import ClientSignupPage from "@/features/auth/ClientSignupPage";
 import NotFound from "@/pages/not-found";
 
 // ─── ProtectedRoute ──────────────────────────────────────────────────────────
@@ -91,6 +92,7 @@ function Router() {
 
       {/* Auth */}
       <Route path="/login" component={LoginPage} />
+      <Route path="/cadastro" component={ClientSignupPage} />
 
       {/* ── Client routes ─────────────────────────────────────── */}
       <Route path="/dashboard">
