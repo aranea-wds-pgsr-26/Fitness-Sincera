@@ -88,7 +88,8 @@ export async function createExpressApp(options: CreateAppOptions = {}) {
   }
 
   if (clientMode === "vite") {
-    const { setupVite } = await import("./vite");
+    const viteModule = "./vite";
+    const { setupVite } = await import(viteModule);
     await setupVite(httpServer, app);
   }
 
