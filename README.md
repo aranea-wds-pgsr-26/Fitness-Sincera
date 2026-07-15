@@ -151,3 +151,11 @@ O projeto possui configuracao inicial para Vercel:
 - O teste `npm.cmd run manual:deploy:vercel` valida localmente API serverless, build estatico e Supabase.
 
 Para publicar, configure `DATABASE_URL` na Vercel e conecte a branch de deploy pelo painel da Vercel ou use a Vercel CLI autenticada. Em producao serverless, prefira a connection string do Supabase Pooler/Supavisor com `sslmode=require`.
+
+Variaveis como `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_ANON_KEY` sao usadas pelo Supabase SDK no frontend ou por fluxos de Auth/Storage. Elas nao substituem a connection string PostgreSQL usada pelo Drizzle. Para o backend atual funcionar, configure pelo menos uma destas variaveis na Vercel:
+
+- `DATABASE_URL`
+- `POSTGRES_URL`
+- `SUPABASE_DB_URL`
+
+O endpoint `/api/readiness` mostra qual delas foi encontrada e qual host/porta esta sendo usado, sem expor senha.

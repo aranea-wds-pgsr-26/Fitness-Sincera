@@ -563,3 +563,22 @@ Melhorar o diagnostico do erro 500 em producao na Vercel e remover arquivos lega
 ## Resultado
 
 O deploy passa a ter um endpoint de diagnostico mais claro para separar erro de function, erro de variavel de ambiente e erro de conexao com Supabase.
+
+# Sprint 20 - Diagnostico de Variaveis Supabase
+
+## Objetivo
+
+Evitar confusao entre chaves publicas do Supabase SDK e connection string PostgreSQL usada pelo backend com Drizzle.
+
+## Alteracoes
+
+- Backend passa a aceitar `DATABASE_URL`, `POSTGRES_URL` ou `SUPABASE_DB_URL`.
+- `/api/readiness` mostra qual variavel de banco foi encontrada.
+- `/api/readiness` mostra host/porta/database sem expor senha.
+- `/api/readiness` informa quais variaveis Supabase existem no ambiente.
+- `.env.example` atualizado com variaveis de banco e SDK.
+- README documenta que `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_ANON_KEY` nao substituem `DATABASE_URL`.
+
+## Resultado
+
+Fica mais facil diagnosticar quando a Vercel recebeu apenas as chaves do Supabase SDK, mas nao recebeu uma connection string PostgreSQL valida para o backend.

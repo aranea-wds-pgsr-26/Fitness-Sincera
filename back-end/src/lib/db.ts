@@ -1,6 +1,59 @@
 import { Pool } from "pg";
 
-const connectionString = process.env.DATABASE_URL;
+const databaseEnvCandidates = [
+  "DATABASE_URL",
+  "POSTGRES_URL",
+  "SUPABASE_DB_URL",
+] as const;
+
+function getDatabaseConnectionString() {
+  for (const key of databaseEnvCandidates) {
+    const value = process.env[key];
+    if (value?.trim()) {
+      return {
+        source: key,
+        value: value.trim(),
+      };
+    }
+  }
+
+  return null;
+}
+
+function getSafeDatabaseTarget(value?: string) {
+  if (!value) return null;
+
+  try {
+    const url = new URL(value);
+    return {
+      protocol: url.protocol.replace(":", ""),
+      host: url.hostname,
+      port: url.port || (url.protocol === "postgresql:" ? "5432" : ""),
+      database: url.pathname.replace("/", "") || null,
+      sslmode: url.searchParams.get("sslmode"),
+    };
+  } catch {
+    return {
+      parseError: "Invalid database URL format",
+    };
+  }
+}
+
+function getSupabaseEnvDiagnostics() {
+  return {
+    DATABASE_URL: Boolean(process.env.DATABASE_URL),
+    POSTGRES_URL: Boolean(process.env.POSTGRES_URL),
+    SUPABASE_DB_URL: Boolean(process.env.SUPABASE_DB_URL),
+    SUPABASE_URL: Boolean(process.env.SUPABASE_URL),
+    NEXT_PUBLIC_SUPABASE_URL: Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL),
+    SUPABASE_ANON_KEY: Boolean(process.env.SUPABASE_ANON_KEY),
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: Boolean(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY),
+    SUPABASE_SERVICE_ROLE_KEY: Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY),
+  };
+}
+
+const databaseConnection = getDatabaseConnectionString();
+const connectionString = databaseConnection?.value;
 const requiresSsl =
   connectionString?.includes("supabase") || connectionString?.includes("sslmode=require");
 
@@ -17,7 +70,9 @@ export async function checkDatabaseConnection() {
     return {
       ok: false,
       configured: false,
-      message: "DATABASE_URL is not configured",
+      env: getSupabaseEnvDiagnostics(),
+      message:
+        "No PostgreSQL connection string configured. Drizzle needs DATABASE_URL, POSTGRES_URL or SUPABASE_DB_URL; Supabase URL/anon keys alone are not enough for backend database access.",
     };
   }
 
@@ -26,6 +81,9 @@ export async function checkDatabaseConnection() {
     return {
       ok: true,
       configured: true,
+      source: databaseConnection.source,
+      target: getSafeDatabaseTarget(connectionString),
+      env: getSupabaseEnvDiagnostics(),
       message: "Database connection ok",
     };
   } catch (error) {
@@ -33,6 +91,9 @@ export async function checkDatabaseConnection() {
     return {
       ok: false,
       configured: true,
+      source: databaseConnection.source,
+      target: getSafeDatabaseTarget(connectionString),
+      env: getSupabaseEnvDiagnostics(),
       code: dbError.code,
       message: dbError.message,
     };
