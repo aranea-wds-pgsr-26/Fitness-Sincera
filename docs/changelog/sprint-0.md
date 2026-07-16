@@ -582,3 +582,9 @@ Evitar confusao entre chaves publicas do Supabase SDK e connection string Postgr
 ## Resultado
 
 Fica mais facil diagnosticar quando a Vercel recebeu apenas as chaves do Supabase SDK, mas nao recebeu uma connection string PostgreSQL valida para o backend.
+## Sprint 21 - Unificacao do backend
+
+- A function da Vercel agora carrega o backend modular.
+- Build e processo de producao executam a API modular.
+- Adicionada validacao que exercita a entrada real da Vercel contra o Supabase.
+- `nanoid` foi declarada como dependencia e `esbuild` foi fixado para build reproduzivel.

@@ -8,7 +8,7 @@ O projeto esta em migracao arquitetural de um app React + Express legado para um
 
 - `front-end/`: aplicacao React.
 - `back-end/`: novo backend modular com Express, Drizzle e PostgreSQL/Supabase.
-- `server/`: servidor atual de transicao, ainda usado para servir a aplicacao e pontes temporarias.
+- `server/`: legado de transicao, mantido como referencia; nao e a API publicada.
 - `drizzle/`: migrations versionadas.
 - `docs/`: documentacao de arquitetura, sprints e testes.
 
@@ -36,18 +36,17 @@ O projeto esta em migracao arquitetural de um app React + Express legado para um
 | Camada | Tecnologias |
 |---|---|
 | Frontend | React, Wouter, TanStack Query, Tailwind CSS, Radix UI, shadcn/ui |
-| Backend atual | Express + Vite middleware |
-| Backend novo | Express modular + TypeScript |
+| Backend | Express modular + TypeScript |
 | Banco | PostgreSQL/Supabase + Drizzle ORM |
 | Build | Vite + esbuild |
 
 ## Requisitos
 
 - Node.js 20+
-- Supabase ou PostgreSQL compatível
+- Supabase ou PostgreSQL compatÃƒÂ­vel
 - `DATABASE_URL` configurada em `.env`
 
-## Instalação
+## InstalaÃƒÂ§ÃƒÂ£o
 
 ```bash
 npm install
@@ -97,7 +96,7 @@ npm.cmd run manual:deploy:vercel
 
 Alguns scripts acessam o Supabase e precisam de `DATABASE_URL` valida.
 
-## Usuários padrão
+## UsuÃƒÂ¡rios padrÃƒÂ£o
 
 Crie ou atualize os usuarios de teste com:
 
@@ -125,32 +124,33 @@ npm.cmd run db:seed:users
 | `/nutritionist/dashboard` | Painel nutricionista |
 | `/trainer/dashboard` | Painel personal trainer |
 
-## Documentação
+## DocumentaÃƒÂ§ÃƒÂ£o
 
 - `docs/sprints/`: entregas por sprint.
 - `docs/api/manual-test-scripts.md`: scripts de teste manual.
 - `docs/changelog/sprint-0.md`: changelog consolidado.
 - `docs/architecture/`: decisoes e estrutura arquitetural.
 
-## Limitações atuais
+## LimitaÃƒÂ§ÃƒÂµes atuais
 
-- Login ainda usa token bearer simples, sem expiração ou refresh token.
+- Login ainda usa token bearer simples, sem expiraÃƒÂ§ÃƒÂ£o ou refresh token.
 - Envio real de email ainda nao foi integrado.
 - Pagamentos ainda nao foram definidos.
 - A ficha de anamnese inicial existe para clientes; perfis profissionais detalhados ficam para proximas sprints.
-- `server/` ainda existe como camada de transicao ate a migracao completa para `back-end/`.
+- `server/` permanece apenas como referencia de transicao; producao usa o backend modular.
 
 ## Deploy
 
 O projeto possui configuracao inicial para Vercel:
 
 - `vercel.json` entrega o front-end estatico em `dist/public`.
-- `api/index.ts` expõe o Express como funcao serverless para `/api/*`.
+- `api/index.ts` expoe o backend modular como funcao serverless para `/api/*`.
+- `npm.cmd run start` executa a mesma API modular e serve o front-end compilado, adequado para Railway e Render.
 - `/api/health` valida se a function esta respondendo.
 - `/api/readiness` valida a conexao real com o Supabase.
 - O teste `npm.cmd run manual:deploy:vercel` valida localmente API serverless, build estatico e Supabase.
 
-Para publicar, configure `DATABASE_URL` na Vercel e conecte a branch de deploy pelo painel da Vercel ou use a Vercel CLI autenticada. Em producao serverless, prefira a connection string do Supabase Pooler/Supavisor com `sslmode=require`.
+Na Vercel, configure `DATABASE_URL` e use a URL transaction pooler/Supavisor do Supabase na porta `6543`, com `sslmode=require`. Para Railway ou Render, use `npm.cmd run build` como build command e `npm.cmd run start` como start command.
 
 Variaveis como `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_ANON_KEY` sao usadas pelo Supabase SDK no frontend ou por fluxos de Auth/Storage. Elas nao substituem a connection string PostgreSQL usada pelo Drizzle. Para o backend atual funcionar, configure pelo menos uma destas variaveis na Vercel:
 

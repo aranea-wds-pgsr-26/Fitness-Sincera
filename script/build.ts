@@ -53,7 +53,7 @@ async function buildAll() {
 
   await esbuild({
     absWorkingDir: process.cwd(),
-    entryPoints: [path.resolve("server", "index.ts")],
+    entryPoints: ["server/production.ts"],
     platform: "node",
     bundle: true,
     format: "cjs",

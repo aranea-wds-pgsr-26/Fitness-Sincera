@@ -1,22 +1,41 @@
 import express from "express";
+import fs from "node:fs";
+import path from "node:path";
 import apiRouter from "./routes";
 import { notFound } from "./middleware/notFound";
 import { errorHandler } from "./middleware/errorHandler";
 import { requestId } from "./middleware/requestId";
 
-const app = express();
+interface CreateAppOptions {
+  serveClient?: boolean;
+}
 
-app.disable("x-powered-by");
-app.use(requestId);
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+export function createApp({ serveClient = false }: CreateAppOptions = {}) {
+  const app = express();
 
-app.use("/api", apiRouter);
+  app.disable("x-powered-by");
+  app.use(requestId);
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: false }));
+  app.use("/api", apiRouter);
 
-// Middleware para rotas inexistentes
-app.use(notFound);
+  if (serveClient) {
+    const clientDist = path.resolve(process.cwd(), "dist", "public");
 
-// Middleware global de tratamento de erros (sempre por último)
-app.use(errorHandler);
+    if (!fs.existsSync(clientDist)) {
+      throw new Error("Client build not found. Run npm run build before starting production.");
+    }
 
-export default app;
+    app.use(express.static(clientDist));
+    app.use("/{*path}", (_req, res) => {
+      res.sendFile(path.join(clientDist, "index.html"));
+    });
+  }
+
+  app.use(notFound);
+  app.use(errorHandler);
+
+  return app;
+}
+
+export default createApp();

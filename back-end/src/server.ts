@@ -1,5 +1,5 @@
 import "dotenv/config";
-import app from "./app";
+import { createApp } from "./app";
 import { env } from "./config";
 import { initializeStore } from "./lib/store";
 
@@ -15,6 +15,7 @@ async function start() {
     console.warn("DATABASE_URL not configured. Database-backed routes will be unavailable.");
   }
 
+  const app = createApp({ serveClient: env.NODE_ENV === "production" });
   const port = env.PORT;
   app.listen(port, "0.0.0.0", () => {
     console.log(`Backend listening on port ${port}`);

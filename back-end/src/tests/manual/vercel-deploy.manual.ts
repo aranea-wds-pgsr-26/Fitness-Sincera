@@ -1,9 +1,10 @@
 import "dotenv/config";
 
 import fs from "node:fs";
+import { createServer } from "node:http";
 import path from "node:path";
 import type { AddressInfo } from "node:net";
-import { createExpressApp } from "../../../../server/app";
+import vercelHandler from "../../../../api/index";
 import { SiteLeadRepository } from "../../repositories/siteLeadRepository";
 import { UserRepository } from "../../repositories/userRepository";
 
@@ -45,7 +46,7 @@ async function run() {
 
   await SiteLeadRepository.ensureTable();
 
-  const { httpServer } = await createExpressApp({ clientMode: "none" });
+  const httpServer = createServer(vercelHandler);
   const leadEmail = `vercel-deploy-${Date.now()}@fitnesssincera.local`;
   let token: string | undefined;
 

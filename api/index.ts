@@ -1,8 +1,6 @@
-import { createExpressApp } from "../server/app";
+import app from "../back-end/src/app";
 
-const appPromise = createExpressApp({ clientMode: "none" }).then(({ app }) => app);
-
-export default async function handler(req: any, res: any) {
-  const app = await appPromise;
+// Vercel invokes this same modular API used by the persistent Node server.
+export default function handler(req: any, res: any) {
   return app(req, res);
 }
