@@ -56,6 +56,19 @@ export function ProSidebar({ role = "trainer" }: ProSidebarProps) {
     };
 
     return (
+        <>
+        <header className="md:hidden sticky top-0 z-30 border-b border-white/10 bg-[#1a1c1e] px-4 py-3 text-white">
+            <div className="mb-3 flex items-center justify-between">
+                <span className="font-bold">Fitness Sincera</span>
+                <ThemeToggle className="h-9 w-9" />
+            </div>
+            <nav className="flex gap-2 overflow-x-auto pb-1" aria-label="Navegacao principal">
+                {navItems.map((item) => {
+                    const isActive = location === item.href || location.startsWith(item.href + "/");
+                    return <Link key={item.href} href={item.href} className={`flex shrink-0 items-center gap-2 rounded-md px-3 py-2 text-xs font-bold ${isActive ? "bg-[#d4f54c] text-black" : "bg-white/10 text-white"}`}><item.icon className="h-4 w-4" />{item.label}</Link>;
+                })}
+            </nav>
+        </header>
         <aside className="hidden md:flex w-64 bg-[#1a1c1e] text-slate-400 flex-col fixed h-full z-20 overflow-hidden">
             {/* Logo */}
             <div className="p-6 flex items-center gap-3 mb-4">
@@ -117,6 +130,7 @@ export function ProSidebar({ role = "trainer" }: ProSidebarProps) {
                 </button>
             </div>
         </aside>
+        </>
     );
 
 }
