@@ -592,3 +592,6 @@ Fica mais facil diagnosticar quando a Vercel recebeu apenas as chaves do Supabas
 
 - Corrigido `ERR_MODULE_NOT_FOUND` no runtime da Vercel.
 - Adicionado bundle de API e inclusao explicita do artefato na function.
+## Sprint 21.2 - TLS do pooler Supabase
+
+- Corrigido conflito entre `sslmode=require` e as opcoes TLS do driver PostgreSQL na Vercel.

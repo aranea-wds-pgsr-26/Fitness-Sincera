@@ -20,6 +20,19 @@ function getDatabaseConnectionString() {
   return null;
 }
 
+function getPoolConnectionString(value?: string) {
+  if (!value) return undefined;
+
+  try {
+    const url = new URL(value);
+
+    // pg gives sslmode precedence over the explicit TLS options below.
+    url.searchParams.delete("sslmode");
+    return url.toString();
+  } catch {
+    return value;
+  }
+}
 function getSafeDatabaseTarget(value?: string) {
   if (!value) return null;
 
@@ -56,9 +69,10 @@ const databaseConnection = getDatabaseConnectionString();
 const connectionString = databaseConnection?.value;
 const requiresSsl =
   connectionString?.includes("supabase") || connectionString?.includes("sslmode=require");
+const poolConnectionString = getPoolConnectionString(connectionString);
 
 export const pool = new Pool({
-  connectionString,
+  connectionString: poolConnectionString,
   connectionTimeoutMillis: 10_000,
   idleTimeoutMillis: 10_000,
   max: Number(process.env.PG_POOL_MAX ?? 1),
