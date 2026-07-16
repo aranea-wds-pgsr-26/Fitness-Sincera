@@ -1,6 +1,11 @@
-import app from "../back-end/src/app";
+import { createRequire } from "node:module";
+import type { Express } from "express";
 
-// Vercel invokes this same modular API used by the persistent Node server.
-export default function handler(req: any, res: any) {
-  return app(req, res);
+const require = createRequire(import.meta.url);
+const bundledApi = require("../dist/api.cjs") as Express | { default: Express };
+const app = "default" in bundledApi ? bundledApi.default : bundledApi;
+
+// The runtime bundle keeps Vercel independent from TypeScript source imports.
+export default function handler(req: unknown, res: unknown) {
+  return app(req as never, res as never);
 }

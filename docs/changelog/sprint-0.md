@@ -588,3 +588,7 @@ Fica mais facil diagnosticar quando a Vercel recebeu apenas as chaves do Supabas
 - Build e processo de producao executam a API modular.
 - Adicionada validacao que exercita a entrada real da Vercel contra o Supabase.
 - `nanoid` foi declarada como dependencia e `esbuild` foi fixado para build reproduzivel.
+## Sprint 21.1 - Bundle da function Vercel
+
+- Corrigido `ERR_MODULE_NOT_FOUND` no runtime da Vercel.
+- Adicionado bundle de API e inclusao explicita do artefato na function.

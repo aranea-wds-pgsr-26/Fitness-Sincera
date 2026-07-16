@@ -51,19 +51,30 @@ async function buildAll() {
   ];
   const externals = allDeps.filter((dep) => !allowlist.includes(dep));
 
-  await esbuild({
+  const productionBuild = {
     absWorkingDir: process.cwd(),
-    entryPoints: ["server/production.ts"],
-    platform: "node",
+    platform: "node" as const,
     bundle: true,
-    format: "cjs",
-    outfile: "dist/index.cjs",
+    format: "cjs" as const,
     define: {
       "process.env.NODE_ENV": '"production"',
     },
     minify: true,
     external: externals,
-    logLevel: "info",
+    logLevel: "info" as const,
+  };
+
+  await esbuild({
+    ...productionBuild,
+    entryPoints: ["server/production.ts"],
+    outfile: "dist/index.cjs",
+  });
+
+  console.log("building vercel api...");
+  await esbuild({
+    ...productionBuild,
+    entryPoints: ["back-end/src/app.ts"],
+    outfile: "dist/api.cjs",
   });
 }
 
