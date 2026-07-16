@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check, RefreshCw, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { MealItem } from "@/lib/mockData";
+import type { MealItem } from "./types";
 import {
   Dialog,
   DialogContent,

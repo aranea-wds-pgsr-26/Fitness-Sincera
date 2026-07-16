@@ -7,7 +7,7 @@
     "dev:front-end": "vite dev --port 5000",
     "dev:client": "vite dev --port 5000",
     "dev:back": "tsx back-end/src/server.ts",
-    "dev": "cross-env NODE_ENV=development tsx server/index.ts",
+    "dev": "cross-env NODE_ENV=development tsx back-end/src/server.ts",
     "build": "tsx script/build.ts",
     "start": "cross-env NODE_ENV=production node dist/index.cjs",
     "check": "tsc",

@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { navItems } from "@/lib/mockData";
+import { clientNavigationItems as navItems } from "@/lib/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { LogOut, Zap, Rocket } from "lucide-react";

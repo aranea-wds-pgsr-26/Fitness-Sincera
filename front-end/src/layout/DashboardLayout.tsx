@@ -2,7 +2,7 @@ import { AppSidebar } from "./AppSidebar";
 import { Menu, Zap } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { navItems } from "@/lib/mockData";
+import { clientNavigationItems as navItems } from "@/lib/navigation";
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/features/theme/ThemeToggle";

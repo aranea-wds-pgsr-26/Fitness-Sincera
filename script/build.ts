@@ -66,7 +66,7 @@ async function buildAll() {
 
   await esbuild({
     ...productionBuild,
-    entryPoints: ["server/production.ts"],
+    entryPoints: ["back-end/src/server.ts"],
     outfile: "dist/index.cjs",
   });
 
