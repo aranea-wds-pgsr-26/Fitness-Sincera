@@ -595,3 +595,8 @@ Fica mais facil diagnosticar quando a Vercel recebeu apenas as chaves do Supabas
 ## Sprint 21.2 - TLS do pooler Supabase
 
 - Corrigido conflito entre `sslmode=require` e as opcoes TLS do driver PostgreSQL na Vercel.
+## Sprint 22 - CRUD base com Drizzle
+
+- CRUD persistido de alimentos, refeicoes, dietas e treinos.
+- Templates de treino conectados a API modular.
+- Teste funcional atualizado para usar o backend publicado.

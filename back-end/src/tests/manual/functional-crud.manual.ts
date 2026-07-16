@@ -1,7 +1,7 @@
 import "dotenv/config";
 
 import type { AddressInfo } from "node:net";
-import { createExpressApp } from "../../../../server/app";
+import app from "../../app";
 import { UserRepository } from "../../repositories/userRepository";
 
 async function jsonRequest(
@@ -33,15 +33,12 @@ async function run() {
   console.log(" Fitness Sincera Functional CRUD Test ");
   console.log("=======================================");
 
-  const { httpServer } = await createExpressApp({ clientMode: "none" });
+  const httpServer = app.listen(0, "127.0.0.1");
   const created: Array<{ path: string; id: string; token: string }> = [];
   const tokens: string[] = [];
 
   try {
-    await new Promise<void>((resolve) => {
-      httpServer.listen(0, "127.0.0.1", resolve);
-    });
-
+    await new Promise<void>((resolve) => httpServer.once("listening", resolve));
     const { port } = httpServer.address() as AddressInfo;
     const baseUrl = `http://127.0.0.1:${port}`;
     const nutritionist = await UserRepository.findByEmail("sofia.almeida@fitnesssincera.com");
@@ -74,13 +71,13 @@ async function run() {
     const updatedDiet = await jsonRequest(baseUrl, `/api/diets/${diet.body.data.id}`, {
       method: "PUT",
       headers: nutritionistHeaders,
-      body: JSON.stringify({ description: "Plano alimentar atualizado." }),
+      body: JSON.stringify({ name: "Sprint 17 Diet Test", description: "Plano alimentar atualizado.", meals: ["Cafe da manha proteico", "Almoco equilibrado"] }),
     });
 
     assertOk(updatedDiet.response.status === 200 && updatedDiet.body.data.description.includes("atualizado"), "Diet update failed.");
     console.log("OK - Diet updated");
 
-    const workout = await jsonRequest(baseUrl, "/api/workout-plans", {
+    const workout = await jsonRequest(baseUrl, "/api/workouts", {
       method: "POST",
       headers: trainerHeaders,
       body: JSON.stringify({
@@ -91,13 +88,13 @@ async function run() {
     });
 
     assertOk(workout.response.status === 201 && workout.body.success, "Workout creation failed.");
-    created.push({ path: "/api/workout-plans", id: workout.body.data.id, token: trainerToken });
+    created.push({ path: "/api/workouts", id: workout.body.data.id, token: trainerToken });
     console.log("OK - Workout created");
 
-    const updatedWorkout = await jsonRequest(baseUrl, `/api/workout-plans/${workout.body.data.id}`, {
+    const updatedWorkout = await jsonRequest(baseUrl, `/api/workouts/${workout.body.data.id}`, {
       method: "PUT",
       headers: trainerHeaders,
-      body: JSON.stringify({ exercises: ["Agachamento 4x10", "Supino 4x8", "Prancha 3x45s"] }),
+      body: JSON.stringify({ name: "Sprint 17 Workout Test", description: "Treino criado pelo teste funcional.", exercises: ["Agachamento 4x10", "Supino 4x8", "Prancha 3x45s"] }),
     });
 
     assertOk(updatedWorkout.response.status === 200 && updatedWorkout.body.data.exercises.length === 3, "Workout update failed.");

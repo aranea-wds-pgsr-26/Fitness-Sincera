@@ -163,7 +163,7 @@ export default function TemplatesPage() {
   async function loadPlans() {
     setIsLoading(true);
     try {
-      const response = await apiRequest("GET", "/api/workout-plans");
+      const response = await apiRequest("GET", "/api/workouts");
       const body = await response.json();
       setPlans(body.data ?? []);
     } finally {
@@ -183,7 +183,7 @@ export default function TemplatesPage() {
   const paged = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   async function createPlan(payload: { name: string; description: string; exercises: string[] }) {
-    const response = await apiRequest("POST", "/api/workout-plans", payload);
+    const response = await apiRequest("POST", "/api/workouts", payload);
     const body = await response.json();
     setPlans((current) => [body.data, ...current]);
     setMessage("Treino criado no Supabase.");
@@ -192,7 +192,7 @@ export default function TemplatesPage() {
   async function updatePlan(payload: { name: string; description: string; exercises: string[] }) {
     if (!editingPlan) return;
 
-    const response = await apiRequest("PUT", `/api/workout-plans/${editingPlan.id}`, payload);
+    const response = await apiRequest("PUT", `/api/workouts/${editingPlan.id}`, payload);
     const body = await response.json();
     setPlans((current) => current.map((plan) => (plan.id === editingPlan.id ? body.data : plan)));
     setEditingPlan(null);
@@ -200,7 +200,7 @@ export default function TemplatesPage() {
   }
 
   async function duplicatePlan(plan: WorkoutPlan) {
-    const response = await apiRequest("POST", "/api/workout-plans", {
+    const response = await apiRequest("POST", "/api/workouts", {
       name: `${plan.name} copia`,
       description: plan.description,
       exercises: plan.exercises,
@@ -211,7 +211,7 @@ export default function TemplatesPage() {
   }
 
   async function deletePlan(id: string) {
-    await apiRequest("DELETE", `/api/workout-plans/${id}`);
+    await apiRequest("DELETE", `/api/workouts/${id}`);
     setPlans((current) => current.filter((plan) => plan.id !== id));
     setMessage("Treino removido.");
   }
