@@ -10,6 +10,7 @@ import chatbotRouter from "../modules/chatbot/routes";
 import wearablesRouter from "../modules/wearables/routes";
 import systemRouter from "../modules/system/routes";
 import { clientAssignmentsRouter, nutritionistClientsRouter, trainerClientsRouter } from "../modules/clients/routes";
+import trackingRouter from "../modules/tracking/routes";
 import v1Router from "./v1";
 
 const router = Router();
@@ -29,5 +30,6 @@ router.use("/nutritionist", nutritionistClientsRouter);
 router.use("/trainer", trainerClientsRouter);
 router.use("/chatbot", chatbotRouter);
 router.use("/wearables", wearablesRouter);
+router.use("/tracking", trackingRouter);
 
 export default router;

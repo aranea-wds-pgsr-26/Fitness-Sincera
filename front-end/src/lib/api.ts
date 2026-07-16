@@ -59,12 +59,12 @@ export const api = {
     return res.json();
   },
 
-  // Dashboard
+  // Daily tracking
   getDashboardSummary: async () => {
-    const res = await apiRequest("GET", "/api/dashboard/summary");
-    return res.json();
+    const res = await apiRequest("GET", "/api/tracking/today");
+    const payload = await res.json();
+    return payload.data;
   },
-
   // Progress
   getProgressHistory: async (): Promise<DailyProgress[]> => {
     const res = await apiRequest("GET", "/api/progress/history");
@@ -73,14 +73,15 @@ export const api = {
 
   // Water
   getWaterToday: async (): Promise<WaterIntake> => {
-    const res = await apiRequest("GET", "/api/water/today");
-    return res.json();
+    const res = await apiRequest("GET", "/api/tracking/today");
+    const payload = await res.json();
+    return { date: payload.data.trackingDate, amount: Number(payload.data.waterMl), goal: Number(payload.data.waterGoalMl) };
   },
   addWater: async (amount: number): Promise<WaterIntake> => {
-    const res = await apiRequest("POST", "/api/water/add", { amount });
-    return res.json();
+    const res = await apiRequest("POST", "/api/tracking/water", { amount });
+    const payload = await res.json();
+    return { date: payload.data.trackingDate, amount: Number(payload.data.waterMl), goal: Number(payload.data.waterGoalMl) };
   },
-
   // Achievements
   getAchievements: async (): Promise<Achievement[]> => {
     const res = await apiRequest("GET", "/api/achievements");

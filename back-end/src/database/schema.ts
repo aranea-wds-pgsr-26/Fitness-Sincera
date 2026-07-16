@@ -159,6 +159,19 @@ export const fitnessProfessionalClients = pgTable(
     index("fitness_professional_clients_client_idx").on(table.clientId),
   ],
 );
+export const fitnessDailyTrackings = pgTable("fitness_daily_trackings", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: uuid("user_id").notNull().references(() => fitnessUsers.id, { onDelete: "cascade" }),
+  trackingDate: text("tracking_date").notNull(),
+  waterMl: doublePrecision("water_ml").notNull().default(0),
+  waterGoalMl: doublePrecision("water_goal_ml").notNull().default(3000),
+  steps: doublePrecision("steps").notNull().default(0),
+  sleepMinutes: doublePrecision("sleep_minutes"),
+  caloriesBurned: doublePrecision("calories_burned").notNull().default(0),
+  notes: text("notes"),
+  createdAt: timestamp("created_at", { withTimezone: true }).default(sql`now()`),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).default(sql`now()`),
+});
 export const fitnessUsersRelations = relations(fitnessUsers, ({ many }) => ({
   sessions: many(fitnessSessions),
   meals: many(fitnessMeals),

@@ -35,6 +35,7 @@
     "manual:backend:public-site": "tsx back-end/src/tests/manual/public-site.manual.ts",
     "manual:backend:functional-crud": "tsx back-end/src/tests/manual/functional-crud.manual.ts",
     "manual:backend:professional-clients": "tsx back-end/src/tests/manual/professional-clients.manual.ts",
+    "manual:backend:daily-tracking": "tsx back-end/src/tests/manual/daily-tracking.manual.ts",
     "manual:backend:client-signup": "tsx back-end/src/tests/manual/client-signup.manual.ts",
     "manual:deploy:vercel": "tsx back-end/src/tests/manual/vercel-deploy.manual.ts",
     "manual:backend:default-users": "tsx back-end/src/tests/manual/default-users.manual.ts",
