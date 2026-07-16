@@ -41,6 +41,7 @@
     "manual:backend:default-users": "tsx back-end/src/tests/manual/default-users.manual.ts",
     "db:seed:users": "tsx back-end/src/tests/manual/default-users.manual.ts",
     "db:seed:foods": "tsx back-end/src/tests/manual/foods.manual.ts",
+    "db:seed:foods:open-food-facts": "tsx scripts/seed-foods-open-food-facts.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
