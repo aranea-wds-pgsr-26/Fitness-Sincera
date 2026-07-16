@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 import {
   NutritionistDashboardStats,
   ClientListItem,
@@ -49,17 +50,14 @@ export function useNutritionistClients(options: UseNutritionistClientsOptions = 
       if (search) params.append("search", search);
       params.append("page", page.toString());
 
-      const response = await fetch(
-        `${API_BASE}/clients?${params.toString()}`
-      );
-      if (!response.ok) throw new Error("Failed to fetch clients");
-      return response.json();
+      const response = await apiRequest("GET", `${API_BASE}/clients?${params.toString()}`);
+      const payload = await response.json();
+      return { data: payload.data, pagination: payload.pagination };
     },
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
   });
 }
-
 export function useNutritionistClientDetail(clientId: string | null) {
   return useQuery({
     queryKey: ["nutritionist", "client", clientId],

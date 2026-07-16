@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 import {
   TrainerDashboardStats,
   ClientListItem,
@@ -21,6 +22,11 @@ export function useTrainerDashboard() {
   });
 }
 
+interface ClientsPageResponse {
+  data: ClientListItem[];
+  pagination: { page: number; pageSize: number; total: number; totalItems?: number; totalPages: number; };
+}
+
 export interface UseTrainerClientsOptions {
   performance?: string;
   search?: string;
@@ -32,23 +38,20 @@ export function useTrainerClients(options: UseTrainerClientsOptions = {}) {
 
   return useQuery({
     queryKey: ["trainer", "clients", { performance, search, page }],
-    queryFn: async () => {
+    queryFn: async (): Promise<ClientsPageResponse> => {
       const params = new URLSearchParams();
-      if (performance && performance !== "all") params.append("performance", performance);
+      if (performance && performance !== "all") params.append("status", performance);
       if (search) params.append("search", search);
       params.append("page", page.toString());
 
-      const response = await fetch(
-        `${API_BASE}/clients?${params.toString()}`
-      );
-      if (!response.ok) throw new Error("Failed to fetch students");
-      return response.json();
+      const response = await apiRequest("GET", `${API_BASE}/clients?${params.toString()}`);
+      const payload = await response.json();
+      return { data: payload.data, pagination: payload.pagination };
     },
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
   });
 }
-
 export function useTrainerClientDetail(clientId: string | null) {
   return useQuery({
     queryKey: ["trainer", "client", clientId],

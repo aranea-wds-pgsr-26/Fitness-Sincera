@@ -1,9 +1,11 @@
 import { relations, sql } from "drizzle-orm";
 import {
   doublePrecision,
+  index,
   pgTable,
   text,
   timestamp,
+  uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
 
@@ -142,6 +144,21 @@ export const fitnessClientAnamneses = pgTable("fitness_client_anamneses", {
   createdAt: timestamp("created_at", { withTimezone: true }).default(sql`now()`),
 });
 
+export const fitnessProfessionalClients = pgTable(
+  "fitness_professional_clients",
+  {
+    id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+    professionalId: uuid("professional_id").notNull().references(() => fitnessUsers.id, { onDelete: "cascade" }),
+    clientId: uuid("client_id").notNull().references(() => fitnessUsers.id, { onDelete: "cascade" }),
+    specialty: text("specialty").notNull(),
+    status: text("status").notNull().default("active"),
+    createdAt: timestamp("created_at", { withTimezone: true }).default(sql`now()`),
+  },
+  (table) => [
+    uniqueIndex("fitness_professional_clients_unique_assignment").on(table.professionalId, table.clientId, table.specialty),
+    index("fitness_professional_clients_client_idx").on(table.clientId),
+  ],
+);
 export const fitnessUsersRelations = relations(fitnessUsers, ({ many }) => ({
   sessions: many(fitnessSessions),
   meals: many(fitnessMeals),
@@ -151,6 +168,8 @@ export const fitnessUsersRelations = relations(fitnessUsers, ({ many }) => ({
   wearableDevices: many(fitnessWearableDevices),
   clientProfiles: many(fitnessClientProfiles),
   clientAnamneses: many(fitnessClientAnamneses),
+  professionalAssignments: many(fitnessProfessionalClients, { relationName: "professionalAssignments" }),
+  clientAssignments: many(fitnessProfessionalClients, { relationName: "clientAssignments" }),
 }));
 
 export const fitnessSessionsRelations = relations(fitnessSessions, ({ one }) => ({
@@ -213,6 +232,18 @@ export const fitnessClientAnamnesesRelations = relations(fitnessClientAnamneses,
   }),
 }));
 
+export const fitnessProfessionalClientsRelations = relations(fitnessProfessionalClients, ({ one }) => ({
+  professional: one(fitnessUsers, {
+    fields: [fitnessProfessionalClients.professionalId],
+    references: [fitnessUsers.id],
+    relationName: "professionalAssignments",
+  }),
+  client: one(fitnessUsers, {
+    fields: [fitnessProfessionalClients.clientId],
+    references: [fitnessUsers.id],
+    relationName: "clientAssignments",
+  }),
+}));
 export type FitnessUser = typeof fitnessUsers.$inferSelect;
 export type NewFitnessUser = typeof fitnessUsers.$inferInsert;
 export type FitnessMeal = typeof fitnessMeals.$inferSelect;
